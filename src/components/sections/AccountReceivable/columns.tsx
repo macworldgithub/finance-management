@@ -521,23 +521,49 @@ export function getColumns(
         return text;
       },
     },
+    // {
+    //   title: "Process Severity Levels",
+    //   dataIndex: "processSeverityLevels",
+    //   key: "processSeverityLevels",
+    //   width: 200,
+    //   render: (text: any, record: DataType) => {
+    //     const menu = buildMenu(processSeverityLevelsOptions, (key) =>
+    //       handlers?.onSelectGeneric?.(key, record.key, "processSeverityLevels")
+    //     );
+    //     return (
+    //       <Dropdown overlay={menu} trigger={["click"]}>
+    //         <div className="flex items-center cursor-pointer">
+    //           {text || "Select"}
+    //           <DownOutlined className="ml-1 text-gray-500 text-xs" />
+    //         </div>
+    //       </Dropdown>
+    //     );
+    //   },
+    // },
     {
       title: "Process Severity Levels",
       dataIndex: "processSeverityLevels",
       key: "processSeverityLevels",
       width: 200,
       render: (text: any, record: DataType) => {
-        const menu = buildMenu(processSeverityLevelsOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "processSeverityLevels")
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
+        if (editingKeys.includes(record.key)) {
+          const menu = buildMenu(processSeverityLevelsOptions, (key) =>
+            handlers?.onSelectGeneric?.(
+              key,
+              record.key,
+              "processSeverityLevels"
+            )
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text || "-";
       },
     },
   ];
@@ -1553,7 +1579,7 @@ export function getColumns(
         return text;
       },
     },
-   
+
     {
       title: "Key Control",
       dataIndex: "keyControl",
@@ -1571,7 +1597,7 @@ export function getColumns(
       render: () => "Yes",
     },
   ];
- 
+
   const controlAssessmentColumns: ColumnsType<DataType> = [
     {
       title: "Level of Responsibility",
@@ -2321,33 +2347,65 @@ export function getColumns(
               editingKeys
             ),
         },
+        // {
+        //   title: "Process Severity Levels",
+        //   dataIndex: "processSeverityLevels",
+        //   key: "processSeverityLevels",
+        //   width: 180,
+        //   render: (text: any, record: DataType) => {
+        //     const severityOptions = [
+        //       { label: "Low", key: "Low" },
+        //       { label: "Medium", key: "Medium" },
+        //       { label: "High", key: "High" },
+        //       { label: "Critical", key: "Critical" },
+        //     ];
+        //     const menu = buildMenu(severityOptions, (key) =>
+        //       handlers?.onSelectGeneric?.(
+        //         key,
+        //         record.key,
+        //         "processSeverityLevels"
+        //       )
+        //     );
+        //     return (
+        //       <Dropdown overlay={menu} trigger={["click"]}>
+        //         <div className="flex items-center cursor-pointer">
+        //           {text || "Select"}
+        //           <DownOutlined className="ml-1 text-gray-500 text-xs" />
+        //         </div>
+        //       </Dropdown>
+        //     );
+        //   },
+        // },
         {
           title: "Process Severity Levels",
           dataIndex: "processSeverityLevels",
           key: "processSeverityLevels",
           width: 180,
           render: (text: any, record: DataType) => {
-            const severityOptions = [
-              { label: "Low", key: "Low" },
-              { label: "Medium", key: "Medium" },
-              { label: "High", key: "High" },
-              { label: "Critical", key: "Critical" },
-            ];
-            const menu = buildMenu(severityOptions, (key) =>
-              handlers?.onSelectGeneric?.(
-                key,
-                record.key,
-                "processSeverityLevels"
-              )
-            );
-            return (
-              <Dropdown overlay={menu} trigger={["click"]}>
-                <div className="flex items-center cursor-pointer">
-                  {text || "Select"}
-                  <DownOutlined className="ml-1 text-gray-500 text-xs" />
-                </div>
-              </Dropdown>
-            );
+            if (editingKeys.includes(record.key)) {
+              const severityOptions = [
+                { label: "Low", key: "Low" },
+                { label: "Medium", key: "Medium" },
+                { label: "High", key: "High" },
+                { label: "Critical", key: "Critical" },
+              ];
+              const menu = buildMenu(severityOptions, (key) =>
+                handlers?.onSelectGeneric?.(
+                  key,
+                  record.key,
+                  "processSeverityLevels"
+                )
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text || "";
           },
         },
       ];
