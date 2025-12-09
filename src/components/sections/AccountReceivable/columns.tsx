@@ -438,15 +438,13 @@ export function getColumns(
       dataIndex: "no",
       key: "no",
       width: 80,
-      fixed: "left",
-      render: (text: string) => text || "-", // Add this line
+      render: (text: string) => text || "-",
     },
     {
       title: "Processes",
       dataIndex: "process",
       key: "process",
       width: 300,
-      fixed: "left",
       render: (text: string, record: DataType) => {
         if (editingKeys.includes(record.key)) {
           return (
@@ -2018,7 +2016,8 @@ export function getColumns(
               text,
               record.key,
               "designAdequacyScore",
-              handlers
+              handlers,
+              editingKeys
             ),
         },
         {
@@ -2040,7 +2039,13 @@ export function getColumns(
           key: "scalabilityScore",
           width: 160,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "scalabilityScore", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "scalabilityScore",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Adequacy Score(0-25)",
@@ -2048,7 +2053,13 @@ export function getColumns(
           key: "adequacyScore",
           width: 160,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "adequacyScore", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "adequacyScore",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Total Score(0-25)",
@@ -2056,7 +2067,13 @@ export function getColumns(
           key: "totalScore",
           width: 140,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "totalScore", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "totalScore",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Scale(1-5)",
@@ -2064,7 +2081,13 @@ export function getColumns(
           key: "scale",
           width: 100,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "scale", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "scale",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Rating",
@@ -2072,7 +2095,13 @@ export function getColumns(
           key: "rating",
           width: 100,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "rating", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "rating",
+              handlers,
+              editingKeys
+            ),
         },
       ];
       break;
@@ -2084,7 +2113,13 @@ export function getColumns(
           key: "designScore",
           width: 140,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "designScore", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "designScore",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Operating Score(0-10)",
@@ -2092,7 +2127,13 @@ export function getColumns(
           key: "operatingScore",
           width: 160,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "operatingScore", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "operatingScore",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Sustainability Score(0-5)",
@@ -2104,7 +2145,8 @@ export function getColumns(
               text,
               record.key,
               "sustainabilityScore",
-              handlers
+              handlers,
+              editingKeys
             ),
         },
         {
@@ -2117,7 +2159,8 @@ export function getColumns(
               text,
               record.key,
               "effectivenessScore",
-              handlers
+              handlers,
+              editingKeys
             ),
         },
         {
@@ -2126,7 +2169,13 @@ export function getColumns(
           key: "totalScore",
           width: 140,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "totalScore", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "totalScore",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Scale(1-5)",
@@ -2134,7 +2183,13 @@ export function getColumns(
           key: "scale",
           width: 100,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "scale", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "scale",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Rating",
@@ -2142,7 +2197,13 @@ export function getColumns(
           key: "rating",
           width: 100,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "rating", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "rating",
+              handlers,
+              editingKeys
+            ),
         },
       ];
       break;
@@ -2158,7 +2219,8 @@ export function getColumns(
               text,
               record.key,
               "objectiveAchievementScore",
-              handlers
+              handlers,
+              editingKeys
             ),
         },
         {
@@ -2171,7 +2233,8 @@ export function getColumns(
               text,
               record.key,
               "processTimelinessScore",
-              handlers
+              handlers,
+              editingKeys
             ),
         },
         {
@@ -2184,7 +2247,8 @@ export function getColumns(
               text,
               record.key,
               "resourceConsumptionScore",
-              handlers
+              handlers,
+              editingKeys
             ),
         },
         {
@@ -2193,7 +2257,13 @@ export function getColumns(
           key: "efficiencyScore",
           width: 160,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "efficiencyScore", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "efficiencyScore",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Total Score(0-25)",
@@ -2201,7 +2271,13 @@ export function getColumns(
           key: "totalScore",
           width: 140,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "totalScore", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "totalScore",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Scale(1-5)",
@@ -2209,7 +2285,13 @@ export function getColumns(
           key: "scale",
           width: 100,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "scale", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "scale",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Rating",
@@ -2217,7 +2299,13 @@ export function getColumns(
           key: "rating",
           width: 100,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "rating", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "rating",
+              handlers,
+              editingKeys
+            ),
         },
       ];
       break;
@@ -2229,7 +2317,13 @@ export function getColumns(
           key: "scale",
           width: 120,
           render: (text: any, record: DataType) =>
-            renderEditableInput(text, record.key, "scale", handlers),
+            renderEditableInput(
+              text,
+              record.key,
+              "scale",
+              handlers,
+              editingKeys
+            ),
         },
         {
           title: "Process Severity Levels",
