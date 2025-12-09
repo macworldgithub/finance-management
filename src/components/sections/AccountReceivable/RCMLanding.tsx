@@ -4,9 +4,17 @@ import React from "react";
 
 interface RCMLandingProps {
   onNavigate: (tabKey: string, subTabKey?: string) => void;
+  onOpenAdequacy?: () => void;
+  onOpenEffectiveness?: () => void;
+  onOpenEfficiency?: () => void;
 }
 
-const RCMLanding: React.FC<RCMLandingProps> = ({ onNavigate }) => {
+const RCMLanding: React.FC<RCMLandingProps> = ({
+  onNavigate,
+  onOpenAdequacy,
+  onOpenEffectiveness,
+  onOpenEfficiency,
+}) => {
   return (
     <div className="min-h-screen bg-[#f8fafc] flex justify-center pt-8 pb-12">
       <div className="w-[96%] max-w-5xl bg-white shadow-md rounded-xl p-6 border border-gray-200">
@@ -102,18 +110,34 @@ const RCMLanding: React.FC<RCMLandingProps> = ({ onNavigate }) => {
           RCM ASSESSMENT
         </div>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-6 text-center text-xs font-semibold">
-          <div className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623]">
+          <button
+            type="button"
+            className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
+            onClick={() => onNavigate("1")}
+          >
             Processes
-          </div>
-          <div className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623]">
+          </button>
+          <button
+            type="button"
+            className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
+            onClick={onOpenAdequacy}
+          >
             Assessment of Adequacy
-          </div>
-          <div className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623]">
+          </button>
+          <button
+            type="button"
+            className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
+            onClick={onOpenEffectiveness}
+          >
             Assessment of Effectiveness
-          </div>
-          <div className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623]">
+          </button>
+          <button
+            type="button"
+            className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
+            onClick={onOpenEfficiency}
+          >
             Assessment of Efficiency
-          </div>
+          </button>
           <div className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623]">
             Process Severity
           </div>
