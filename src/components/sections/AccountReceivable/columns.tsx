@@ -1981,9 +1981,219 @@ export function getColumns(
       else dynamicColumns = internalAuditTestColumns; // default to audit
       break;
     case "11":
+      dynamicColumns = [
+        {
+          title: "Design Adequacy Score(0-10)",
+          dataIndex: "designAdequacyScore",
+          key: "designAdequacyScore",
+          width: 180,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "designAdequacyScore",
+              handlers
+            ),
+        },
+        {
+          title: "Sustainability Score(0-10)",
+          dataIndex: "sustainabilityScore",
+          key: "sustainabilityScore",
+          width: 180,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "sustainabilityScore",
+              handlers
+            ),
+        },
+        {
+          title: "Scalability Score(0-5)",
+          dataIndex: "scalabilityScore",
+          key: "scalabilityScore",
+          width: 160,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "scalabilityScore", handlers),
+        },
+        {
+          title: "Adequacy Score(0-25)",
+          dataIndex: "adequacyScore",
+          key: "adequacyScore",
+          width: 160,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "adequacyScore", handlers),
+        },
+        {
+          title: "Total Score(0-25)",
+          dataIndex: "totalScore",
+          key: "totalScore",
+          width: 140,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "totalScore", handlers),
+        },
+        {
+          title: "Scale(1-5)",
+          dataIndex: "scale",
+          key: "scale",
+          width: 100,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "scale", handlers),
+        },
+        {
+          title: "Rating",
+          dataIndex: "rating",
+          key: "rating",
+          width: 100,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "rating", handlers),
+        },
+      ];
+      break;
     case "12":
+      dynamicColumns = [
+        {
+          title: "Design Score(0-10)",
+          dataIndex: "designScore",
+          key: "designScore",
+          width: 140,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "designScore", handlers),
+        },
+        {
+          title: "Operating Score(0-10)",
+          dataIndex: "operatingScore",
+          key: "operatingScore",
+          width: 160,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "operatingScore", handlers),
+        },
+        {
+          title: "Sustainability Score(0-5)",
+          dataIndex: "sustainabilityScore",
+          key: "sustainabilityScore",
+          width: 180,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "sustainabilityScore",
+              handlers
+            ),
+        },
+        {
+          title: "Effectiveness Score(0-25)",
+          dataIndex: "effectivenessScore",
+          key: "effectivenessScore",
+          width: 180,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "effectivenessScore",
+              handlers
+            ),
+        },
+        {
+          title: "Total Score(0-25)",
+          dataIndex: "totalScore",
+          key: "totalScore",
+          width: 140,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "totalScore", handlers),
+        },
+        {
+          title: "Scale(1-5)",
+          dataIndex: "scale",
+          key: "scale",
+          width: 100,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "scale", handlers),
+        },
+        {
+          title: "Rating",
+          dataIndex: "rating",
+          key: "rating",
+          width: 100,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "rating", handlers),
+        },
+      ];
+      break;
     case "13":
-      dynamicColumns = additionalTabsColumns;
+      dynamicColumns = [
+        {
+          title: "Objective Achievement Score(0-10)",
+          dataIndex: "objectiveAchievementScore",
+          key: "objectiveAchievementScore",
+          width: 210,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "objectiveAchievementScore",
+              handlers
+            ),
+        },
+        {
+          title: "Process Timeliness & Throughput Score(0-10)",
+          dataIndex: "processTimelinessScore",
+          key: "processTimelinessScore",
+          width: 260,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "processTimelinessScore",
+              handlers
+            ),
+        },
+        {
+          title: "Resource Consumption Score(0-5)",
+          dataIndex: "resourceConsumptionScore",
+          key: "resourceConsumptionScore",
+          width: 220,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "resourceConsumptionScore",
+              handlers
+            ),
+        },
+        {
+          title: "Efficiency Score(0-25)",
+          dataIndex: "efficiencyScore",
+          key: "efficiencyScore",
+          width: 160,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "efficiencyScore", handlers),
+        },
+        {
+          title: "Total Score(0-25)",
+          dataIndex: "totalScore",
+          key: "totalScore",
+          width: 140,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "totalScore", handlers),
+        },
+        {
+          title: "Scale(1-5)",
+          dataIndex: "scale",
+          key: "scale",
+          width: 100,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "scale", handlers),
+        },
+        {
+          title: "Rating",
+          dataIndex: "rating",
+          key: "rating",
+          width: 100,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "rating", handlers),
+        },
+      ];
       break;
     case "14":
       dynamicColumns = [
