@@ -121,6 +121,14 @@ const AccountReceivable = forwardRef<
         if (activeSubTab === "audit") return "Internal Audit Test";
         if (activeSubTab === "grc") return "GRC Exception Log";
         return "Internal Audit Test"; // default
+      case "11":
+        return "Assessment of Adequacy";
+      case "12":
+        return "Assessment of Effectiveness";
+      case "13":
+        return "Assessment of Efficiency";
+      case "14":
+        return "Process Severity";
       default:
         return "Process";
     }
@@ -458,6 +466,10 @@ const AccountReceivable = forwardRef<
       label: "Internal Audit Management",
       subTabs: ["audit", "grc"],
     },
+    { key: "11", label: "Assessment of Adequacy" },
+    { key: "12", label: "Assessment of Effectiveness" },
+    { key: "13", label: "Assessment of Efficiency" },
+    { key: "14", label: "Process Severity" },
   ];
   const getSectionFromTabKey = (tabKey: string): string => {
     switch (tabKey) {

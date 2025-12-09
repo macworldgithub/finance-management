@@ -120,21 +120,21 @@ const RCMLanding: React.FC<RCMLandingProps> = ({
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={onOpenAdequacy}
+            onClick={() => onNavigate("11")}
           >
             Assessment of Adequacy
           </button>
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={onOpenEffectiveness}
+            onClick={() => onNavigate("12")}
           >
             Assessment of Effectiveness
           </button>
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={onOpenEfficiency}
+            onClick={() => onNavigate("13")}
           >
             Assessment of Efficiency
           </button>

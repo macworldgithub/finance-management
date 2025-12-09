@@ -278,6 +278,78 @@ export function getColumns(
   },
   editingKeys: string[] = []
 ): ColumnsType<DataType> {
+  // Special columns for the 4 new tabs
+  const additionalTabsColumns: ColumnsType<DataType> = [
+    {
+      title: "No.",
+      dataIndex: "no",
+      key: "no",
+      width: 80,
+      fixed: "left",
+      render: (text: string) => text || "-",
+    },
+    {
+      title: "Process",
+      dataIndex: "process",
+      key: "process",
+      width: 300,
+      fixed: "left",
+      render: (text: string) => text,
+    },
+  ];
+  // Special Process Severity column
+  const processSeverityColumn: ColumnsType<DataType>[0] = {
+    title: (
+      <div
+        style={{
+          background: "#1f4e79",
+          color: "#fff",
+          textAlign: "center",
+          fontWeight: "bold",
+        }}
+      >
+        <div>Process Severity</div>
+        <div
+          style={{
+            background: "#0070c0",
+            color: "#fff",
+            fontWeight: "bold",
+            fontSize: 16,
+          }}
+        >
+          Scale(1-4)
+        </div>
+      </div>
+    ),
+    dataIndex: "processSeverityLevel",
+    key: "processSeverityLevel",
+    width: 180,
+    render: (text: string) => (
+      <div style={{ textAlign: "center", fontWeight: "bold", fontSize: 18 }}>
+        {text || "-"}
+      </div>
+    ),
+  };
+  const processSeverityLevelColumn: ColumnsType<DataType>[0] = {
+    title: (
+      <div
+        style={{
+          background: "#595959",
+          color: "#fff",
+          textAlign: "center",
+          fontWeight: "bold",
+        }}
+      >
+        Process Severity Levels
+      </div>
+    ),
+    dataIndex: "processSeverityLevels",
+    key: "processSeverityLevels",
+    width: 180,
+    render: (text: string) => (
+      <div style={{ textAlign: "center" }}>{text || "-"}</div>
+    ),
+  };
   const baseColumns: ColumnsType<DataType> = [
     {
       title: () => (
@@ -1384,29 +1456,6 @@ export function getColumns(
     },
   ];
   const controlAssessmentColumns: ColumnsType<DataType> = [
-    // {
-    // title: "Level of Responsibility",
-    // dataIndex: "levelResponsibility",
-    // key: "levelResponsibility",
-    // width: 200,
-    // render: (text: string, record: DataType) => {
-    // if (editingKeys.includes(record.key)) {
-    // return (
-    // <Input
-    // value={text}
-    // onChange={(e) =>
-    // handlers?.onTextChange?.(
-    // record.key,
-    // "levelResponsibility",
-    // e.target.value
-    // )
-    // }
-    // />
-    // );
-    // }
-    // return text;
-    // },
-    // },
     {
       title: "Level of Responsibility",
       dataIndex: "levelResponsibility",
@@ -1887,6 +1936,19 @@ export function getColumns(
       if (activeSubTab === "audit") dynamicColumns = internalAuditTestColumns;
       else if (activeSubTab === "grc") dynamicColumns = grcExceptionLogColumns;
       else dynamicColumns = internalAuditTestColumns; // default to audit
+      break;
+    case "11":
+    case "12":
+    case "13":
+      dynamicColumns = additionalTabsColumns;
+      break;
+    case "14":
+      dynamicColumns = [
+        additionalTabsColumns[0],
+        additionalTabsColumns[1],
+        processSeverityColumn,
+        processSeverityLevelColumn,
+      ];
       break;
     default:
       dynamicColumns = processColumns;
