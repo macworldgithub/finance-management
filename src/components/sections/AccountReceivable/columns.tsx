@@ -149,6 +149,32 @@ const renderEditableCheckbox = (
     />
   );
 };
+
+const renderEditableInput = (
+  value: string,
+  recordKey: string,
+  field: keyof DataType,
+  handlers?: {
+    onTextChange?: (
+      rowKey: string,
+      field: keyof DataType,
+      value: string
+    ) => void;
+  },
+  editingKeys: string[] = []
+) => {
+  if (editingKeys.includes(recordKey)) {
+    return (
+      <Input
+        value={value}
+        onChange={(e) =>
+          handlers?.onTextChange?.(recordKey, field, e.target.value)
+        }
+      />
+    );
+  }
+  return value;
+};
 //abc
 // Helper function to get color based on severity/impact level
 const getColorForSeverity = (
