@@ -278,6 +278,49 @@ export function getColumns(
   },
   editingKeys: string[] = []
 ): ColumnsType<DataType> {
+  // No, Process, Actions columns for all tabs
+  // Duplicate baseColumns removed above. Only one definition remains.
+  const actionsColumn: ColumnsType<DataType>[0] = {
+    title: "Actions",
+    key: "actions",
+    width: 200,
+    render: (_, record: DataType) => {
+      const isActive = record.isActive !== false;
+      if (editingKeys.includes(record.key)) {
+        return (
+          <Button onClick={() => handlers?.onSaveRow?.(record.key)}>
+            Save
+          </Button>
+        );
+      } else {
+        return (
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            {isActive && (
+              <Button
+                icon={<EditOutlined />}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlers?.onEditRow?.(record.key);
+                }}
+              />
+            )}
+            <Popconfirm
+              title="Sure to delete?"
+              onConfirm={() => handlers?.onDeleteRow?.(record.key)}
+            >
+              <Button icon={<DeleteOutlined />} danger />
+            </Popconfirm>
+            <Button
+              icon={isActive ? <LockOutlined /> : <UnlockOutlined />}
+              onClick={() => handlers?.onToggleStatus?.(record.key)}
+              type={isActive ? "default" : "primary"}
+              title={isActive ? "Deactivate" : "Activate"}
+            />
+          </div>
+        );
+      }
+    },
+  };
   // Special columns for the 4 new tabs
   const additionalTabsColumns: ColumnsType<DataType> = [
     {
@@ -1944,56 +1987,48 @@ export function getColumns(
       break;
     case "14":
       dynamicColumns = [
-        additionalTabsColumns[0],
-        additionalTabsColumns[1],
-        processSeverityColumn,
-        processSeverityLevelColumn,
+        {
+          title: "Scale(1-4)",
+          dataIndex: "scale",
+          key: "scale",
+          width: 120,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(text, record.key, "scale", handlers),
+        },
+        {
+          title: "Process Severity Levels",
+          dataIndex: "processSeverityLevels",
+          key: "processSeverityLevels",
+          width: 180,
+          render: (text: any, record: DataType) => {
+            const severityOptions = [
+              { label: "Low", key: "Low" },
+              { label: "Medium", key: "Medium" },
+              { label: "High", key: "High" },
+              { label: "Critical", key: "Critical" },
+            ];
+            const menu = buildMenu(severityOptions, (key) =>
+              handlers?.onSelectGeneric?.(
+                key,
+                record.key,
+                "processSeverityLevels"
+              )
+            );
+            return (
+              <Dropdown overlay={menu} trigger={["click"]}>
+                <div className="flex items-center cursor-pointer">
+                  {text || "Select"}
+                  <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                </div>
+              </Dropdown>
+            );
+          },
+        },
       ];
       break;
     default:
       dynamicColumns = processColumns;
   }
-  const actionsColumn: ColumnsType<DataType>[0] = {
-    title: "Actions",
-    key: "actions",
-    width: 200,
-    render: (_, record: DataType) => {
-      // use isActive boolean (default true when undefined)
-      const isActive = record.isActive !== false;
-      if (editingKeys.includes(record.key)) {
-        return (
-          <Button onClick={() => handlers?.onSaveRow?.(record.key)}>
-            Save
-          </Button>
-        );
-      } else {
-        return (
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            {isActive && (
-              <Button
-                icon={<EditOutlined />}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlers?.onEditRow?.(record.key);
-                }}
-              />
-            )}
-            <Popconfirm
-              title="Sure to delete?"
-              onConfirm={() => handlers?.onDeleteRow?.(record.key)}
-            >
-              <Button icon={<DeleteOutlined />} danger />
-            </Popconfirm>
-            <Button
-              icon={isActive ? <LockOutlined /> : <UnlockOutlined />}
-              onClick={() => handlers?.onToggleStatus?.(record.key)}
-              type={isActive ? "default" : "primary"}
-              title={isActive ? "Deactivate" : "Activate"}
-            />
-          </div>
-        );
-      }
-    },
-  };
+  // Duplicate actionsColumn removed above. Only one definition remains.
   return [...baseColumns, ...dynamicColumns, actionsColumn];
 }

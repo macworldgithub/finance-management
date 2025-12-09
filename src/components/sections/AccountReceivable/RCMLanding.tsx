@@ -138,9 +138,13 @@ const RCMLanding: React.FC<RCMLandingProps> = ({
           >
             Assessment of Efficiency
           </button>
-          <div className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623]">
+          <button
+            type="button"
+            className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
+            onClick={() => onNavigate("14")}
+          >
             Process Severity
-          </div>
+          </button>
         </div>
 
         {/* Dashboard */}
