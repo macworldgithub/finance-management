@@ -1270,21 +1270,36 @@ export function getColumns(
           handlers?.onSelectGeneric?.(key, record.key, "severityImpact")
         );
         const { bgColor, textColor, borderColor } = getColorForSeverity(text);
+        if (editingKeys.includes(record.key)) {
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div
+                className="flex items-center cursor-pointer p-2 rounded"
+                style={{
+                  backgroundColor: bgColor,
+                  color: textColor,
+                  border: `1px solid ${borderColor}`,
+                  fontWeight: "600",
+                }}
+              >
+                {text || "Select"}
+                <DownOutlined className="ml-2" style={{ color: textColor }} />
+              </div>
+            </Dropdown>
+          );
+        }
         return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div
-              className="flex items-center cursor-pointer p-2 rounded"
-              style={{
-                backgroundColor: bgColor,
-                color: textColor,
-                border: `1px solid ${borderColor}`,
-                fontWeight: "600",
-              }}
-            >
-              {text || "Select"}
-              <DownOutlined className="ml-2" style={{ color: textColor }} />
-            </div>
-          </Dropdown>
+          <div
+            className="flex items-center p-2 rounded"
+            style={{
+              backgroundColor: bgColor,
+              color: textColor,
+              border: `1px solid ${borderColor}`,
+              fontWeight: "600",
+            }}
+          >
+            {text || ""}
+          </div>
         );
       },
     },
@@ -1305,21 +1320,36 @@ export function getColumns(
           handlers?.onSelectGeneric?.(key, record.key, "probabilityLikelihood")
         );
         const { bgColor, textColor, borderColor } = getColorForSeverity(text);
+        if (editingKeys.includes(record.key)) {
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div
+                className="flex items-center cursor-pointer p-2 rounded"
+                style={{
+                  backgroundColor: bgColor,
+                  color: textColor,
+                  border: `1px solid ${borderColor}`,
+                  fontWeight: "600",
+                }}
+              >
+                {text || "Select"}
+                <DownOutlined className="ml-2" style={{ color: textColor }} />
+              </div>
+            </Dropdown>
+          );
+        }
         return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div
-              className="flex items-center cursor-pointer p-2 rounded"
-              style={{
-                backgroundColor: bgColor,
-                color: textColor,
-                border: `1px solid ${borderColor}`,
-                fontWeight: "600",
-              }}
-            >
-              {text || "Select"}
-              <DownOutlined className="ml-2" style={{ color: textColor }} />
-            </div>
-          </Dropdown>
+          <div
+            className="flex items-center p-2 rounded"
+            style={{
+              backgroundColor: bgColor,
+              color: textColor,
+              border: `1px solid ${borderColor}`,
+              fontWeight: "600",
+            }}
+          >
+            {text || ""}
+          </div>
         );
       },
     },
@@ -1340,21 +1370,36 @@ export function getColumns(
           handlers?.onSelectGeneric?.(key, record.key, "classification")
         );
         const { bgColor, textColor, borderColor } = getColorForSeverity(text);
+        if (editingKeys.includes(record.key)) {
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div
+                className="flex items-center cursor-pointer p-2 rounded"
+                style={{
+                  backgroundColor: bgColor,
+                  color: textColor,
+                  border: `1px solid ${borderColor}`,
+                  fontWeight: "600",
+                }}
+              >
+                {text || "Select"}
+                <DownOutlined className="ml-2" style={{ color: textColor }} />
+              </div>
+            </Dropdown>
+          );
+        }
         return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div
-              className="flex items-center cursor-pointer p-2 rounded"
-              style={{
-                backgroundColor: bgColor,
-                color: textColor,
-                border: `1px solid ${borderColor}`,
-                fontWeight: "600",
-              }}
-            >
-              {text || "Select"}
-              <DownOutlined className="ml-2" style={{ color: textColor }} />
-            </div>
-          </Dropdown>
+          <div
+            className="flex items-center p-2 rounded"
+            style={{
+              backgroundColor: bgColor,
+              color: textColor,
+              border: `1px solid ${borderColor}`,
+              fontWeight: "600",
+            }}
+          >
+            {text || ""}
+          </div>
         );
       },
     },
