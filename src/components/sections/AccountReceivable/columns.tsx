@@ -1553,25 +1553,7 @@ export function getColumns(
         return text;
       },
     },
-    // {
-    // title: "Process Stage",
-    // dataIndex: "processStage",
-    // key: "processStage",
-    // width: 150,
-    // render: (text: any, record: DataType) => {
-    // const menu = buildMenu(yesNoOptions, (key) =>
-    // handlers?.onSelectGeneric?.(key, record.key, "processStage")
-    // );
-    // return (
-    // <Dropdown overlay={menu} trigger={["click"]}>
-    // <div className="flex items-center cursor-pointer">
-    // {text || "Select"}
-    // <DownOutlined className="ml-1 text-gray-500 text-xs" />
-    // </div>
-    // </Dropdown>
-    // );
-    // },
-    // },
+   
     {
       title: "Key Control",
       dataIndex: "keyControl",
@@ -1589,6 +1571,7 @@ export function getColumns(
       render: () => "Yes",
     },
   ];
+ 
   const controlAssessmentColumns: ColumnsType<DataType> = [
     {
       title: "Level of Responsibility",
@@ -1596,115 +1579,58 @@ export function getColumns(
       key: "levelResponsibility",
       width: 200,
       render: (text: any, record: DataType) => {
-        const levelOptions = [
-          { label: "Process Level", key: "Process Level" },
-          { label: "Functional Level", key: "Functional Level" },
-          { label: "Operating Unit Level", key: "Operating Unit Level" },
-          { label: "Division Level", key: "Division Level" },
-          { label: "Entity Level", key: "Entity Level" },
-        ];
-        const menu = buildMenu(levelOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "levelResponsibility")
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
+        if (editingKeys.includes(record.key)) {
+          const levelOptions = [
+            { label: "Process Level", key: "Process Level" },
+            { label: "Functional Level", key: "Functional Level" },
+            { label: "Operating Unit Level", key: "Operating Unit Level" },
+            { label: "Division Level", key: "Division Level" },
+            { label: "Entity Level", key: "Entity Level" },
+          ];
+          const menu = buildMenu(levelOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "levelResponsibility")
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text || ""; // Simple text when not editing
       },
     },
-    {
-      title: "COSO Principle",
-      dataIndex: "cosoPrinciple",
-      key: "cosoPrinciple",
-      width: 250,
-      render: (text: any, record: DataType) => {
-        const menu = buildMenu(cosoPrincipleOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "cosoPrinciple")
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
-      },
-    },
-    {
-      title: "Operational Approach",
-      dataIndex: "operationalApproach",
-      key: "operationalApproach",
-      width: 200,
-      render: (text: any, record: DataType) => {
-        const approachOptions = [
-          { label: "Automated", key: "automated" },
-          { label: "Manual", key: "manual" },
-        ];
-        const menu = buildMenu(approachOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "operationalApproach")
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
-      },
-    },
-    {
-      title: "Operational Frequency",
-      dataIndex: "operationalFrequency",
-      key: "operationalFrequency",
-      width: 200,
-      render: (text: any, record: DataType) => {
-        const menu = buildMenu(operationalFrequencyOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "operationalFrequency")
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
-      },
-    },
-    {
-      title: "Control Classification",
-      dataIndex: "controlClassification",
-      key: "controlClassification",
-      width: 200,
-      render: (text: any, record: DataType) => {
-        const classificationOptions = [
-          { label: "Directive Control", key: "Directive Control" },
-          { label: "Preventive Control", key: "Preventive Control" },
-          { label: "Detective Control", key: "Detective Control" },
-          { label: "Corrective Control", key: "Corrective Control" },
-        ];
-        const menu = buildMenu(classificationOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "controlClassification")
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
-      },
-    },
+    // Repeat similar pattern for:
+    // - COSO Principle
+    // - Operational Approach
+    // - Operational Frequency
+    // - Control Classification
   ];
   const riskAssessmentResidualColumns: ColumnsType<DataType> =
     riskAssessmentInherentColumns.map((col) => ({ ...col })); // copy to avoid reference issues
+  // const soxSubTabColumns: ColumnsType<DataType> = [
+  //   {
+  //     title: "SOX Control Activity",
+  //     dataIndex: "soxControlActivity",
+  //     key: "soxControlActivity",
+  //     width: 250,
+  //     render: (text: any, record: DataType) => {
+  //       const menu = buildMenu(soxControlActivityOptions, (key) =>
+  //         handlers?.onSelectGeneric?.(key, record.key, "soxControlActivity")
+  //       );
+  //       return (
+  //         <Dropdown overlay={menu} trigger={["click"]}>
+  //           <div className="flex items-center cursor-pointer">
+  //             {text || "Select"}
+  //             <DownOutlined className="ml-1 text-gray-500 text-xs" />
+  //           </div>
+  //         </Dropdown>
+  //       );
+  //     },
+  //   },
+  // ];
   const soxSubTabColumns: ColumnsType<DataType> = [
     {
       title: "SOX Control Activity",
@@ -1712,17 +1638,20 @@ export function getColumns(
       key: "soxControlActivity",
       width: 250,
       render: (text: any, record: DataType) => {
-        const menu = buildMenu(soxControlActivityOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "soxControlActivity")
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
+        if (editingKeys.includes(record.key)) {
+          const menu = buildMenu(soxControlActivityOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "soxControlActivity")
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text || "-"; // Simple text when not editing
       },
     },
   ];
