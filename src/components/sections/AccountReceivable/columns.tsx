@@ -132,22 +132,34 @@ const buildMenu = (
   );
 };
 const renderEditableCheckbox = (
-  value: boolean,
+  value: boolean | string,
   record: DataType,
   field: keyof DataType,
   onCheckboxChange?: (
     rowKey: string,
     field: keyof DataType,
     checked: boolean
-  ) => void
+  ) => void,
+  editingKeys?: string[]
 ) => {
-  return (
-    <Checkbox
-      checked={value}
-      onChange={(e) => onCheckboxChange?.(record.key, field, e.target.checked)}
-      className="flex justify-center"
-    />
-  );
+  if (editingKeys && editingKeys.includes(record.key)) {
+    return (
+      <Checkbox
+        checked={value === true || value === "P"}
+        onChange={(e) =>
+          onCheckboxChange?.(record.key, field, e.target.checked)
+        }
+        className="flex justify-center"
+      />
+    );
+  }
+  if (value === true || value === "P") {
+    return <span style={{ fontSize: 18, color: "#52c41a" }}>&#10003;</span>; // tick
+  }
+  if (value === false || value === "O") {
+    return <span style={{ fontSize: 18, color: "#d9d9d9" }}>&#10007;</span>; // cross
+  }
+  return null;
 };
 
 const renderEditableInput = (
@@ -770,12 +782,13 @@ export function getColumns(
       dataIndex: "integrityEthical",
       key: "integrityEthical",
       width: 200,
-      render: (checked: boolean, record: DataType) =>
+      render: (checked: boolean | string, record: DataType) =>
         renderEditableCheckbox(
           checked,
           record,
           "integrityEthical",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -783,12 +796,13 @@ export function getColumns(
       dataIndex: "boardOversight",
       key: "boardOversight",
       width: 180,
-      render: (checked: boolean, record: DataType) =>
+      render: (checked: boolean | string, record: DataType) =>
         renderEditableCheckbox(
           checked,
           record,
           "boardOversight",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -796,12 +810,13 @@ export function getColumns(
       dataIndex: "orgStructure",
       key: "orgStructure",
       width: 200,
-      render: (checked: boolean, record: DataType) =>
+      render: (checked: boolean | string, record: DataType) =>
         renderEditableCheckbox(
           checked,
           record,
           "orgStructure",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -809,12 +824,13 @@ export function getColumns(
       dataIndex: "commitmentCompetence",
       key: "commitmentCompetence",
       width: 220,
-      render: (checked: boolean, record: DataType) =>
+      render: (checked: boolean | string, record: DataType) =>
         renderEditableCheckbox(
           checked,
           record,
           "commitmentCompetence",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -822,12 +838,13 @@ export function getColumns(
       dataIndex: "managementPhilosophy",
       key: "managementPhilosophy",
       width: 200,
-      render: (checked: boolean, record: DataType) =>
+      render: (checked: boolean | string, record: DataType) =>
         renderEditableCheckbox(
           checked,
           record,
           "managementPhilosophy",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
   ];
@@ -1356,17 +1373,22 @@ export function getColumns(
           { label: "Share", key: "Share" },
           { label: "Accept", key: "Accept" },
         ];
-        const menu = buildMenu(responseOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "riskResponseType")
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
+
+        if (editingKeys.includes(record.key)) {
+          const menu = buildMenu(responseOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "riskResponseType")
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+
+        return text || "-";
       },
     },
   ];
