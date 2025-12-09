@@ -33,6 +33,9 @@ interface AccountReceivableProps {
   excelModalVisible?: boolean;
   onExcelModalClose?: () => void;
   onExcelModalOpen?: () => void;
+  initialTabKey?: string;
+  initialSubTabKey?: string;
+  onBackToLanding?: () => void;
 }
 const defaultNewRow = (maxNo: number): DataType => {
   const newKey = String(Date.now());
@@ -51,8 +54,10 @@ const AccountReceivable = forwardRef<
   const tableWrapperRef = useRef<HTMLDivElement>(null);
   const topScrollbarRef = useRef<HTMLDivElement>(null);
   const scrollSyncRef = useRef<boolean>(true);
-  const [activeTab, setActiveTab] = useState("1");
-  const [activeSubTab, setActiveSubTab] = useState("coso");
+  const [activeTab, setActiveTab] = useState(props.initialTabKey ?? "1");
+  const [activeSubTab, setActiveSubTab] = useState(
+    props.initialSubTabKey ?? "coso"
+  );
   const [dataBySection, setDataBySection] = useState<
     Record<string, DataType[]>
   >({});
@@ -72,6 +77,19 @@ const AccountReceivable = forwardRef<
     else if (activeTab === "9") setActiveSubTab("sox");
     else if (activeTab === "10") setActiveSubTab("audit");
   }, [activeTab]);
+
+  // Sync with optional initial props when they change (e.g. navigating from landing page)
+  useEffect(() => {
+    if (props.initialTabKey) {
+      setActiveTab(props.initialTabKey);
+    }
+  }, [props.initialTabKey]);
+
+  useEffect(() => {
+    if (props.initialSubTabKey) {
+      setActiveSubTab(props.initialSubTabKey);
+    }
+  }, [props.initialSubTabKey]);
   const getCurrentSection = useCallback((): string => {
     switch (activeTab) {
       case "1":
@@ -758,9 +776,13 @@ const AccountReceivable = forwardRef<
         <div className="p-6 pb-2">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">
-              <h1 className="text-xl font-bold text-black">
+              <button
+                type="button"
+                onClick={props.onBackToLanding}
+                className="text-xl font-bold text-black hover:text-blue-700 underline-offset-4 hover:underline text-left"
+              >
                 RCM – Account Receivable
-              </h1>
+              </button>
               <Button type="primary" onClick={handleExport}>
                 Export Data
               </Button>

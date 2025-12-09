@@ -30,11 +30,17 @@ import AccountReceivable, {
   AccountReceivableRef,
 } from "@/components/sections/AccountReceivable/index";
 import ExcelUploadModal from "@/components/sections/AccountReceivable/ExcelUploadModal";
+import RCMLanding from "@/components/sections/AccountReceivable/RCMLanding";
 import { useRef, useState } from "react";
 
 export default function HomePage() {
   const arRef = useRef<AccountReceivableRef>(null);
   const [excelModalVisible, setExcelModalVisible] = useState(false);
+  const [showLanding, setShowLanding] = useState(true);
+  const [initialTabKey, setInitialTabKey] = useState<string | undefined>();
+  const [initialSubTabKey, setInitialSubTabKey] = useState<
+    string | undefined
+  >();
 
   const handleImport = (file: File) => {
     arRef.current?.triggerImport(file);
@@ -45,10 +51,25 @@ export default function HomePage() {
     setExcelModalVisible(false);
   };
 
+  const handleNavigateFromLanding = (tabKey: string, subTabKey?: string) => {
+    setInitialTabKey(tabKey);
+    setInitialSubTabKey(subTabKey);
+    setShowLanding(false);
+  };
+
   return (
     <main className="relative">
       <Navbar onExcelUploadClick={() => setExcelModalVisible(true)} />
-      <AccountReceivable ref={arRef} />
+      {showLanding ? (
+        <RCMLanding onNavigate={handleNavigateFromLanding} />
+      ) : (
+        <AccountReceivable
+          ref={arRef}
+          initialTabKey={initialTabKey}
+          initialSubTabKey={initialSubTabKey}
+          onBackToLanding={() => setShowLanding(true)}
+        />
+      )}
 
       <ExcelUploadModal
         visible={excelModalVisible}
