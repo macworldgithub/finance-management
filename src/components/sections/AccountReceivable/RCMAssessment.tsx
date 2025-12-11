@@ -338,11 +338,12 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         const convertTotalScore = (value: any) => {
           if (typeof value === "number") return value;
           if (typeof value === "string") {
-            if (value.includes("20.1 - 25")) return 22.5; // Average of range
-            if (value.includes("15.1 - 20")) return 17.5;
-            if (value.includes("10.1 - 15")) return 12.5;
-            if (value.includes("5.1 - 10")) return 7.5;
-            if (value.includes("0 - 5")) return 2.5;
+            // Use the upper bound of each range as requested
+            if (value.includes("20.1 - 25")) return 25;
+            if (value.includes("15.1 - 20")) return 20;
+            if (value.includes("10.1 - 15")) return 15;
+            if (value.includes("5.1 - 10")) return 10;
+            if (value.includes("0 - 5")) return 5;
           }
           return 0;
         };
