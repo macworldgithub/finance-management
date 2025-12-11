@@ -2092,7 +2092,8 @@ export function getColumns(
               text,
               record.key,
               "sustainabilityScore",
-              handlers
+              handlers,
+              editingKeys
             ),
         },
         {
