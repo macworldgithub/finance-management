@@ -334,25 +334,12 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         // Remove extra fields from request body but keep Date for API
         const { key: itemKey, ...requestBody } = item;
 
-        // Convert dropdown values to numbers for API
-        const convertTotalScore = (value: any) => {
-          if (typeof value === "number") return value;
-          if (typeof value === "string") {
-            // Use the upper bound of each range as requested
-            if (value.includes("20.1 - 25")) return 25;
-            if (value.includes("15.1 - 20")) return 20;
-            if (value.includes("10.1 - 15")) return 15;
-            if (value.includes("5.1 - 10")) return 10;
-            if (value.includes("0 - 5")) return 5;
-          }
-          return 0;
-        };
-
+        // Convert dropdown values for API - keep TotalScore as string, convert all others to numbers
         const apiRequestBody: any = {
           Id: requestBody.id, // Convert id to Id
           No: requestBody.no, // Convert no to No
           Process: requestBody.process, // Convert process to Process
-          TotalScore: convertTotalScore(requestBody.totalScore),
+          TotalScore: requestBody.totalScore, // Keep as string (exact range)
           Scale:
             typeof requestBody.scale === "string"
               ? parseInt(requestBody.scale) || 0
@@ -360,27 +347,63 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           Rating: requestBody.rating,
         };
 
-        // Add assessment-specific fields based on section
+        // Add assessment-specific fields based on section and ensure all scores are numbers
         if (section === "Assessment of Adequacy") {
           Object.assign(apiRequestBody, {
-            DesignAdequacyScore: requestBody.designAdequacyScore,
-            SustainabilityScore: requestBody.sustainabilityScore,
-            ScalabilityScore: requestBody.scalabilityScore,
-            AdequacyScore: requestBody.adequacyScore,
+            DesignAdequacyScore:
+              typeof requestBody.designAdequacyScore === "string"
+                ? parseFloat(requestBody.designAdequacyScore) || 0
+                : requestBody.designAdequacyScore || 0,
+            SustainabilityScore:
+              typeof requestBody.sustainabilityScore === "string"
+                ? parseFloat(requestBody.sustainabilityScore) || 0
+                : requestBody.sustainabilityScore || 0,
+            ScalabilityScore:
+              typeof requestBody.scalabilityScore === "string"
+                ? parseFloat(requestBody.scalabilityScore) || 0
+                : requestBody.scalabilityScore || 0,
+            AdequacyScore:
+              typeof requestBody.adequacyScore === "string"
+                ? parseFloat(requestBody.adequacyScore) || 0
+                : requestBody.adequacyScore || 0,
           });
         } else if (section === "Assessment of Effectiveness") {
           Object.assign(apiRequestBody, {
-            DesignScore: requestBody.designScore,
-            OperatingScore: requestBody.operatingScore,
-            SustainabilityScore: requestBody.sustainabilityScore,
-            EffectivenessScore: requestBody.effectivenessScore,
+            DesignScore:
+              typeof requestBody.designScore === "string"
+                ? parseFloat(requestBody.designScore) || 0
+                : requestBody.designScore || 0,
+            OperatingScore:
+              typeof requestBody.operatingScore === "string"
+                ? parseFloat(requestBody.operatingScore) || 0
+                : requestBody.operatingScore || 0,
+            SustainabilityScore:
+              typeof requestBody.sustainabilityScore === "string"
+                ? parseFloat(requestBody.sustainabilityScore) || 0
+                : requestBody.sustainabilityScore || 0,
+            EffectivenessScore:
+              typeof requestBody.effectivenessScore === "string"
+                ? parseFloat(requestBody.effectivenessScore) || 0
+                : requestBody.effectivenessScore || 0,
           });
         } else if (section === "Assessment of Efficiency") {
           Object.assign(apiRequestBody, {
-            DesignScore: requestBody.designScore,
-            OperatingScore: requestBody.operatingScore,
-            SustainabilityScore: requestBody.sustainabilityScore,
-            EfficiencyScore: requestBody.efficiencyScore,
+            ObjectiveAchievementScore:
+              typeof requestBody.objectiveAchievementScore === "string"
+                ? parseFloat(requestBody.objectiveAchievementScore) || 0
+                : requestBody.objectiveAchievementScore || 0,
+            TimelinessThroughputScore:
+              typeof requestBody.timelinessThroughputScore === "string"
+                ? parseFloat(requestBody.timelinessThroughputScore) || 0
+                : requestBody.timelinessThroughputScore || 0,
+            ResourceConsumptionScore:
+              typeof requestBody.resourceConsumptionScore === "string"
+                ? parseFloat(requestBody.resourceConsumptionScore) || 0
+                : requestBody.resourceConsumptionScore || 0,
+            EfficiencyScore:
+              typeof requestBody.efficiencyScore === "string"
+                ? parseFloat(requestBody.efficiencyScore) || 0
+                : requestBody.efficiencyScore || 0,
           });
         } else if (section === "Process Severity") {
           Object.assign(apiRequestBody, {
