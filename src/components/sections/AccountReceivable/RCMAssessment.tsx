@@ -164,9 +164,9 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             case "Assessment of Efficiency": {
               return {
                 ...base,
-                designScore: item.DesignScore ?? 0,
-                operatingScore: item.OperatingScore ?? 0,
-                sustainabilityScore: item.SustainabilityScore ?? 0,
+                objectiveAchievementScore: item.ObjectiveAchievementScore ?? 0,
+                timelinessThroughputScore: item.TimelinessThroughputScore ?? 0,
+                resourceConsumptionScore: item.ResourceConsumptionScore ?? 0,
                 efficiencyScore: item.EfficiencyScore ?? 0,
                 totalScore: item.TotalScore ?? 0,
                 scale: item.Scale ?? 0,
@@ -388,18 +388,18 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           Object.assign(apiRequestBody, {
             TotalScore: requestBody.totalScore, // Keep as string (exact range)
             Rating: requestBody.rating,
-            DesignScore:
-              typeof requestBody.designScore === "string"
-                ? parseFloat(requestBody.designScore) || 0
-                : requestBody.designScore || 0,
-            OperatingScore:
-              typeof requestBody.operatingScore === "string"
-                ? parseFloat(requestBody.operatingScore) || 0
-                : requestBody.operatingScore || 0,
-            SustainabilityScore:
-              typeof requestBody.sustainabilityScore === "string"
-                ? parseFloat(requestBody.sustainabilityScore) || 0
-                : requestBody.sustainabilityScore || 0,
+            ObjectiveAchievementScore:
+              typeof requestBody.objectiveAchievementScore === "string"
+                ? parseFloat(requestBody.objectiveAchievementScore) || 0
+                : requestBody.objectiveAchievementScore || 0,
+            TimelinessThroughputScore:
+              typeof requestBody.timelinessThroughputScore === "string"
+                ? parseFloat(requestBody.timelinessThroughputScore) || 0
+                : requestBody.timelinessThroughputScore || 0,
+            ResourceConsumptionScore:
+              typeof requestBody.resourceConsumptionScore === "string"
+                ? parseFloat(requestBody.resourceConsumptionScore) || 0
+                : requestBody.resourceConsumptionScore || 0,
             EfficiencyScore:
               typeof requestBody.efficiencyScore === "string"
                 ? parseFloat(requestBody.efficiencyScore) || 0

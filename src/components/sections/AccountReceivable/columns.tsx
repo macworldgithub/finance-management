@@ -2322,43 +2322,43 @@ export function getColumns(
     case "13":
       dynamicColumns = [
         {
-          title: "Design Score(0-10)",
-          dataIndex: "designScore",
-          key: "designScore",
-          width: 140,
+          title: "Objective Achievement Score(0-10)",
+          dataIndex: "objectiveAchievementScore",
+          key: "objectiveAchievementScore",
+          width: 210,
           render: (text: any, record: DataType) =>
             renderEditableInput(
               text,
               record.key,
-              "designScore",
+              "objectiveAchievementScore",
               handlers,
               editingKeys
             ),
         },
         {
-          title: "Operating Score(0-10)",
-          dataIndex: "operatingScore",
-          key: "operatingScore",
-          width: 160,
+          title: "Process Timeliness & Throughput Score(0-10)",
+          dataIndex: "timelinessThroughputScore",
+          key: "timelinessThroughputScore",
+          width: 260,
           render: (text: any, record: DataType) =>
             renderEditableInput(
               text,
               record.key,
-              "operatingScore",
+              "timelinessThroughputScore",
               handlers,
               editingKeys
             ),
         },
         {
-          title: "Sustainability Score(0-5)",
-          dataIndex: "sustainabilityScore",
-          key: "sustainabilityScore",
-          width: 180,
+          title: "Resource Consumption Score(0-5)",
+          dataIndex: "resourceConsumptionScore",
+          key: "resourceConsumptionScore",
+          width: 210,
           render: (text: any, record: DataType) =>
             renderEditableInput(
               text,
               record.key,
-              "sustainabilityScore",
+              "resourceConsumptionScore",
               handlers,
               editingKeys
             ),
