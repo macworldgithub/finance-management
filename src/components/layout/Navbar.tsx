@@ -278,10 +278,12 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Search } from "lucide-react";
+import { Search, LogOut, User } from "lucide-react";
 import { GoBellFill } from "react-icons/go";
 import { MdMessage } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
+import { useAuth } from "@/contexts/AuthContext";
+import { Dropdown, message } from "antd";
 
 interface NavbarProps {
   onExcelUploadClick: () => void;
@@ -292,6 +294,7 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
   const [showMessages, setShowMessages] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
   const messageRef = useRef<HTMLDivElement>(null);
+  const { user, logout } = useAuth();
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -312,6 +315,11 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    message.success("Logged out successfully");
+  };
 
   const notifications = [
     { id: 1, title: "New user registered", time: "2 min ago", unread: true },
@@ -339,41 +347,25 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
     { id: 8, title: "Task assigned to you", time: "9 hours ago", unread: true },
   ];
 
-  const messages = [
+  const userMenuItems = [
     {
-      id: 1,
-      sender: "Alice Johnson",
-      preview: "Hey, can we reschedule?",
-      time: "1 min ago",
-      unread: true,
+      key: "profile",
+      label: (
+        <div className="flex items-center space-x-2">
+          <User className="h-4 w-4" />
+          <span>Profile</span>
+        </div>
+      ),
     },
     {
-      id: 2,
-      sender: "Team Sync",
-      preview: "Meeting at 3 PM today",
-      time: "10 min ago",
-      unread: true,
-    },
-    {
-      id: 3,
-      sender: "HR Dept",
-      preview: "New policy update",
-      time: "1 hour ago",
-      unread: false,
-    },
-    {
-      id: 4,
-      sender: "Dev Team",
-      preview: "Build failed on CI",
-      time: "2 hours ago",
-      unread: false,
-    },
-    {
-      id: 5,
-      sender: "Support",
-      preview: "Ticket #123 resolved",
-      time: "4 hours ago",
-      unread: false,
+      key: "logout",
+      label: (
+        <div className="flex items-center space-x-2 text-red-600">
+          <LogOut className="h-4 w-4" />
+          <span>Logout</span>
+        </div>
+      ),
+      onClick: handleLogout,
     },
   ];
 
@@ -382,7 +374,7 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
       <nav className="w-[96%] max-w-[1600px] bg-white rounded-2xl shadow-md px-6 py-3 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-1">
-          <span className="text-xl font-semibold text-gray-900">GRC</span>
+          <span className="text-xl font-semibold text-gray-900">GCR</span>
           <FaPlay className="h-4 w-4 text-blue-500" />
         </div>
 
@@ -472,7 +464,7 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
             >
               <MdMessage className="h-5 w-5 text-gray-800" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-3.5 h-3.5 rounded-full flex items-center justify-center">
-                {messages.filter((m) => m.unread).length}
+                {notifications.filter((n) => n.unread).length}
               </span>
             </button>
             {showMessages && (
@@ -483,11 +475,11 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
                   </h3>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
-                  {messages.map((msg) => (
+                  {notifications.map((notif) => (
                     <div
-                      key={msg.id}
+                      key={notif.id}
                       className={`px-4 py-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition flex items-start space-x-3 ${
-                        msg.unread ? "bg-blue-50" : ""
+                        notif.unread ? "bg-blue-50" : ""
                       }`}
                     >
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex-shrink-0"></div>
@@ -495,19 +487,21 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
                         <div className="flex justify-between items-start">
                           <p
                             className={`text-sm font-medium truncate ${
-                              msg.unread ? "text-gray-900" : "text-gray-700"
+                              notif.unread ? "text-gray-900" : "text-gray-700"
                             }`}
                           >
-                            {msg.sender}
+                            {notif.title}
                           </p>
-                          {msg.unread && (
+                          {notif.unread && (
                             <span className="ml-2 w-2 h-2 bg-blue-500 rounded-full"></span>
                           )}
                         </div>
                         <p className="text-xs text-gray-600 truncate">
-                          {msg.preview}
+                          {notif.time}
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">{msg.time}</p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {notif.time}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -521,8 +515,26 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
             )}
           </div>
 
-          {/* Profile */}
-          <div className="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-blue-500 transition" />
+          {/* User Profile Dropdown */}
+          <Dropdown
+            menu={{ items: userMenuItems }}
+            placement="bottomRight"
+            trigger={["click"]}
+          >
+            <div className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded-md transition">
+              <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center">
+                <span className="text-white text-sm font-medium">
+                  {user?.fullName?.charAt(0).toUpperCase() || "U"}
+                </span>
+              </div>
+              <div className="hidden md:block">
+                <p className="text-sm font-medium text-gray-900">
+                  {user?.fullName || "User"}
+                </p>
+                <p className="text-xs text-gray-500">{user?.role || "User"}</p>
+              </div>
+            </div>
+          </Dropdown>
         </div>
       </nav>
     </div>

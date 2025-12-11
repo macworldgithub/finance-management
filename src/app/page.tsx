@@ -35,6 +35,7 @@ import AssessmentModal from "@/components/sections/AccountReceivable/AssessmentM
 import RCMAssessment, {
   RCMAssessmentRef,
 } from "@/components/sections/AccountReceivable/RCMAssessment";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { useRef, useState } from "react";
 
 export default function HomePage() {
@@ -82,52 +83,54 @@ export default function HomePage() {
   };
 
   return (
-    <main className="relative">
-      <Navbar onExcelUploadClick={() => setExcelModalVisible(true)} />
-      {showLanding ? (
-        <RCMLanding
-          onNavigate={handleNavigateFromLanding}
-          onNavigateToAssessment={handleNavigateToAssessment}
-          onOpenAdequacy={() => setShowAdequacy(true)}
-          onOpenEffectiveness={() => setShowEffectiveness(true)}
-          onOpenEfficiency={() => setShowEfficiency(true)}
-        />
-      ) : showAssessment ? (
-        <RCMAssessment
-          ref={assessmentRef}
-          initialTabKey={initialAssessmentTabKey}
-          onBackToLanding={handleBackToLanding}
-        />
-      ) : (
-        <AccountReceivable
-          ref={arRef}
-          initialTabKey={initialTabKey}
-          initialSubTabKey={initialSubTabKey}
-          onBackToLanding={handleBackToLanding}
-        />
-      )}
+    <ProtectedRoute>
+      <main className="relative">
+        <Navbar onExcelUploadClick={() => setExcelModalVisible(true)} />
+        {showLanding ? (
+          <RCMLanding
+            onNavigate={handleNavigateFromLanding}
+            onNavigateToAssessment={handleNavigateToAssessment}
+            onOpenAdequacy={() => setShowAdequacy(true)}
+            onOpenEffectiveness={() => setShowEffectiveness(true)}
+            onOpenEfficiency={() => setShowEfficiency(true)}
+          />
+        ) : showAssessment ? (
+          <RCMAssessment
+            ref={assessmentRef}
+            initialTabKey={initialAssessmentTabKey}
+            onBackToLanding={handleBackToLanding}
+          />
+        ) : (
+          <AccountReceivable
+            ref={arRef}
+            initialTabKey={initialTabKey}
+            initialSubTabKey={initialSubTabKey}
+            onBackToLanding={handleBackToLanding}
+          />
+        )}
 
-      <ExcelUploadModal
-        visible={excelModalVisible}
-        onClose={() => setExcelModalVisible(false)}
-        onDataLoaded={handleDataLoaded}
-      />
+        <ExcelUploadModal
+          visible={excelModalVisible}
+          onClose={() => setExcelModalVisible(false)}
+          onDataLoaded={handleDataLoaded}
+        />
 
-      {/* <AssessmentModal
-        type="adequacy"
-        visible={showAdequacy}
-        onClose={() => setShowAdequacy(false)}
-      />
-      <AssessmentModal
-        type="effectiveness"
-        visible={showEffectiveness}
-        onClose={() => setShowEffectiveness(false)}
-      />
-      <AssessmentModal
-        type="efficiency"
-        visible={showEfficiency}
-        onClose={() => setShowEfficiency(false)}
-      /> */}
-    </main>
+        {/* <AssessmentModal
+          type="adequacy"
+          visible={showAdequacy}
+          onClose={() => setShowAdequacy(false)}
+        />
+        <AssessmentModal
+          type="effectiveness"
+          visible={showEffectiveness}
+          onClose={() => setShowEffectiveness(false)}
+        />
+        <AssessmentModal
+          type="efficiency"
+          visible={showEfficiency}
+          onClose={() => setShowEfficiency(false)}
+        /> */}
+      </main>
+    </ProtectedRoute>
   );
 }
