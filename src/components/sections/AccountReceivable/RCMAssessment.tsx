@@ -177,13 +177,9 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               return {
                 ...base,
                 date: item.Date ?? item.date ?? "",
-                // Add Process Severity-specific fields when you get the API response
-                severityLevel: item.SeverityLevel ?? "",
-                impact: item.Impact ?? "",
-                likelihood: item.Likelihood ?? "",
-                totalScore: item.TotalScore ?? 0,
                 scale: item.Scale ?? 0,
                 rating: item.Rating ?? "",
+                processSeverityLevels: item.Rating ?? "", // Map API Rating to processSeverityLevels column
               };
             }
             default:
@@ -339,17 +335,17 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           Id: requestBody.id, // Convert id to Id
           No: requestBody.no, // Convert no to No
           Process: requestBody.process, // Convert process to Process
-          TotalScore: requestBody.totalScore, // Keep as string (exact range)
           Scale:
             typeof requestBody.scale === "string"
               ? parseInt(requestBody.scale) || 0
               : requestBody.scale || 0,
-          Rating: requestBody.rating,
         };
 
         // Add assessment-specific fields based on section and ensure all scores are numbers
         if (section === "Assessment of Adequacy") {
           Object.assign(apiRequestBody, {
+            TotalScore: requestBody.totalScore, // Keep as string (exact range)
+            Rating: requestBody.rating,
             DesignAdequacyScore:
               typeof requestBody.designAdequacyScore === "string"
                 ? parseFloat(requestBody.designAdequacyScore) || 0
@@ -369,6 +365,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           });
         } else if (section === "Assessment of Effectiveness") {
           Object.assign(apiRequestBody, {
+            TotalScore: requestBody.totalScore, // Keep as string (exact range)
+            Rating: requestBody.rating,
             DesignScore:
               typeof requestBody.designScore === "string"
                 ? parseFloat(requestBody.designScore) || 0
@@ -388,18 +386,20 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           });
         } else if (section === "Assessment of Efficiency") {
           Object.assign(apiRequestBody, {
-            ObjectiveAchievementScore:
-              typeof requestBody.objectiveAchievementScore === "string"
-                ? parseFloat(requestBody.objectiveAchievementScore) || 0
-                : requestBody.objectiveAchievementScore || 0,
-            TimelinessThroughputScore:
-              typeof requestBody.timelinessThroughputScore === "string"
-                ? parseFloat(requestBody.timelinessThroughputScore) || 0
-                : requestBody.timelinessThroughputScore || 0,
-            ResourceConsumptionScore:
-              typeof requestBody.resourceConsumptionScore === "string"
-                ? parseFloat(requestBody.resourceConsumptionScore) || 0
-                : requestBody.resourceConsumptionScore || 0,
+            TotalScore: requestBody.totalScore, // Keep as string (exact range)
+            Rating: requestBody.rating,
+            DesignScore:
+              typeof requestBody.designScore === "string"
+                ? parseFloat(requestBody.designScore) || 0
+                : requestBody.designScore || 0,
+            OperatingScore:
+              typeof requestBody.operatingScore === "string"
+                ? parseFloat(requestBody.operatingScore) || 0
+                : requestBody.operatingScore || 0,
+            SustainabilityScore:
+              typeof requestBody.sustainabilityScore === "string"
+                ? parseFloat(requestBody.sustainabilityScore) || 0
+                : requestBody.sustainabilityScore || 0,
             EfficiencyScore:
               typeof requestBody.efficiencyScore === "string"
                 ? parseFloat(requestBody.efficiencyScore) || 0
@@ -407,7 +407,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           });
         } else if (section === "Process Severity") {
           Object.assign(apiRequestBody, {
-            // Add Process Severity specific fields if needed
+            Rating: requestBody.processSeverityLevels, // Use Process Severity Levels column value for Rating
           });
         }
 

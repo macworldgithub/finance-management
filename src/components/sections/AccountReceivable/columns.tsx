@@ -407,7 +407,8 @@ export function getColumns(
       key: "no",
       width: 80,
       fixed: "left",
-      render: (text: string) => text || "-",
+      render: (text: any, record: DataType) =>
+        renderEditableInput(text, record.key, "no", handlers, editingKeys),
     },
     {
       title: "Process",
