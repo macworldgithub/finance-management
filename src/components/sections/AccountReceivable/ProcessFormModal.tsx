@@ -67,6 +67,10 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     },
     { key: "sox", title: "SOX" },
     { key: "grc-exception-logs", title: "GRC Exception Logs" },
+    { key: "assessment-adequacies", title: "Assessment of Adequacy" },
+    { key: "assessment-effectivenesses", title: "Assessment of Effectiveness" },
+    { key: "assessment-efficiencies", title: "Assessment of Efficiency" },
+    { key: "process-severities", title: "Process Severity" },
     { key: "internal-audit-tests", title: "Internal Audit Tests" },
     {
       key: "intosai-ifac-control-environments",
@@ -888,6 +892,178 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
       <>
         <Form.Item name="SOX Control Activity" label="SOX Control Activity">
           <TextArea rows={3} />
+        </Form.Item>
+      </>
+    ),
+    // Assessment of Adequacy
+    "assessment-adequacies": (
+      <>
+        {commonFields}
+        <Form.Item
+          name="DesignAdequacyScore"
+          label="Design Adequacy Score(0-10)"
+        >
+          <Input type="number" min={0} max={10} />
+        </Form.Item>
+        <Form.Item
+          name="SustainabilityScore"
+          label="Sustainability Score(0-10)"
+        >
+          <Input type="number" min={0} max={10} />
+        </Form.Item>
+        <Form.Item name="ScalabilityScore" label="Scalability Score(0-5)">
+          <Input type="number" min={0} max={5} />
+        </Form.Item>
+        <Form.Item name="AdequacyScore" label="Adequacy Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="TotalScore" label="Total Score(0-25)">
+          <Select>
+            <Option value="20.1 - 25">20.1 - 25</Option>
+            <Option value="15.1 - 20">15.1 - 20</Option>
+            <Option value="10.1 - 15">10.1 - 15</Option>
+            <Option value="5.1 - 10">5.1 - 10</Option>
+            <Option value="0 - 5">0 - 5</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Scale" label="Scale(1-5)">
+          <Select>
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Rating" label="Rating">
+          <Select>
+            <Option value="Fully Adequate">Fully Adequate</Option>
+            <Option value="Adequate">Adequate</Option>
+            <Option value="Partially Adequate">Partially Adequate</Option>
+            <Option value="Inadequate">Inadequate</Option>
+            <Option value="Critically Inadequate">Critically Inadequate</Option>
+          </Select>
+        </Form.Item>
+      </>
+    ),
+    // Assessment of Effectiveness
+    "assessment-effectivenesses": (
+      <>
+        {commonFields}
+        <Form.Item name="DesignScore" label="Design Score(0-10)">
+          <Input type="number" min={0} max={10} />
+        </Form.Item>
+        <Form.Item name="OperatingScore" label="Operating Score(0-10)">
+          <Input type="number" min={0} max={10} />
+        </Form.Item>
+        <Form.Item name="SustainabilityScore" label="Sustainability Score(0-5)">
+          <Input type="number" min={0} max={5} />
+        </Form.Item>
+        <Form.Item name="EffectivenessScore" label="Effectiveness Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="TotalScore" label="Total Score(0-25)">
+          <Select>
+            <Option value="20.1 - 25">20.1 - 25</Option>
+            <Option value="15.1 - 20">15.1 - 20</Option>
+            <Option value="10.1 - 15">10.1 - 15</Option>
+            <Option value="5.1 - 10">5.1 - 10</Option>
+            <Option value="0 - 5">0 - 5</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Scale" label="Scale(1-5)">
+          <Select>
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Rating" label="Rating">
+          <Select>
+            <Option value="Highly Effective">Highly Effective</Option>
+            <Option value="Effective">Effective</Option>
+            <Option value="Moderately Effective">Moderately Effective</Option>
+            <Option value="Ineffective">Ineffective</Option>
+            <Option value="Highly Ineffective">Highly Ineffective</Option>
+          </Select>
+        </Form.Item>
+      </>
+    ),
+    // Assessment of Efficiency
+    "assessment-efficiencies": (
+      <>
+        {commonFields}
+        <Form.Item
+          name="ObjectiveAchievementScore"
+          label="Objective Achievement Score(0-10)"
+        >
+          <Input type="number" min={0} max={10} />
+        </Form.Item>
+        <Form.Item
+          name="TimelinessThroughputScore"
+          label="Process Timeliness & Throughput Score(0-10)"
+        >
+          <Input type="number" min={0} max={10} />
+        </Form.Item>
+        <Form.Item
+          name="ResourceConsumptionScore"
+          label="Resource Consumption Score(0-5)"
+        >
+          <Input type="number" min={0} max={5} />
+        </Form.Item>
+        <Form.Item name="EfficiencyScore" label="Efficiency Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="TotalScore" label="Total Score(0-25)">
+          <Select>
+            <Option value="20.1 - 25">20.1 - 25</Option>
+            <Option value="15.1 - 20">15.1 - 20</Option>
+            <Option value="10.1 - 15">10.1 - 15</Option>
+            <Option value="5.1 - 10">5.1 - 10</Option>
+            <Option value="0 - 5">0 - 5</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Scale" label="Scale(1-5)">
+          <Select>
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Rating" label="Rating">
+          <Select>
+            <Option value="Highly Effective">Highly Effective</Option>
+            <Option value="Effective">Effective</Option>
+            <Option value="Moderately Effective">Moderately Effective</Option>
+            <Option value="Ineffective">Ineffective</Option>
+            <Option value="Highly Ineffective">Highly Ineffective</Option>
+          </Select>
+        </Form.Item>
+      </>
+    ),
+    // Process Severity
+    "process-severities": (
+      <>
+        {commonFields}
+        <Form.Item name="Scale" label="Scale(1-4)">
+          <Select>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Rating" label="Process Severity Levels">
+          <Select>
+            <Option value="Critical">Critical</Option>
+            <Option value="High">High</Option>
+            <Option value="Medium">Medium</Option>
+            <Option value="Low">Low</Option>
+          </Select>
         </Form.Item>
       </>
     ),
