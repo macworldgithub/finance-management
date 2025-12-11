@@ -15,6 +15,10 @@ export const SECTION_TO_BASE_ENDPOINT: Record<string, string> = {
   "Financial Statement Assertions": "FinancialStatementAssertions",
   "Internal Audit Test": "InternalAuditTests",
   "GRC Exception Log": "GrcExceptionLogs",
+  "Assessment of Adequacy": "AssessmentOfAdequacy",
+  "Assessment of Effectiveness": "AssessmentOfEffectiveness",
+  "Assessment of Efficiency": "AssessmentOfEfficiency",
+  "Process Severity": "ProcessSeverity",
 };
 export const getEndpointForSection = (section: string): string | undefined => {
   return SECTION_TO_BASE_ENDPOINT[section];

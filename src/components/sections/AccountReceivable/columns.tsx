@@ -2029,6 +2029,20 @@ export function getColumns(
     case "11":
       dynamicColumns = [
         {
+          title: "Date",
+          dataIndex: "date",
+          key: "date",
+          width: 120,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "date",
+              handlers,
+              editingKeys
+            ),
+        },
+        {
           title: "Design Adequacy Score(0-10)",
           dataIndex: "designAdequacyScore",
           key: "designAdequacyScore",
@@ -2129,6 +2143,20 @@ export function getColumns(
       break;
     case "12":
       dynamicColumns = [
+        {
+          title: "Date",
+          dataIndex: "date",
+          key: "date",
+          width: 120,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "date",
+              handlers,
+              editingKeys
+            ),
+        },
         {
           title: "Design Score(0-10)",
           dataIndex: "designScore",
@@ -2232,43 +2260,57 @@ export function getColumns(
     case "13":
       dynamicColumns = [
         {
-          title: "Objective Achievement Score(0-10)",
-          dataIndex: "objectiveAchievementScore",
-          key: "objectiveAchievementScore",
-          width: 210,
+          title: "Date",
+          dataIndex: "date",
+          key: "date",
+          width: 120,
           render: (text: any, record: DataType) =>
             renderEditableInput(
               text,
               record.key,
-              "objectiveAchievementScore",
+              "date",
               handlers,
               editingKeys
             ),
         },
         {
-          title: "Process Timeliness & Throughput Score(0-10)",
-          dataIndex: "processTimelinessScore",
-          key: "processTimelinessScore",
-          width: 260,
+          title: "Design Score(0-10)",
+          dataIndex: "designScore",
+          key: "designScore",
+          width: 140,
           render: (text: any, record: DataType) =>
             renderEditableInput(
               text,
               record.key,
-              "processTimelinessScore",
+              "designScore",
               handlers,
               editingKeys
             ),
         },
         {
-          title: "Resource Consumption Score(0-5)",
-          dataIndex: "resourceConsumptionScore",
-          key: "resourceConsumptionScore",
-          width: 220,
+          title: "Operating Score(0-10)",
+          dataIndex: "operatingScore",
+          key: "operatingScore",
+          width: 160,
           render: (text: any, record: DataType) =>
             renderEditableInput(
               text,
               record.key,
-              "resourceConsumptionScore",
+              "operatingScore",
+              handlers,
+              editingKeys
+            ),
+        },
+        {
+          title: "Sustainability Score(0-5)",
+          dataIndex: "sustainabilityScore",
+          key: "sustainabilityScore",
+          width: 180,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "sustainabilityScore",
               handlers,
               editingKeys
             ),
@@ -2333,6 +2375,20 @@ export function getColumns(
       break;
     case "14":
       dynamicColumns = [
+        {
+          title: "Date",
+          dataIndex: "date",
+          key: "date",
+          width: 120,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "date",
+              handlers,
+              editingKeys
+            ),
+        },
         {
           title: "Scale(1-4)",
           dataIndex: "scale",

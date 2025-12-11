@@ -135,15 +135,59 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                   item["Process Severity Levels"] ?? item.processSeverityLevels,
               };
             }
-            case "Assessment of Adequacy":
-            case "Assessment of Effectiveness":
-            case "Assessment of Efficiency":
-            case "Process Severity":
-              // Add specific mappings for assessment sections if needed
+            case "Assessment of Adequacy": {
               return {
                 ...base,
-                // Add assessment-specific fields here based on your API response
+                date: item.Date ?? item.date ?? "",
+                designAdequacyScore: item.DesignAdequacyScore ?? 0,
+                sustainabilityScore: item.SustainabilityScore ?? 0,
+                scalabilityScore: item.ScalabilityScore ?? 0,
+                adequacyScore: item.AdequacyScore ?? 0,
+                totalScore: item.TotalScore ?? 0,
+                scale: item.Scale ?? 0,
+                rating: item.Rating ?? "",
               };
+            }
+            case "Assessment of Effectiveness": {
+              return {
+                ...base,
+                date: item.Date ?? item.date ?? "",
+                designScore: item.DesignScore ?? 0,
+                operatingScore: item.OperatingScore ?? 0,
+                sustainabilityScore: item.SustainabilityScore ?? 0,
+                effectivenessScore: item.EffectivenessScore ?? 0,
+                totalScore: item.TotalScore ?? 0,
+                scale: item.Scale ?? 0,
+                rating: item.Rating ?? "",
+              };
+            }
+            case "Assessment of Efficiency": {
+              return {
+                ...base,
+                date: item.Date ?? item.date ?? "",
+                // Add Efficiency-specific fields when you get the API response
+                designScore: item.DesignScore ?? 0,
+                operatingScore: item.OperatingScore ?? 0,
+                sustainabilityScore: item.SustainabilityScore ?? 0,
+                efficiencyScore: item.EfficiencyScore ?? 0,
+                totalScore: item.TotalScore ?? 0,
+                scale: item.Scale ?? 0,
+                rating: item.Rating ?? "",
+              };
+            }
+            case "Process Severity": {
+              return {
+                ...base,
+                date: item.Date ?? item.date ?? "",
+                // Add Process Severity-specific fields when you get the API response
+                severityLevel: item.SeverityLevel ?? "",
+                impact: item.Impact ?? "",
+                likelihood: item.Likelihood ?? "",
+                totalScore: item.TotalScore ?? 0,
+                scale: item.Scale ?? 0,
+                rating: item.Rating ?? "",
+              };
+            }
             default:
               return base;
           }
