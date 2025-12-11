@@ -32,14 +32,22 @@ import AccountReceivable, {
 import ExcelUploadModal from "@/components/sections/AccountReceivable/ExcelUploadModal";
 import RCMLanding from "@/components/sections/AccountReceivable/RCMLanding";
 import AssessmentModal from "@/components/sections/AccountReceivable/AssessmentModal";
+import RCMAssessment, {
+  RCMAssessmentRef,
+} from "@/components/sections/AccountReceivable/RCMAssessment";
 import { useRef, useState } from "react";
 
 export default function HomePage() {
   const arRef = useRef<AccountReceivableRef>(null);
+  const assessmentRef = useRef<RCMAssessmentRef>(null);
   const [excelModalVisible, setExcelModalVisible] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
+  const [showAssessment, setShowAssessment] = useState(false);
   const [initialTabKey, setInitialTabKey] = useState<string | undefined>();
   const [initialSubTabKey, setInitialSubTabKey] = useState<
+    string | undefined
+  >();
+  const [initialAssessmentTabKey, setInitialAssessmentTabKey] = useState<
     string | undefined
   >();
   const [showAdequacy, setShowAdequacy] = useState(false);
@@ -59,6 +67,18 @@ export default function HomePage() {
     setInitialTabKey(tabKey);
     setInitialSubTabKey(subTabKey);
     setShowLanding(false);
+    setShowAssessment(false);
+  };
+
+  const handleNavigateToAssessment = (tabKey: string) => {
+    setInitialAssessmentTabKey(tabKey);
+    setShowLanding(false);
+    setShowAssessment(true);
+  };
+
+  const handleBackToLanding = () => {
+    setShowLanding(true);
+    setShowAssessment(false);
   };
 
   return (
@@ -67,16 +87,23 @@ export default function HomePage() {
       {showLanding ? (
         <RCMLanding
           onNavigate={handleNavigateFromLanding}
+          onNavigateToAssessment={handleNavigateToAssessment}
           onOpenAdequacy={() => setShowAdequacy(true)}
           onOpenEffectiveness={() => setShowEffectiveness(true)}
           onOpenEfficiency={() => setShowEfficiency(true)}
+        />
+      ) : showAssessment ? (
+        <RCMAssessment
+          ref={assessmentRef}
+          initialTabKey={initialAssessmentTabKey}
+          onBackToLanding={handleBackToLanding}
         />
       ) : (
         <AccountReceivable
           ref={arRef}
           initialTabKey={initialTabKey}
           initialSubTabKey={initialSubTabKey}
-          onBackToLanding={() => setShowLanding(true)}
+          onBackToLanding={handleBackToLanding}
         />
       )}
 
@@ -86,7 +113,7 @@ export default function HomePage() {
         onDataLoaded={handleDataLoaded}
       />
 
-      <AssessmentModal
+      {/* <AssessmentModal
         type="adequacy"
         visible={showAdequacy}
         onClose={() => setShowAdequacy(false)}
@@ -100,7 +127,7 @@ export default function HomePage() {
         type="efficiency"
         visible={showEfficiency}
         onClose={() => setShowEfficiency(false)}
-      />
+      /> */}
     </main>
   );
 }

@@ -4,6 +4,7 @@ import React from "react";
 
 interface RCMLandingProps {
   onNavigate: (tabKey: string, subTabKey?: string) => void;
+  onNavigateToAssessment: (tabKey: string) => void;
   onOpenAdequacy?: () => void;
   onOpenEffectiveness?: () => void;
   onOpenEfficiency?: () => void;
@@ -11,6 +12,7 @@ interface RCMLandingProps {
 
 const RCMLanding: React.FC<RCMLandingProps> = ({
   onNavigate,
+  onNavigateToAssessment,
   onOpenAdequacy,
   onOpenEffectiveness,
   onOpenEfficiency,
@@ -113,35 +115,35 @@ const RCMLanding: React.FC<RCMLandingProps> = ({
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={() => onNavigate("1")}
+            onClick={() => onNavigateToAssessment("1")}
           >
             Processes
           </button>
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={() => onNavigate("11")}
+            onClick={() => onNavigateToAssessment("11")}
           >
             Assessment of Adequacy
           </button>
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={() => onNavigate("12")}
+            onClick={() => onNavigateToAssessment("12")}
           >
             Assessment of Effectiveness
           </button>
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={() => onNavigate("13")}
+            onClick={() => onNavigateToAssessment("13")}
           >
             Assessment of Efficiency
           </button>
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={() => onNavigate("14")}
+            onClick={() => onNavigateToAssessment("14")}
           >
             Process Severity
           </button>
