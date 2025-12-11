@@ -334,15 +334,24 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         // Remove extra fields from request body but keep Date for API
         const { key: itemKey, ...requestBody } = item;
 
-        // Convert string dropdown values to numbers for API
+        // Convert dropdown values to numbers for API
+        const convertTotalScore = (value: any) => {
+          if (typeof value === "number") return value;
+          if (typeof value === "string") {
+            if (value.includes("20.1 - 25")) return 22.5; // Average of range
+            if (value.includes("15.1 - 20")) return 17.5;
+            if (value.includes("10.1 - 15")) return 12.5;
+            if (value.includes("5.1 - 10")) return 7.5;
+            if (value.includes("0 - 5")) return 2.5;
+          }
+          return 0;
+        };
+
         const apiRequestBody: any = {
           Id: requestBody.id, // Convert id to Id
           No: requestBody.no, // Convert no to No
           Process: requestBody.process, // Convert process to Process
-          TotalScore:
-            typeof requestBody.totalScore === "string"
-              ? 0
-              : requestBody.totalScore || 0,
+          TotalScore: convertTotalScore(requestBody.totalScore),
           Scale:
             typeof requestBody.scale === "string"
               ? parseInt(requestBody.scale) || 0
