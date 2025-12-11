@@ -164,8 +164,6 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             case "Assessment of Efficiency": {
               return {
                 ...base,
-                date: item.Date ?? item.date ?? "",
-                // Add Efficiency-specific fields when you get the API response
                 designScore: item.DesignScore ?? 0,
                 operatingScore: item.OperatingScore ?? 0,
                 sustainabilityScore: item.SustainabilityScore ?? 0,
@@ -332,13 +330,67 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         const item = tableData[itemIndex];
         const section = getCurrentSection();
         const endpoint = SECTION_TO_BASE_ENDPOINT[section];
+
+        // Remove extra fields from request body but keep Date for API
+        const { key: itemKey, ...requestBody } = item;
+
+        // Convert string dropdown values to numbers for API
+        const apiRequestBody: any = {
+          Id: requestBody.id, // Convert id to Id
+          No: requestBody.no, // Convert no to No
+          Process: requestBody.process, // Convert process to Process
+          TotalScore:
+            typeof requestBody.totalScore === "string"
+              ? 0
+              : requestBody.totalScore || 0,
+          Scale:
+            typeof requestBody.scale === "string"
+              ? parseInt(requestBody.scale) || 0
+              : requestBody.scale || 0,
+          Rating: requestBody.rating,
+        };
+
+        // Add assessment-specific fields based on section
+        if (section === "Assessment of Adequacy") {
+          Object.assign(apiRequestBody, {
+            DesignAdequacyScore: requestBody.designAdequacyScore,
+            SustainabilityScore: requestBody.sustainabilityScore,
+            ScalabilityScore: requestBody.scalabilityScore,
+            AdequacyScore: requestBody.adequacyScore,
+          });
+        } else if (section === "Assessment of Effectiveness") {
+          Object.assign(apiRequestBody, {
+            DesignScore: requestBody.designScore,
+            OperatingScore: requestBody.operatingScore,
+            SustainabilityScore: requestBody.sustainabilityScore,
+            EffectivenessScore: requestBody.effectivenessScore,
+          });
+        } else if (section === "Assessment of Efficiency") {
+          Object.assign(apiRequestBody, {
+            DesignScore: requestBody.designScore,
+            OperatingScore: requestBody.operatingScore,
+            SustainabilityScore: requestBody.sustainabilityScore,
+            EfficiencyScore: requestBody.efficiencyScore,
+          });
+        } else if (section === "Process Severity") {
+          Object.assign(apiRequestBody, {
+            // Add Process Severity specific fields if needed
+          });
+        }
+
         try {
           let updatedItem;
           if (item.id) {
-            await apiClientDotNet.put(`/${endpoint}/${item.id}`, item);
+            await apiClientDotNet.put(
+              `/${endpoint}/${item.id}`,
+              apiRequestBody
+            );
             updatedItem = { ...item };
           } else {
-            const response = await apiClientDotNet.post(`/${endpoint}`, item);
+            const response = await apiClientDotNet.post(
+              `/${endpoint}`,
+              apiRequestBody
+            );
             updatedItem = { ...response.data, key: response.data.Id };
           }
           const newData = [...tableData];

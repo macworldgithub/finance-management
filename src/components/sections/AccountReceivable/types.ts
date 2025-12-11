@@ -13,6 +13,10 @@ export interface DataType {
   designScore?: number;
   operatingScore?: number;
   effectivenessScore?: number;
+  // Assessment of Efficiency fields
+  objectiveAchievementScore?: number;
+  timelinessThroughputScore?: number;
+  resourceConsumptionScore?: number;
   efficiencyScore?: number;
   totalScore?: number;
   scale?: number;

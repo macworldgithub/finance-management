@@ -31,6 +31,46 @@ export const processSeverityLevelsOptions = [
   { label: "Medium", key: "Medium" },
   { label: "Low", key: "Low" },
 ];
+
+// Assessment Rating Options
+export const adequacyRatingOptions = [
+  { label: "Fully Adequate", key: "Fully Adequate" },
+  { label: "Adequate", key: "Adequate" },
+  { label: "Partially Adequate", key: "Partially Adequate" },
+  { label: "Inadequate", key: "Inadequate" },
+  { label: "Critically Inadequate", key: "Critically Inadequate" },
+];
+
+export const effectivenessRatingOptions = [
+  { label: "Highly Effective", key: "Highly Effective" },
+  { label: "Effective", key: "Effective" },
+  { label: "Moderately Effective", key: "Moderately Effective" },
+  { label: "Ineffective", key: "Ineffective" },
+  { label: "Highly Ineffective", key: "Highly Ineffective" },
+];
+
+export const totalScoreOptions = [
+  { label: "20.1 - 25", key: "20.1 - 25" },
+  { label: "15.1 - 20", key: "15.1 - 20" },
+  { label: "10.1 - 15", key: "10.1 - 15" },
+  { label: "5.1 - 10", key: "5.1 - 10" },
+  { label: "0 - 5", key: "0 - 5" },
+];
+
+export const scale5Options = [
+  { label: "5", key: "5" },
+  { label: "4", key: "4" },
+  { label: "3", key: "3" },
+  { label: "2", key: "2" },
+  { label: "1", key: "1" },
+];
+
+export const scale4Options = [
+  { label: "4", key: "4" },
+  { label: "3", key: "3" },
+  { label: "2", key: "2" },
+  { label: "1", key: "1" },
+];
 export const cosoPrincipleOptions = [
   {
     label: "1. Demonstrates commitment to integrity and ethical values",
@@ -2029,20 +2069,6 @@ export function getColumns(
     case "11":
       dynamicColumns = [
         {
-          title: "Date",
-          dataIndex: "date",
-          key: "date",
-          width: 120,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "date",
-              handlers,
-              editingKeys
-            ),
-        },
-        {
           title: "Design Adequacy Score(0-10)",
           dataIndex: "designAdequacyScore",
           key: "designAdequacyScore",
@@ -2102,61 +2128,71 @@ export function getColumns(
           dataIndex: "totalScore",
           key: "totalScore",
           width: 140,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "totalScore",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(totalScoreOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "totalScore")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
         {
           title: "Scale(1-5)",
           dataIndex: "scale",
           key: "scale",
           width: 100,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "scale",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(scale5Options, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "scale")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
         {
           title: "Rating",
           dataIndex: "rating",
           key: "rating",
           width: 100,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "rating",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(adequacyRatingOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "rating")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
       ];
       break;
     case "12":
       dynamicColumns = [
-        {
-          title: "Date",
-          dataIndex: "date",
-          key: "date",
-          width: 120,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "date",
-              handlers,
-              editingKeys
-            ),
-        },
         {
           title: "Design Score(0-10)",
           dataIndex: "designScore",
@@ -2218,61 +2254,71 @@ export function getColumns(
           dataIndex: "totalScore",
           key: "totalScore",
           width: 140,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "totalScore",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(totalScoreOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "totalScore")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
         {
           title: "Scale(1-5)",
           dataIndex: "scale",
           key: "scale",
           width: 100,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "scale",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(scale5Options, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "scale")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
         {
           title: "Rating",
           dataIndex: "rating",
           key: "rating",
           width: 100,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "rating",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(effectivenessRatingOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "rating")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
       ];
       break;
     case "13":
       dynamicColumns = [
-        {
-          title: "Date",
-          dataIndex: "date",
-          key: "date",
-          width: 120,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "date",
-              handlers,
-              editingKeys
-            ),
-        },
         {
           title: "Design Score(0-10)",
           dataIndex: "designScore",
@@ -2334,104 +2380,94 @@ export function getColumns(
           dataIndex: "totalScore",
           key: "totalScore",
           width: 140,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "totalScore",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(totalScoreOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "totalScore")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
         {
           title: "Scale(1-5)",
           dataIndex: "scale",
           key: "scale",
           width: 100,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "scale",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(scale5Options, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "scale")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
         {
           title: "Rating",
           dataIndex: "rating",
           key: "rating",
           width: 100,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "rating",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(effectivenessRatingOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "rating")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
       ];
       break;
     case "14":
       dynamicColumns = [
         {
-          title: "Date",
-          dataIndex: "date",
-          key: "date",
-          width: 120,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "date",
-              handlers,
-              editingKeys
-            ),
-        },
-        {
           title: "Scale(1-4)",
           dataIndex: "scale",
           key: "scale",
           width: 120,
-          render: (text: any, record: DataType) =>
-            renderEditableInput(
-              text,
-              record.key,
-              "scale",
-              handlers,
-              editingKeys
-            ),
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(scale4Options, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "scale")
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
         },
-        // {
-        //   title: "Process Severity Levels",
-        //   dataIndex: "processSeverityLevels",
-        //   key: "processSeverityLevels",
-        //   width: 180,
-        //   render: (text: any, record: DataType) => {
-        //     const severityOptions = [
-        //       { label: "Low", key: "Low" },
-        //       { label: "Medium", key: "Medium" },
-        //       { label: "High", key: "High" },
-        //       { label: "Critical", key: "Critical" },
-        //     ];
-        //     const menu = buildMenu(severityOptions, (key) =>
-        //       handlers?.onSelectGeneric?.(
-        //         key,
-        //         record.key,
-        //         "processSeverityLevels"
-        //       )
-        //     );
-        //     return (
-        //       <Dropdown overlay={menu} trigger={["click"]}>
-        //         <div className="flex items-center cursor-pointer">
-        //           {text || "Select"}
-        //           <DownOutlined className="ml-1 text-gray-500 text-xs" />
-        //         </div>
-        //       </Dropdown>
-        //     );
-        //   },
-        // },
+
         {
           title: "Process Severity Levels",
           dataIndex: "processSeverityLevels",
@@ -2439,13 +2475,7 @@ export function getColumns(
           width: 180,
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
-              const severityOptions = [
-                { label: "Low", key: "Low" },
-                { label: "Medium", key: "Medium" },
-                { label: "High", key: "High" },
-                { label: "Critical", key: "Critical" },
-              ];
-              const menu = buildMenu(severityOptions, (key) =>
+              const menu = buildMenu(processSeverityLevelsOptions, (key) =>
                 handlers?.onSelectGeneric?.(
                   key,
                   record.key,
