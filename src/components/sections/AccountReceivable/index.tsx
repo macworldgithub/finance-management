@@ -1155,20 +1155,11 @@ const AccountReceivable = forwardRef<
                     -ms-overflow-style: none;
                   }
                   .ant-table-header::-webkit-scrollbar {
-                    height: 12px;
-                    background: #f5f5f5;
+                    display: none;
                   }
-                  .ant-table-header::-webkit-scrollbar-thumb {
-                    background: linear-gradient(
-                      to right,
-                      #e5e7eb 0%,
-                      #d1d5db 100%
-                    );
-                    border-radius: 6px;
-                    border: 1px solid #9ca3af;
-                  }
-                  .ant-table-header::-webkit-scrollbar-track {
-                    background: #f5f5f5;
+                  .ant-table-header {
+                    scrollbar-width: none;
+                    -ms-overflow-style: none;
                   }
                   .row-deactivated {
                     background-color: #e5e7eb !important;
