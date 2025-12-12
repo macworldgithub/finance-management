@@ -1869,33 +1869,41 @@ export function getColumns(
   const icfrColumn: ColumnsType<DataType> = [
     {
       title: "Internal Control Over Financial Reporting",
-      dataIndex: "internalControlFinancial",
-      key: "internalControlFinancial",
+      dataIndex: "internalControlOverFinancialReporting",
+      key: "internalControlOverFinancialReporting",
       width: 320,
       render: (value: any, record: DataType) => {
+        // Convert P/O to Yes/No for display
         const displayValue =
-          value === true
+          value === "P" || value === true
             ? "Yes"
-            : value === false
+            : value === "O" || value === false
             ? "No"
             : value === "Yes" || value === "No"
             ? value
             : "";
-        const menu = buildMenu(yesNoOptions, (key) =>
-          handlers?.onSelectGeneric?.(
-            key,
-            record.key,
-            "internalControlFinancial"
-          )
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {displayValue || "Select"}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
+
+        // Only show dropdown when editing
+        if (editingKeys.includes(record.key)) {
+          const menu = buildMenu(yesNoOptions, (key) =>
+            handlers?.onSelectGeneric?.(
+              key,
+              record.key,
+              "internalControlOverFinancialReporting"
+            )
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {displayValue || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+
+        // Show just the text when not editing
+        return <div>{displayValue || "-"}</div>;
       },
     },
   ];
@@ -1910,7 +1918,8 @@ export function getColumns(
           checked,
           record,
           "check",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {

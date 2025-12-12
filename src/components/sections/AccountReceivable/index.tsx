@@ -365,7 +365,8 @@ const AccountReceivable = forwardRef<
           case "Internal Audit Test": {
             return {
               ...base,
-              // API fields: "Internal Audit Test", "Sample Size"
+              // API fields: "Internal Audit Test", "Sample Size", "Check"
+              check: item.Check === "P" ? true : item.check,
               internalAuditTest:
                 item["Internal Audit Test"] ?? item.internalAuditTest,
               sampleSize: item["Sample Size"] ?? item.sampleSize,
@@ -388,6 +389,8 @@ const AccountReceivable = forwardRef<
               internalControlOverFinancialReporting:
                 item["Internal Control Over Financial Reporting?"] === "P"
                   ? true
+                  : item["Internal Control Over Financial Reporting?"] === "O"
+                  ? false
                   : item.internalControlOverFinancialReporting,
               occurrence: item.Occurrence === "P" ? true : item.occurrence,
               completeness:
@@ -653,6 +656,14 @@ const AccountReceivable = forwardRef<
           "SOX Control Activity": item.soxControlActivity,
         };
 
+      case "Internal Audit Test":
+        return {
+          ...basePayload,
+          Check: item.check ? "P" : "O",
+          "Internal Audit Test": item.internalAuditTest,
+          "Sample Size": item.sampleSize,
+        };
+
       case "GRC Exception Log":
         return {
           ...basePayload,
@@ -731,8 +742,17 @@ const AccountReceivable = forwardRef<
   const handleSelectGeneric = useCallback(
     (value: string, rowKey: string, field?: string) => {
       if (!field) return;
+
+      // Convert Yes/No to boolean for ICFR field
+      let processedValue = value;
+      if (field === "internalControlOverFinancialReporting") {
+        //@ts-ignore
+        processedValue =
+          value === "Yes" ? true : value === "No" ? false : value;
+      }
+
       const newData = tableData.map((r) =>
-        r.key === rowKey ? { ...r, [field]: value } : r
+        r.key === rowKey ? { ...r, [field]: processedValue } : r
       );
       setTableData(newData);
     },
