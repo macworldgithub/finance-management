@@ -602,6 +602,12 @@ const AccountReceivable = forwardRef<
           "Type of Risk Response": item.riskResponseType,
         };
 
+      case "SOX":
+        return {
+          ...basePayload,
+          "SOX Control Activity": item.soxControlActivity,
+        };
+
       // Add other sections as needed
       default:
         return basePayload;
