@@ -532,6 +532,82 @@ const AccountReceivable = forwardRef<
     },
     [tableData, getCurrentSection]
   );
+  // Transform data to match API format before sending
+  const transformDataForAPI = (item: DataType, section: string): any => {
+    const basePayload = {
+      Id: item.id,
+      Date: new Date().toISOString(),
+      No: parseFloat(item.no as string) || 0,
+      Process: item.process,
+    };
+
+    switch (section) {
+      case "Risk Assessment (Inherent Risk)":
+        return {
+          ...basePayload,
+          "Risk Type": item.riskType,
+          "Risk Description": item.riskDescription,
+          "Severity/ Impact": item.severityImpact,
+          "Probability/ Likelihood": item.probabilityLikelihood,
+          Classification: item.classification,
+        };
+
+      case "Risk Assessment (Residual Risk)":
+        return {
+          ...basePayload,
+          "Risk Type": item.riskType,
+          "Risk Description": item.riskDescription,
+          "Severity/ Impact": item.severityImpact,
+          "Probability/ Likelihood": item.probabilityLikelihood,
+          Classification: item.classification,
+        };
+
+      case "Process":
+        return {
+          ...basePayload,
+          "Process Description": item.processDescription,
+          "Process Objectives": item.processObjective,
+          "Process Severity Levels": item.processSeverityLevels,
+        };
+
+      case "Ownership":
+        return {
+          ...basePayload,
+          "Main Process": item.process2,
+          Activity: item.activity,
+          "Process Stage": item.stage,
+          Functions: item.functions,
+          "Client Segment and/or Functional Segment": item.clientSegment,
+          "Operational Unit": item.operationalUnit,
+          Division: item.division,
+          Entity: item.entity,
+          "Unit / Department": item.unitDepartment,
+          "Product Class": item.productClass,
+          "Product Name": item.productName,
+        };
+
+      case "COSO-Control Environment":
+        return {
+          ...basePayload,
+          "Integrity & Ethical Values": item.integrityEthical ? "P" : "O",
+          "Board Oversight": item.boardOversight ? "P" : "O",
+          "Organizational Structure": item.orgStructure ? "P" : "O",
+          "Commitment to Competence": item.commitmentCompetence ? "P" : "O",
+          "Management Philosophy": item.managementPhilosophy ? "P" : "O",
+        };
+
+      case "Risk Responses":
+        return {
+          ...basePayload,
+          "Type of Risk Response": item.riskResponseType,
+        };
+
+      // Add other sections as needed
+      default:
+        return basePayload;
+    }
+  };
+
   const handleSave = useCallback(
     async (key: string) => {
       const itemIndex = tableData.findIndex((r) => r.key === key);
@@ -542,10 +618,14 @@ const AccountReceivable = forwardRef<
       try {
         let updatedItem;
         if (item.id) {
-          await apiClientDotNet.put(`/${endpoint}/${item.id}`, item);
+          // Transform data to match API format before sending
+          const payload = transformDataForAPI(item, section);
+          await apiClientDotNet.put(`/${endpoint}/${item.id}`, payload);
           updatedItem = { ...item };
         } else {
-          const response = await apiClientDotNet.post(`/${endpoint}`, item);
+          // Transform data to match API format before sending
+          const payload = transformDataForAPI(item, section);
+          const response = await apiClientDotNet.post(`/${endpoint}`, payload);
           updatedItem = { ...response.data, key: response.data.Id };
         }
         const newData = [...tableData];
@@ -557,7 +637,7 @@ const AccountReceivable = forwardRef<
         setEditingKeys((prev) => prev.filter((k) => k !== key));
       }
     },
-    [tableData, getCurrentSection]
+    [tableData, getCurrentSection, transformDataForAPI]
   );
   const handleCancel = useCallback((key: string) => {
     setEditingKeys((prev) => prev.filter((k) => k !== key));
