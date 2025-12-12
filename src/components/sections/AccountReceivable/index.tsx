@@ -461,7 +461,7 @@ const AccountReceivable = forwardRef<
   useEffect(() => {
     debouncedResize();
   }, [tableData, activeTab, activeSubTab, debouncedResize]);
-  // Keep top scrollbar width in sync
+  // Keep top scrollbar width in sync with table content (excluding Process column)
   useEffect(() => {
     const updateWidth = () => {
       if (!topScrollbarRef.current || !tableWrapperRef.current) return;
@@ -469,15 +469,35 @@ const AccountReceivable = forwardRef<
         ".ant-table"
       ) as HTMLElement;
       if (table) {
-        const dummy = topScrollbarRef.current.querySelector("div");
-        if (dummy) {
-          dummy.style.width = `${table.scrollWidth}px`;
+        const tableContent = table.querySelector(
+          ".ant-table-content"
+        ) as HTMLElement;
+        if (tableContent) {
+          // Find the Process column width (first fixed column)
+          const processCol = table.querySelector(
+            ".ant-table-cell-fix-left:first-child"
+          ) as HTMLElement;
+          const processColWidth = processCol ? processCol.offsetWidth : 0;
+
+          // Set scrollbar width to total width minus Process column width
+          const dummy = topScrollbarRef.current.querySelector("div");
+          if (dummy) {
+            dummy.style.width = `${Math.max(
+              tableContent.scrollWidth - processColWidth,
+              window.innerWidth - processColWidth - 100
+            )}px`;
+          }
         }
       }
     };
-    // Use timeout to ensure DOM is updated
+
+    // Initial update
+    updateWidth();
+
+    // Update on resize and data changes
     const timeoutId = setTimeout(updateWidth, 100);
     window.addEventListener("resize", updateWidth);
+
     return () => {
       window.removeEventListener("resize", updateWidth);
       clearTimeout(timeoutId);
@@ -956,13 +976,19 @@ const AccountReceivable = forwardRef<
     const body = tableWrapperRef.current?.querySelector(
       ".ant-table-body"
     ) as HTMLElement;
+    const header = tableWrapperRef.current?.querySelector(
+      ".ant-table-header"
+    ) as HTMLElement;
     if (body) {
       scrollSyncRef.current = false;
       body.scrollLeft = target.scrollLeft;
-      setTimeout(() => {
-        scrollSyncRef.current = true;
-      }, 50);
     }
+    if (header) {
+      header.scrollLeft = target.scrollLeft;
+    }
+    setTimeout(() => {
+      scrollSyncRef.current = true;
+    }, 50);
   }, []);
   const handleDataLoaded = async (data: DataType[]) => {
     // Existing bulk post functionality remains unchanged
@@ -1093,42 +1119,56 @@ const AccountReceivable = forwardRef<
             </div>
           ) : (
             <div className="relative">
-              {/* Top Scrollbar - Only when needed */}
-              {(() => {
-                if (!tableWrapperRef.current) return null;
-                const table = tableWrapperRef.current.querySelector(
-                  ".ant-table"
-                ) as HTMLElement;
-                if (!table || table.scrollWidth <= table.clientWidth + 10)
-                  return null;
-                return (
-                  <div
-                    ref={topScrollbarRef}
-                    className="sticky top-0 z-20 overflow-x-auto bg-white border-b border-gray-200 -mx-6 px-6 mb-3"
-                    style={{
-                      scrollbarWidth: "thin",
-                      scrollbarColor: "#787878 #121212",
-                    }}
-                    onScroll={handleTopScroll}
-                  >
-                    <div
-                      style={{ width: `${table.scrollWidth}px`, height: "1px" }}
-                    />
-                  </div>
-                );
-              })()}
+              {/* Custom Top Scrollbar for all columns except 'Processes' */}
+              <div
+                className="sticky top-0 z-20 overflow-x-auto bg-white border-b border-gray-200 -mx-6 px-6 mb-3"
+                style={{
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#787878 #e5e7eb",
+                }}
+                onScroll={handleTopScroll}
+                ref={topScrollbarRef}
+              >
+                <div
+                  style={{
+                    width: "2000px",
+                    height: "12px",
+                    background:
+                      "linear-gradient(to right, #e5e7eb 0%, #d1d5db 100%)",
+                    borderRadius: 6,
+                    border: "1px solid #9ca3af",
+                    cursor: "grab",
+                  }}
+                />
+              </div>
               <div
                 ref={tableWrapperRef}
-                className="bg-white shadow-md rounded-b-lg overflow-hidden"
+                className="bg-white shadow-md rounded-b-lg"
                 style={{ maxHeight: "calc(100vh - 280px)", minHeight: "500px" }}
               >
                 <style jsx>{`
+                  .ant-table-body::-webkit-scrollbar {
+                    display: none;
+                  }
                   .ant-table-body {
                     scrollbar-width: none;
                     -ms-overflow-style: none;
                   }
-                  .ant-table-body::-webkit-scrollbar {
-                    display: none;
+                  .ant-table-header::-webkit-scrollbar {
+                    height: 12px;
+                    background: #f5f5f5;
+                  }
+                  .ant-table-header::-webkit-scrollbar-thumb {
+                    background: linear-gradient(
+                      to right,
+                      #e5e7eb 0%,
+                      #d1d5db 100%
+                    );
+                    border-radius: 6px;
+                    border: 1px solid #9ca3af;
+                  }
+                  .ant-table-header::-webkit-scrollbar-track {
+                    background: #f5f5f5;
                   }
                   .row-deactivated {
                     background-color: #e5e7eb !important;
@@ -1137,11 +1177,11 @@ const AccountReceivable = forwardRef<
                   }
                 `}</style>
                 <Table
-                  key={`table-${activeTab}-${activeSubTab}`} // Force re-render on tab change
+                  key={`table-${activeTab}-${activeSubTab}`}
                   columns={columns}
                   dataSource={tableData}
                   pagination={false}
-                  scroll={{ x: 1300, y: "calc(100vh - 340px)" }}
+                  scroll={{ x: "max-content", y: "calc(100vh - 340px)" }}
                   bordered
                   rowKey={(r) => `${r.key}-${r.isActive?.toString()}`}
                   rowClassName={(r) =>
