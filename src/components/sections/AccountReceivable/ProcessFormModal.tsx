@@ -228,6 +228,15 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     "As and When",
   ];
 
+  // Level of Responsibility options
+  const levelResponsibilityOptions = [
+    "Process Level",
+    "Functional Level",
+    "Operating Unit Level",
+    "Division Level",
+    "Entity Level",
+  ];
+
   // Control Classification options
   const controlClassificationOptions = [
     "Directive Control",
@@ -307,7 +316,13 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
           name="Level of Responsibility-Operating Level (Entity / Activity)"
           label="Level of Responsibility-Operating Level (Entity / Activity)"
         >
-          <Input />
+          <Select>
+            {levelResponsibilityOptions.map((option) => (
+              <Option key={option} value={option}>
+                {option}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item name="COSO Principle #" label="COSO Principle #">
           <Select>

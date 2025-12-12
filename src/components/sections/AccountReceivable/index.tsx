@@ -650,6 +650,18 @@ const AccountReceivable = forwardRef<
           "Type of Risk Response": item.riskResponseType,
         };
 
+      case "Control Activities":
+        return {
+          ...basePayload,
+          "Control Objectives": item.controlObjectives,
+          "Control Ref": item.controlRef,
+          "Control Definition": item.controlDefinition,
+          "Control Description": item.controlDescription,
+          "Control Responsibility": item.controlResponsibility,
+          "Key Control": item.keyControl ? "P" : "O",
+          "Zero Tolerance": item.zeroTolerance ? "P" : "O",
+        };
+
       case "SOX":
         return {
           ...basePayload,
