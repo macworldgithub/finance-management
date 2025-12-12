@@ -115,6 +115,13 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     const commonProcess = form.getFieldValue("Process"); // shared for all tabs
     const stepValues = form.getFieldsValue();
 
+    // Debug logging for Control Activities
+    if (sectionKey === "control-activities") {
+      console.log("Form Values for Control Activities:", stepValues);
+      console.log("Key Control value:", stepValues["Key Control"]);
+      console.log("Zero Tolerance value:", stepValues["Zero Tolerance"]);
+    }
+
     let fullValues: any;
 
     if (sectionKey === "ownerships") {
@@ -135,6 +142,16 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     }
 
     const { Id, Date, ...submitValues } = fullValues;
+
+    // Debug logging for Control Activities
+    if (sectionKey === "control-activities") {
+      console.log("Final submitValues for Control Activities:", submitValues);
+      console.log("Key Control in submitValues:", submitValues["Key Control"]);
+      console.log(
+        "Zero Tolerance in submitValues:",
+        submitValues["Zero Tolerance"]
+      );
+    }
 
     if (initialValues && initialValues.Id) {
       await processService.update(sectionKey, {

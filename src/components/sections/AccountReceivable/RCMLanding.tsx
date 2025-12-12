@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import React from "react";
 
 interface RCMLandingProps {
@@ -10,13 +12,14 @@ interface RCMLandingProps {
   onOpenEfficiency?: () => void;
 }
 
-const RCMLanding: React.FC<RCMLandingProps> = ({
+export default function RCMLanding({
   onNavigate,
   onNavigateToAssessment,
   onOpenAdequacy,
   onOpenEffectiveness,
   onOpenEfficiency,
-}) => {
+}: RCMLandingProps) {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-[#f8fafc] flex justify-center pt-8 pb-12">
       <div className="w-[96%] max-w-5xl bg-white shadow-md rounded-xl p-6 border border-gray-200">
@@ -153,12 +156,13 @@ const RCMLanding: React.FC<RCMLandingProps> = ({
         <div className="bg-[#2f5b1e] text-white text-center font-bold text-lg py-2 rounded-sm mb-4">
           DASHBOARD
         </div>
-        <div className="py-4 px-3 text-xs font-semibold rounded-sm bg-[#fff2cc] border border-[#ffd966] text-[#7f6000] text-center">
+        <button
+          onClick={() => router.push("/reports")}
+          className="py-4 px-3 text-xs font-semibold rounded-sm bg-[#fff2cc] border border-[#ffd966] text-[#7f6000] text-center hover:bg-[#ffe599] transition-colors duration-200 cursor-pointer w-full"
+        >
           PROCESS MANAGEMENT REPORTS
-        </div>
+        </button>
       </div>
     </div>
   );
-};
-
-export default RCMLanding;
+}

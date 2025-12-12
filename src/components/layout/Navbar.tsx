@@ -374,7 +374,7 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
       <nav className="w-[96%] max-w-[1600px] bg-white rounded-2xl shadow-md px-6 py-3 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-1">
-          <span className="text-xl font-semibold text-gray-900">GCR</span>
+          <span className="text-xl font-semibold text-gray-900">GRC</span>
           <FaPlay className="h-4 w-4 text-blue-500" />
         </div>
 

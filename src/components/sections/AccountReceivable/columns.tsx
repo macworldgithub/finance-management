@@ -1627,7 +1627,26 @@ export function getColumns(
       key: "keyControl",
       width: 110,
       align: "center" as const,
-      render: () => "Yes",
+      render: (text: string, record: DataType) => {
+        if (editingKeys.includes(record.key)) {
+          const yesNoOptions = [
+            { label: "Yes", key: "P" },
+            { label: "No", key: "O" },
+          ];
+          const menu = buildMenu(yesNoOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "keyControl")
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer justify-center">
+                {text === "P" ? "Yes" : text === "O" ? "No" : "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text === "P" ? "Yes" : text === "O" ? "No" : "";
+      },
     },
     {
       title: "Zero Tolerance",
@@ -1635,7 +1654,26 @@ export function getColumns(
       key: "zeroTolerance",
       width: 130,
       align: "center" as const,
-      render: () => "Yes",
+      render: (text: string, record: DataType) => {
+        if (editingKeys.includes(record.key)) {
+          const yesNoOptions = [
+            { label: "Yes", key: "P" },
+            { label: "No", key: "O" },
+          ];
+          const menu = buildMenu(yesNoOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "zeroTolerance")
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer justify-center">
+                {text === "P" ? "Yes" : text === "O" ? "No" : "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text === "P" ? "Yes" : text === "O" ? "No" : "";
+      },
     },
   ];
 
