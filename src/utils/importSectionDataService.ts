@@ -18,6 +18,7 @@ const SECTION_FIELD_MAPPINGS: Record<string, string[]> = {
   ],
   Ownership: [
     "No",
+    "Main Process",
     "Process",
     "Activity",
     "Process Stage",
@@ -151,22 +152,49 @@ const SECTION_FIELD_MAPPINGS: Record<string, string[]> = {
  */
 const transformDataForSection = (sectionName: string, data: any[]): any[] => {
   const fieldMapping = SECTION_FIELD_MAPPINGS[sectionName] || [];
-  return data.map((item) => {
+  return data.map((item, index) => {
     const transformed: any = {};
     // Include all fields from mapping
     fieldMapping.forEach((field) => {
-      // Handle special mappings
-      if (field === "Process") {
-        // For Process field, use "Main Process" if available, otherwise "Process"
-        transformed[field] = item["Main Process"] || item["Process"] || "";
-      } else if (field === "No") {
-        // Ensure No is a number
-        transformed[field] = item.No || item.no || 0;
+      // Handle special mappings for Ownership
+      if (sectionName === "Ownership") {
+        if (field === "Main Process") {
+          // In Ownership, Main Process should use the "Main Process" column or fallback to first "Process" value
+          transformed[field] = item["Main Process"] || "";
+        } else if (field === "Process") {
+          // In Ownership, Process should use the "Process" column
+          transformed[field] = item["Process"] || "";
+        } else if (field === "No") {
+          // Ensure No is a number
+          transformed[field] = item.No || item.no || 0;
+        } else {
+          // Copy value or empty string for all other fields
+          transformed[field] = item[field] || "";
+        }
       } else {
-        // Copy value or empty string for all other fields
-        transformed[field] = item[field] || "";
+        // For other sections, use the original logic
+        if (field === "Process") {
+          // For Process field, use "Main Process" if available, otherwise "Process"
+          transformed[field] = item["Main Process"] || item["Process"] || "";
+        } else if (field === "No") {
+          // Ensure No is a number
+          transformed[field] = item.No || item.no || 0;
+        } else {
+          // Copy value or empty string for all other fields
+          transformed[field] = item[field] || "";
+        }
       }
     });
+    
+    // Log the transformation for Ownership to debug
+    if (sectionName === "Ownership" && index === 0) {
+      console.log("[transformDataForSection] Ownership mapping example:", {
+        original: item,
+        transformed,
+        fieldMapping,
+      });
+    }
+    
     return transformed;
   });
 };

@@ -167,6 +167,14 @@ const DataReviewModal: React.FC<DataReviewModalProps> = ({
         hasData: data && data.length > 0,
       });
 
+      // Log the actual data structure for Ownership
+      if (sectionName === "Ownership" && data.length > 0) {
+        console.log("[DataReviewModal] Ownership data sample:", {
+          firstRecord: data[0],
+          allKeys: Object.keys(data[0]),
+        });
+      }
+
       if (data.length === 0) {
         console.warn("[DataReviewModal] No data in array, showing warning");
         message.warning("No data to import");
@@ -208,7 +216,7 @@ const DataReviewModal: React.FC<DataReviewModalProps> = ({
         ? undefined
         : ["Critical", "High", "Medium", "Low"];
 
-    return getEditableColumns({
+    const baseColumns = getEditableColumns({
       editingKey,
       handleFieldChange,
       handleSave,
@@ -218,6 +226,26 @@ const DataReviewModal: React.FC<DataReviewModalProps> = ({
       data,
       severityLevels,
     });
+
+    // For Ownership section, ensure Main Process column comes before Process column
+    if (sectionName === "Ownership") {
+      // Reorder columns: put Main Process after No, and Process after Main Process
+      const reorderedColumns = baseColumns.sort((a, b) => {
+        const columnOrder = ["No", "Main Process", "Process"];
+        const aIndex = columnOrder.indexOf(a.dataIndex);
+        const bIndex = columnOrder.indexOf(b.dataIndex);
+        
+        if (aIndex !== -1 && bIndex !== -1) {
+          return aIndex - bIndex;
+        }
+        if (aIndex !== -1) return -1;
+        if (bIndex !== -1) return 1;
+        return 0;
+      });
+      return reorderedColumns;
+    }
+
+    return baseColumns;
   }, [
     editingKey,
     data,
