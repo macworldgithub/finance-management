@@ -191,6 +191,51 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     { value: "O", label: "No" },
   ]; // P for Yes, O for No
 
+  // COSO Principle options
+  const cosoPrincipleOptions = [
+    "1. Demonstrates commitment to integrity and ethical values",
+    "2. Exercises oversight responsibility",
+    "3. Establishes structure, authority, and responsibility",
+    "4. Demonstrates commitment to competence",
+    "5. Enforces accountability",
+    "6. Specifies suitable objectives",
+    "7. Identifies and analyzes risk",
+    "8. Assesses fraud risk",
+    "9. Identifies and analyzes significant change",
+    "10. Selects and develops control activities",
+    "11. Selects and develops general controls over technology",
+    "12. Deploys through policies and procedures",
+    "13. Uses relevant information",
+    "14. Communicates internally",
+    "15. Communicates externally",
+    "16. Conducts ongoing and/or separate evaluations",
+    "17. Evaluates and communicates deficiencies",
+  ];
+
+  // Operational Approach options
+  const operationalApproachOptions = ["Automated", "Manual"];
+
+  // Operational Frequency options
+  const operationalFrequencyOptions = [
+    "Daily",
+    "Weekly",
+    "Monthly",
+    "Quarterly",
+    "Semiannually",
+    "Annually",
+    "Every 2 Years",
+    "Every 3 Years",
+    "As and When",
+  ];
+
+  // Control Classification options
+  const controlClassificationOptions = [
+    "Directive Control",
+    "Preventive Control",
+    "Detective Control",
+    "Corrective Control",
+  ];
+
   // Tab-specific form fields (match single-row API request bodies)
   //@ts-ignore
   const tabForms: { [key: string]: JSX.Element } = {
@@ -265,22 +310,46 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
           <Input />
         </Form.Item>
         <Form.Item name="COSO Principle #" label="COSO Principle #">
-          <Input />
+          <Select>
+            {cosoPrincipleOptions.map((option) => (
+              <Option key={option} value={option}>
+                {option}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           name="Operational Approach (Automated / Manual)"
           label="Operational Approach (Automated / Manual)"
         >
-          <Input />
+          <Select>
+            {operationalApproachOptions.map((option) => (
+              <Option key={option} value={option}>
+                {option}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item name="Operational Frequency" label="Operational Frequency">
-          <Input />
+          <Select>
+            {operationalFrequencyOptions.map((option) => (
+              <Option key={option} value={option}>
+                {option}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
           name="Control Classification (Preventive / Detective / Corrective)"
           label="Control Classification (Preventive / Detective / Corrective)"
         >
-          <Input />
+          <Select>
+            {controlClassificationOptions.map((option) => (
+              <Option key={option} value={option}>
+                {option}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
       </>
     ),

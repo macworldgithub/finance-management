@@ -1676,17 +1676,85 @@ export function getColumns(
       width: 150,
       render: (text: string, record: DataType) => {
         if (editingKeys.includes(record.key)) {
+          const cosoOptions = [
+            {
+              label:
+                "1. Demonstrates commitment to integrity and ethical values",
+              key: "1. Demonstrates commitment to integrity and ethical values",
+            },
+            {
+              label: "2. Exercises oversight responsibility",
+              key: "2. Exercises oversight responsibility",
+            },
+            {
+              label: "3. Establishes structure, authority, and responsibility",
+              key: "3. Establishes structure, authority, and responsibility",
+            },
+            {
+              label: "4. Demonstrates commitment to competence",
+              key: "4. Demonstrates commitment to competence",
+            },
+            {
+              label: "5. Enforces accountability",
+              key: "5. Enforces accountability",
+            },
+            {
+              label: "6. Specifies suitable objectives",
+              key: "6. Specifies suitable objectives",
+            },
+            {
+              label: "7. Identifies and analyzes risk",
+              key: "7. Identifies and analyzes risk",
+            },
+            { label: "8. Assesses fraud risk", key: "8. Assesses fraud risk" },
+            {
+              label: "9. Identifies and analyzes significant change",
+              key: "9. Identifies and analyzes significant change",
+            },
+            {
+              label: "10. Selects and develops control activities",
+              key: "10. Selects and develops control activities",
+            },
+            {
+              label:
+                "11. Selects and develops general controls over technology",
+              key: "11. Selects and develops general controls over technology",
+            },
+            {
+              label: "12. Deploys through policies and procedures",
+              key: "12. Deploys through policies and procedures",
+            },
+            {
+              label: "13. Uses relevant information",
+              key: "13. Uses relevant information",
+            },
+            {
+              label: "14. Communicates internally",
+              key: "14. Communicates internally",
+            },
+            {
+              label: "15. Communicates externally",
+              key: "15. Communicates externally",
+            },
+            {
+              label: "16. Conducts ongoing and/or separate evaluations",
+              key: "16. Conducts ongoing and/or separate evaluations",
+            },
+            {
+              label: "17. Evaluates and communicates deficiencies",
+              key: "17. Evaluates and communicates deficiencies",
+            },
+          ];
+          const menu = buildMenu(cosoOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "cosoPrinciple")
+          );
           return (
-            <Input
-              value={text}
-              onChange={(e) =>
-                handlers?.onTextChange?.(
-                  record.key,
-                  "cosoPrinciple",
-                  e.target.value
-                )
-              }
-            />
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
           );
         }
         return text || "";
@@ -1730,7 +1798,11 @@ export function getColumns(
             { label: "Weekly", key: "Weekly" },
             { label: "Monthly", key: "Monthly" },
             { label: "Quarterly", key: "Quarterly" },
+            { label: "Semiannually", key: "Semiannually" },
             { label: "Annually", key: "Annually" },
+            { label: "Every 2 Years", key: "Every 2 Years" },
+            { label: "Every 3 Years", key: "Every 3 Years" },
+            { label: "As and When", key: "As and When" },
           ];
           const menu = buildMenu(frequencyOptions, (key) =>
             handlers?.onSelectGeneric?.(key, record.key, "operationalFrequency")
@@ -1755,9 +1827,10 @@ export function getColumns(
       render: (text: string, record: DataType) => {
         if (editingKeys.includes(record.key)) {
           const classificationOptions = [
-            { label: "Preventive", key: "Preventive" },
-            { label: "Detective", key: "Detective" },
-            { label: "Corrective", key: "Corrective" },
+            { label: "Directive Control", key: "Directive Control" },
+            { label: "Preventive Control", key: "Preventive Control" },
+            { label: "Detective Control", key: "Detective Control" },
+            { label: "Corrective Control", key: "Corrective Control" },
           ];
           const menu = buildMenu(classificationOptions, (key) =>
             handlers?.onSelectGeneric?.(
