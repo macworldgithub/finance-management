@@ -125,14 +125,24 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     let fullValues: any;
 
     if (sectionKey === "ownerships") {
-      const { Process: ownershipProcess, ...restStepValues } = stepValues;
+      const { Process: mainProcessField, "Main Process": processField, ...restStepValues } = stepValues;
+
+      console.log("[ProcessFormModal] Ownership submission:", {
+        noValue,
+        commonProcess,
+        mainProcessField,
+        processField,
+        restStepValues,
+      });
 
       fullValues = {
         No: noValue,
-        Process: ownershipProcess, // Ownership-specific
-        "Main Process": commonProcess, // same as basic Process, autofilled
+        Process: processField, // Process field → API Process
+        "Main Process": mainProcessField, // Main Process field → API Main Process
         ...restStepValues,
       };
+
+      console.log("[ProcessFormModal] Ownership fullValues:", fullValues);
     } else {
       fullValues = {
         No: noValue,
@@ -847,16 +857,13 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     // /Ownerships
     ownerships: (
       <>
-        <Form.Item name="Main Process" label="Main Process">
+        <Form.Item name="Process" label="Main Process">
           <Input disabled />
         </Form.Item>
         <Form.Item name="Activity" label="Activity">
           <Input />
         </Form.Item>
-        {/* <Form.Item name="Process" label="Process">
-          <Input />
-        </Form.Item> */}
-        <Form.Item name="Ownership Process" label="Process">
+        <Form.Item name="Main Process" label="Process">
           <Input />
         </Form.Item>
 
