@@ -690,6 +690,18 @@ const AccountReceivable = forwardRef<
           "Presentation / Disclosure": item.presentationDisclosure ? "P" : "O",
         };
 
+      case "Control Assessment":
+        return {
+          ...basePayload,
+          "Level of Responsibility-Operating Level (Entity / Activity)":
+            item.levelResponsibility,
+          "COSO Principle #": item.cosoPrinciple,
+          "Operational Approach (Automated / Manual)": item.operationalApproach,
+          "Operational Frequency": item.operationalFrequency,
+          "Control Classification (Preventive / Detective / Corrective)":
+            item.controlClassification,
+        };
+
       // Add other sections as needed
       default:
         return basePayload;

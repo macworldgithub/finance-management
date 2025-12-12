@@ -1669,11 +1669,115 @@ export function getColumns(
         return text || ""; // Simple text when not editing
       },
     },
-    // Repeat similar pattern for:
-    // - COSO Principle
-    // - Operational Approach
-    // - Operational Frequency
-    // - Control Classification
+    {
+      title: "COSO Principle #",
+      dataIndex: "cosoPrinciple",
+      key: "cosoPrinciple",
+      width: 150,
+      render: (text: string, record: DataType) => {
+        if (editingKeys.includes(record.key)) {
+          return (
+            <Input
+              value={text}
+              onChange={(e) =>
+                handlers?.onTextChange?.(
+                  record.key,
+                  "cosoPrinciple",
+                  e.target.value
+                )
+              }
+            />
+          );
+        }
+        return text || "";
+      },
+    },
+    {
+      title: "Operational Approach",
+      dataIndex: "operationalApproach",
+      key: "operationalApproach",
+      width: 200,
+      render: (text: string, record: DataType) => {
+        if (editingKeys.includes(record.key)) {
+          const approachOptions = [
+            { label: "Automated", key: "Automated" },
+            { label: "Manual", key: "Manual" },
+          ];
+          const menu = buildMenu(approachOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "operationalApproach")
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text || "";
+      },
+    },
+    {
+      title: "Operational Frequency",
+      dataIndex: "operationalFrequency",
+      key: "operationalFrequency",
+      width: 150,
+      render: (text: string, record: DataType) => {
+        if (editingKeys.includes(record.key)) {
+          const frequencyOptions = [
+            { label: "Daily", key: "Daily" },
+            { label: "Weekly", key: "Weekly" },
+            { label: "Monthly", key: "Monthly" },
+            { label: "Quarterly", key: "Quarterly" },
+            { label: "Annually", key: "Annually" },
+          ];
+          const menu = buildMenu(frequencyOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "operationalFrequency")
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text || "";
+      },
+    },
+    {
+      title: "Control Classification",
+      dataIndex: "controlClassification",
+      key: "controlClassification",
+      width: 220,
+      render: (text: string, record: DataType) => {
+        if (editingKeys.includes(record.key)) {
+          const classificationOptions = [
+            { label: "Preventive", key: "Preventive" },
+            { label: "Detective", key: "Detective" },
+            { label: "Corrective", key: "Corrective" },
+          ];
+          const menu = buildMenu(classificationOptions, (key) =>
+            handlers?.onSelectGeneric?.(
+              key,
+              record.key,
+              "controlClassification"
+            )
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text || "";
+      },
+    },
   ];
   const riskAssessmentResidualColumns: ColumnsType<DataType> =
     riskAssessmentInherentColumns.map((col) => ({ ...col })); // copy to avoid reference issues
