@@ -1734,7 +1734,8 @@ export function getColumns(
           checked,
           record,
           "occurrence",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1747,7 +1748,8 @@ export function getColumns(
           checked,
           record,
           "completeness",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1760,7 +1762,8 @@ export function getColumns(
           checked,
           record,
           "accuracy",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1773,7 +1776,8 @@ export function getColumns(
           checked,
           record,
           "authorization",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1786,7 +1790,8 @@ export function getColumns(
           checked,
           record,
           "cutoff",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1798,8 +1803,9 @@ export function getColumns(
         renderEditableCheckbox(
           checked,
           record,
-          "classificationSOX",
-          handlers?.onCheckboxChange
+          "classificationAndUnderstandability",
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1812,33 +1818,36 @@ export function getColumns(
           checked,
           record,
           "existence",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
       title: "Rights and Obligations",
-      dataIndex: "rightsObligations",
-      key: "rightsObligations",
+      dataIndex: "rightsAndObligations",
+      key: "rightsAndObligations",
       width: 180,
       render: (checked: boolean, record: DataType) =>
         renderEditableCheckbox(
           checked,
           record,
-          "rightsObligations",
-          handlers?.onCheckboxChange
+          "rightsAndObligations",
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
       title: "Valuation and Allocation",
-      dataIndex: "valuationAllocation",
-      key: "valuationAllocation",
+      dataIndex: "valuationAndAllocation",
+      key: "valuationAndAllocation",
       width: 200,
       render: (checked: boolean, record: DataType) =>
         renderEditableCheckbox(
           checked,
           record,
-          "valuationAllocation",
-          handlers?.onCheckboxChange
+          "valuationAndAllocation",
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1851,7 +1860,8 @@ export function getColumns(
           checked,
           record,
           "presentationDisclosure",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
   ];

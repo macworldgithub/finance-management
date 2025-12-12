@@ -372,6 +372,51 @@ const AccountReceivable = forwardRef<
             };
           }
 
+          case "GRC Exception Log": {
+            return {
+              ...base,
+              grcAdequacy: item["GRC Adequacy"] ?? item.grcAdequacy,
+              grcEffectiveness:
+                item["GRC Effectiveness"] ?? item.grcEffectiveness,
+              explanation: item["Explanation"] ?? item.explanation,
+            };
+          }
+
+          case "Financial Statement Assertions": {
+            const mappedData = {
+              ...base,
+              internalControlOverFinancialReporting:
+                item["Internal Control Over Financial Reporting?"] === "P"
+                  ? true
+                  : item.internalControlOverFinancialReporting,
+              occurrence: item.Occurrence === "P" ? true : item.occurrence,
+              completeness:
+                item.Completeness === "P" ? true : item.completeness,
+              accuracy: item.Accuracy === "P" ? true : item.accuracy,
+              authorization:
+                item.Authorization === "P" ? true : item.authorization,
+              cutoff: item.Cutoff === "P" ? true : item.cutoff,
+              classificationAndUnderstandability:
+                item["Classification and Understandability"] === "P"
+                  ? true
+                  : item.classificationAndUnderstandability,
+              existence: item.Existence === "P" ? true : item.existence,
+              rightsAndObligations:
+                item["Rights and Obligations"] === "P"
+                  ? true
+                  : item.rightsAndObligations,
+              valuationAndAllocation:
+                item["Valuation and Allocation"] === "P"
+                  ? true
+                  : item.valuationAndAllocation,
+              presentationDisclosure:
+                item["Presentation / Disclosure"] === "P"
+                  ? true
+                  : item.presentationDisclosure,
+            };
+            return mappedData;
+          }
+
           default:
             return base;
         }
@@ -606,6 +651,32 @@ const AccountReceivable = forwardRef<
         return {
           ...basePayload,
           "SOX Control Activity": item.soxControlActivity,
+        };
+
+      case "GRC Exception Log":
+        return {
+          ...basePayload,
+          "GRC Adequacy": item.grcAdequacy,
+          "GRC Effectiveness": item.grcEffectiveness,
+          Explanation: item.explanation,
+        };
+
+      case "Financial Statement Assertions":
+        return {
+          ...basePayload,
+          "Internal Control Over Financial Reporting?":
+            item.internalControlOverFinancialReporting ? "P" : "O",
+          Occurrence: item.occurrence ? "P" : "O",
+          Completeness: item.completeness ? "P" : "O",
+          Accuracy: item.accuracy ? "P" : "O",
+          Authorization: item.authorization ? "P" : "O",
+          Cutoff: item.cutoff ? "P" : "O",
+          "Classification and Understandability":
+            item.classificationAndUnderstandability ? "P" : "O",
+          Existence: item.existence ? "P" : "O",
+          "Rights and Obligations": item.rightsAndObligations ? "P" : "O",
+          "Valuation and Allocation": item.valuationAndAllocation ? "P" : "O",
+          "Presentation / Disclosure": item.presentationDisclosure ? "P" : "O",
         };
 
       // Add other sections as needed
