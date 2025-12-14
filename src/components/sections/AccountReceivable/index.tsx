@@ -70,6 +70,9 @@ const AccountReceivable = forwardRef<
   const [formModalVisible, setFormModalVisible] = useState(false);
   const [editingRecord, setEditingRecord] = useState<DataType | null>(null);
   const [startSectionKey, setStartSectionKey] = useState<string | null>(null);
+  // After your existing states (around line 40), add:
+  const [tableScrollWidth, setTableScrollWidth] = useState(0);
+  const [fixedLeftWidth, setFixedLeftWidth] = useState(0);
 
   // Reset sub-tab when switching main tabs
   useEffect(() => {
@@ -263,21 +266,21 @@ const AccountReceivable = forwardRef<
               ),
               managementPhilosophy: toCheckboxBool(
                 item["Management’s Philosophy and Operating Style"] ??
-                  item.managementPhilosophy
+                item.managementPhilosophy
               ),
               orgStructure: toCheckboxBool(
                 item["Organizational Structure"] ?? item.orgStructure
               ),
               assignmentAuthority: toCheckboxBool(
                 item["Assignment of Authority and Responsibility"] ??
-                  item.assignmentAuthority
+                item.assignmentAuthority
               ),
               hrPolicies: toCheckboxBool(
                 item["Human Resource Policies and Practices"] ?? item.hrPolicies
               ),
               boardAudit: toCheckboxBool(
                 item[
-                  "Board of Directors’ or Audit Committee’s Participation"
+                "Board of Directors’ or Audit Committee’s Participation"
                 ] ?? item.boardAudit
               ),
               managementControl: toCheckboxBool(
@@ -288,24 +291,24 @@ const AccountReceivable = forwardRef<
               ),
               commitmentInternal: toCheckboxBool(
                 item["Management’s Commitment to Internal Control"] ??
-                  item.commitmentInternal
+                item.commitmentInternal
               ),
               enforcementIntegrity: toCheckboxBool(
                 item[
-                  "Communication and Enforcement of Integrity and Ethical Values"
+                "Communication and Enforcement of Integrity and Ethical Values"
                 ] ?? item.enforcementIntegrity
               ),
               employeeAwareness: toCheckboxBool(
                 item["Employee Awareness and Understanding"] ??
-                  item.employeeAwareness
+                item.employeeAwareness
               ),
               accountability: toCheckboxBool(
                 item["Accountability and Performance Measurement"] ??
-                  item.accountability
+                item.accountability
               ),
               commitmentTransparency: toCheckboxBool(
                 item["Commitment to Transparency and Openness"] ??
-                  item.commitmentTransparency
+                item.commitmentTransparency
               ),
             };
           }
@@ -315,7 +318,7 @@ const AccountReceivable = forwardRef<
               ...base,
               levelResponsibility:
                 item[
-                  "Level of Responsibility-Operating Level (Entity / Activity)"
+                "Level of Responsibility-Operating Level (Entity / Activity)"
                 ] ?? item.levelResponsibility,
               cosoPrinciple: item["COSO Principle #"] ?? item.cosoPrinciple,
               operationalApproach:
@@ -325,7 +328,7 @@ const AccountReceivable = forwardRef<
                 item["Operational Frequency"] ?? item.operationalFrequency,
               controlClassification:
                 item[
-                  "Control Classification (Preventive / Detective / Corrective)"
+                "Control Classification (Preventive / Detective / Corrective)"
                 ] ?? item.controlClassification,
             };
           }
@@ -390,8 +393,8 @@ const AccountReceivable = forwardRef<
                 item["Internal Control Over Financial Reporting?"] === "P"
                   ? true
                   : item["Internal Control Over Financial Reporting?"] === "O"
-                  ? false
-                  : item.internalControlOverFinancialReporting,
+                    ? false
+                    : item.internalControlOverFinancialReporting,
               occurrence: item.Occurrence === "P" ? true : item.occurrence,
               completeness:
                 item.Completeness === "P" ? true : item.completeness,
@@ -438,6 +441,42 @@ const AccountReceivable = forwardRef<
   useEffect(() => {
     fetchData();
   }, [debouncedSearchText, activeTab, activeSubTab, fetchData]);
+
+  useEffect(() => {
+    const updateWidths = () => {
+      const wrapper = tableWrapperRef.current;
+      if (!wrapper) return;
+
+      const tableBody = wrapper.querySelector(".ant-table-body") as HTMLElement;
+      const table = wrapper.querySelector(".ant-table") as HTMLElement;
+
+      if (!tableBody || !table) return;
+
+      const leftCells = Array.from(
+        table.querySelectorAll(".ant-table-cell-fix-left")
+      ) as HTMLElement[];
+
+      const leftWidths = new Set<number>();
+      for (const cell of leftCells) {
+        const w = cell?.offsetWidth ?? 0;
+        if (w > 0) leftWidths.add(w);
+      }
+      const leftWidth = Array.from(leftWidths).reduce((s, w) => s + w, 0);
+
+      setFixedLeftWidth(leftWidth);
+      setTableScrollWidth(Math.max(0, tableBody.scrollWidth - leftWidth));
+    };
+
+    updateWidths();
+    const t = window.setTimeout(updateWidths, 50);
+    window.addEventListener("resize", updateWidths);
+
+    return () => {
+      window.removeEventListener("resize", updateWidths);
+      window.clearTimeout(t);
+    };
+  }, [activeTab, activeSubTab, tableData, editingKeys]);
+
   const tabKeys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   const currentTabIndex = tabKeys.indexOf(activeTab);
   const hasPrev = currentTabIndex > 0;
@@ -462,47 +501,7 @@ const AccountReceivable = forwardRef<
     debouncedResize();
   }, [tableData, activeTab, activeSubTab, debouncedResize]);
   // Keep top scrollbar width in sync with table content (excluding Process column)
-  useEffect(() => {
-    const updateWidth = () => {
-      if (!topScrollbarRef.current || !tableWrapperRef.current) return;
-      const table = tableWrapperRef.current.querySelector(
-        ".ant-table"
-      ) as HTMLElement;
-      if (table) {
-        const tableContent = table.querySelector(
-          ".ant-table-content"
-        ) as HTMLElement;
-        if (tableContent) {
-          // Find the Process column width (first fixed column)
-          const processCol = table.querySelector(
-            ".ant-table-cell-fix-left:first-child"
-          ) as HTMLElement;
-          const processColWidth = processCol ? processCol.offsetWidth : 0;
 
-          // Set scrollbar width to total width minus Process column width
-          const dummy = topScrollbarRef.current.querySelector("div");
-          if (dummy) {
-            dummy.style.width = `${Math.max(
-              tableContent.scrollWidth - processColWidth,
-              window.innerWidth - processColWidth - 100
-            )}px`;
-          }
-        }
-      }
-    };
-
-    // Initial update
-    updateWidth();
-
-    // Update on resize and data changes
-    const timeoutId = setTimeout(updateWidth, 100);
-    window.addEventListener("resize", updateWidth);
-
-    return () => {
-      window.removeEventListener("resize", updateWidth);
-      clearTimeout(timeoutId);
-    };
-  }, [activeTab, activeSubTab, tableData]);
   const tabConfigs = [
     { key: "1", label: "Processes" },
     { key: "2", label: "Ownership" },
@@ -961,31 +960,47 @@ const AccountReceivable = forwardRef<
   // Scroll handler with cleanup
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     if (!scrollSyncRef.current) return;
+
     const target = e.target as HTMLDivElement;
+    const scrollLeft = target.scrollLeft;
+
     if (topScrollbarRef.current) {
       scrollSyncRef.current = false;
-      topScrollbarRef.current.scrollLeft = target.scrollLeft;
+      topScrollbarRef.current.scrollLeft = scrollLeft;
       setTimeout(() => {
         scrollSyncRef.current = true;
       }, 50);
     }
-  }, []);
-  const handleTopScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    if (!scrollSyncRef.current) return;
-    const target = e.target as HTMLDivElement;
-    const body = tableWrapperRef.current?.querySelector(
-      ".ant-table-body"
-    ) as HTMLElement;
+
     const header = tableWrapperRef.current?.querySelector(
       ".ant-table-header"
     ) as HTMLElement;
+    if (header) {
+      header.scrollLeft = scrollLeft;
+    }
+  }, []);
+
+  const handleTopScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    if (!scrollSyncRef.current) return;
+
+    const target = e.target as HTMLDivElement;
+    const scrollLeft = target.scrollLeft;
+
+    const body = tableWrapperRef.current?.querySelector(
+      ".ant-table-body"
+    ) as HTMLElement;
     if (body) {
       scrollSyncRef.current = false;
-      body.scrollLeft = target.scrollLeft;
+      body.scrollLeft = scrollLeft;
     }
+
+    const header = tableWrapperRef.current?.querySelector(
+      ".ant-table-header"
+    ) as HTMLElement;
     if (header) {
-      header.scrollLeft = target.scrollLeft;
+      header.scrollLeft = scrollLeft;
     }
+
     setTimeout(() => {
       scrollSyncRef.current = true;
     }, 50);
@@ -1018,11 +1033,10 @@ const AccountReceivable = forwardRef<
               <button
                 onClick={goPrev}
                 disabled={!hasPrev}
-                className={`p-2 rounded-md transition font-bold ${
-                  hasPrev
+                className={`p-2 rounded-md transition font-bold ${hasPrev
                     ? "text-black hover:bg-gray-50 cursor-pointer"
                     : "text-gray-400 cursor-not-allowed"
-                }`}
+                  }`}
               >
                 <LeftOutlined />
               </button>
@@ -1030,11 +1044,10 @@ const AccountReceivable = forwardRef<
               <button
                 onClick={goNext}
                 disabled={!hasNext}
-                className={`p-2 rounded-md transition font-bold ${
-                  hasNext
+                className={`p-2 rounded-md transition font-bold ${hasNext
                     ? "text-black hover:bg-gray-50 cursor-pointer"
                     : "text-gray-400 cursor-not-allowed"
-                }`}
+                  }`}
               >
                 <RightOutlined />
               </button>
@@ -1121,8 +1134,11 @@ const AccountReceivable = forwardRef<
             <div className="relative">
               {/* Custom Top Scrollbar for all columns except 'Processes' */}
               <div
-                className="sticky top-0 z-20 overflow-x-auto bg-white border-b border-gray-200 -mx-6 px-6 mb-3"
+                className="sticky top-0 z-20 overflow-x-auto bg-white border-b border-gray-200 -mx-6 px-6 mb-3 top-scrollbar"
                 style={{
+                  height: "15px",
+                  marginLeft: fixedLeftWidth,
+                  width: `calc(100% - ${fixedLeftWidth}px)`,
                   scrollbarWidth: "thin",
                   scrollbarColor: "#787878 #e5e7eb",
                 }}
@@ -1131,16 +1147,13 @@ const AccountReceivable = forwardRef<
               >
                 <div
                   style={{
-                    width: "2000px",
-                    height: "12px",
-                    background:
-                      "linear-gradient(to right, #e5e7eb 0%, #d1d5db 100%)",
-                    borderRadius: 6,
-                    border: "1px solid #9ca3af",
-                    cursor: "grab",
+                    width: `${tableScrollWidth}px`,
+                    height: "100%",
+                    background: "transparent",
                   }}
                 />
               </div>
+
               <div
                 ref={tableWrapperRef}
                 className="bg-white shadow-md rounded-b-lg"
@@ -1166,21 +1179,70 @@ const AccountReceivable = forwardRef<
                     color: #6b7280 !important;
                     opacity: 0.7;
                   }
+                  .top-scrollbar::-webkit-scrollbar {
+                    height: 8px;
+                  }
+
+                  .top-scrollbar::-webkit-scrollbar-track {
+                    background: #f1f1f1;
+                    border-radius: 4px;
+                  }
+
+                  .top-scrollbar::-webkit-scrollbar-thumb {
+                    background: #888;
+                    border-radius: 4px;
+                  }
+
+                  .top-scrollbar::-webkit-scrollbar-thumb:hover {
+                    background: #555;
+                  }
+
+                  /* Hide table's horizontal scrollbar */
+                  .ant-table-body::-webkit-scrollbar:horizontal {
+                    display: none !important;
+                    height: 0 !important;
+                  }
+
+                  .ant-table-body {
+                    scrollbar-width: none !important;
+                  }
                 `}</style>
                 <Table
                   key={`table-${activeTab}-${activeSubTab}`}
                   columns={columns}
                   dataSource={tableData}
                   pagination={false}
-                  scroll={{ x: "max-content", y: "calc(100vh - 340px)" }}
+                  // scroll={{ x: "max-content", y: "calc(100vh - 340px)" }}
                   bordered
                   rowKey={(r) => `${r.key}-${r.isActive?.toString()}`}
                   rowClassName={(r) =>
                     r.isActive === false ? "row-deactivated" : ""
                   }
-                  onHeaderRow={() => ({
-                    onScroll: handleScroll,
-                  })}
+                  scroll={{
+                    x: "max-content",
+                    // y: "calc(100vh - 340px)"
+                  }}
+                  onScroll={handleScroll}
+                />
+              </div>
+
+              <div
+                className="sticky bottom-0 z-20 overflow-x-auto bg-white border-t border-gray-200 -mx-6 px-6 mt-3 top-scrollbar"
+                style={{
+                  height: "15px",
+                  marginLeft: fixedLeftWidth,
+                  width: `calc(100% - ${fixedLeftWidth}px)`,
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "#787878 #e5e7eb",
+                }}
+                onScroll={handleTopScroll}
+              >
+                <div
+                  style={{
+                    width: `${tableScrollWidth}px`,
+                    height: "100%",
+                    background: "transparent",
+                  }}
                 />
               </div>
             </div>

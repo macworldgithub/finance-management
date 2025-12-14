@@ -147,9 +147,9 @@ export default function ReportsPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col">
         <Navbar onExcelUploadClick={() => {}} />
-        <main className="max-w-[1600px] mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
+        <main className="max-w-[1600px] mx-auto w-full px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 flex-1 flex flex-col">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
               Process Management Reports
@@ -174,8 +174,8 @@ export default function ReportsPage() {
               Error: {error}
             </div>
           ) : (
-            <div className="space-y-4 sm:space-y-6">
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-6">
+            <div className="space-y-4 sm:space-y-6 flex-1 flex flex-col">
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-6 flex-shrink-0">
                 {/* Line and Vertical Bar */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -186,7 +186,7 @@ export default function ReportsPage() {
                   <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
                     Design Adequacy — Trend (Line)
                   </h2>
-                  <div className="h-64 sm:h-72 md:h-80 w-full">
+                  <div className="h-64 w-full flex-1">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart
                         data={chartData}
@@ -233,7 +233,7 @@ export default function ReportsPage() {
                     <h3 className="text-sm sm:text-base font-semibold mb-3 text-gray-800">
                       Design Adequacy — Vertical Bar
                     </h3>
-                    <div className="h-56 sm:h-64 md:h-72">
+                    <div className="h-56 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                           data={chartData}
@@ -298,7 +298,7 @@ export default function ReportsPage() {
                     <h2 className="text-base sm:text-lg font-semibold mb-3 text-gray-800">
                       Design Adequacy — Horizontal
                     </h2>
-                    <div className="h-64 sm:h-72">
+                    <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart
                           layout="vertical"
@@ -355,7 +355,7 @@ export default function ReportsPage() {
                     <h2 className="text-base sm:text-lg font-semibold mb-3 text-gray-800">
                       Overall — Design Adequacy (Radar)
                     </h2>
-                    <div className="h-64 sm:h-72">
+                    <div className="h-64 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <RadarChart
                           cx="50%"
@@ -404,15 +404,15 @@ export default function ReportsPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.45 }}
-                className="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                className="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex-1 flex flex-col"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 flex-shrink-0">
                   {/* Rating Pie Chart */}
                   <div className="bg-gray-50 rounded-lg p-4">
                     <h4 className="text-sm sm:text-base font-semibold mb-3 text-gray-800">
                       Rating Distribution (Pie)
                     </h4>
-                    <div className="h-56 sm:h-64">
+                    <div className="h-56 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                           <Pie
@@ -450,7 +450,7 @@ export default function ReportsPage() {
                     <h4 className="text-sm sm:text-base font-semibold mb-3 text-gray-800">
                       Design Share (Donut)
                     </h4>
-                    <div className="h-56 sm:h-64">
+                    <div className="h-56 w-full">
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                           <Pie
@@ -554,7 +554,7 @@ export default function ReportsPage() {
                   <h3 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
                     Data Table
                   </h3>
-                  <div className="overflow-x-auto -mx-4 sm:mx-0">
+                  <div className="overflow-auto flex-1 -mx-4 sm:mx-0">
                     <div className="inline-block min-w-full align-middle">
                       <div className="overflow-hidden border border-gray-200 sm:rounded-lg">
                         <table className="min-w-full divide-y divide-gray-200">

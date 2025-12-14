@@ -491,6 +491,7 @@ export function getColumns(
       dataIndex: "no",
       key: "no",
       width: 80,
+      fixed: "left",
       render: (text: string) => text || "-",
     },
     {
@@ -498,6 +499,7 @@ export function getColumns(
       dataIndex: "process",
       key: "process",
       width: 300,
+      fixed: "left",
       render: (text: string, record: DataType) => {
         if (editingKeys.includes(record.key)) {
           return (
