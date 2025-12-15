@@ -155,6 +155,7 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
   };
 
   const handleDataConfirmed = (reviewedData: any[]) => {
+    const sectionForMapping = currentSectionForReview || selectedSection;
     // Transform reviewed data to match DataType structure
     const transformedData = reviewedData.map((item, index) => {
       // Create a base object with common fields
@@ -166,7 +167,7 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
       };
 
       // Add section-specific fields
-      switch (selectedSection) {
+      switch (sectionForMapping) {
         case "Process":
           Object.assign(baseItem, {
             processDescription: item["Process Description"] || "",
@@ -204,6 +205,18 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
             controlResponsibility: item["Control Responsibility"] || "",
             keyControl: item["Key Control"] || "",
             zeroTolerance: item["Zero Tolerance"] || "",
+          });
+          break;
+
+        case "Risk Assessment (Inherent Risk)":
+        case "Risk Assessment  (Inherent Risk)":
+        case "Risk Assessment (Residual Risk)":
+          Object.assign(baseItem, {
+            riskType: item["Risk Type"] || "",
+            riskDescription: item["Risk Description"] || "",
+            severityImpact: item["Severity/ Impact"] || "",
+            probabilityLikelihood: item["Probability/ Likelihood"] || "",
+            classification: item["Classification"] || "",
           });
           break;
 

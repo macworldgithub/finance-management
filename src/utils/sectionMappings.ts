@@ -7,6 +7,7 @@ export const SECTION_TO_BASE_ENDPOINT: Record<string, string> = {
     "IntosaiIfacControlEnvironments",
   "Other- - Control Environment": "OtherControlEnvironments",
   "Risk Assessment (Inherent Risk)": "RiskAssessmentInherentRisks",
+  "Risk Assessment  (Inherent Risk)": "RiskAssessmentInherentRisks",
   "Risk Responses": "RiskResponses",
   "Control Activities": "ControlActivities",
   "Control Assessment": "ControlAssessments",
@@ -20,6 +21,22 @@ export const SECTION_TO_BASE_ENDPOINT: Record<string, string> = {
   "Assessment of Efficiency": "AssessmentOfEfficiency",
   "Process Severity": "ProcessSeverity",
 };
+
+export const normalizeSectionName = (section: string): string => {
+  return String(section ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
+};
+
 export const getEndpointForSection = (section: string): string | undefined => {
-  return SECTION_TO_BASE_ENDPOINT[section];
+  const direct = SECTION_TO_BASE_ENDPOINT[section];
+  if (direct) return direct;
+
+  const normalized = normalizeSectionName(section);
+  const matchedKey = Object.keys(SECTION_TO_BASE_ENDPOINT).find(
+    (k) => normalizeSectionName(k) === normalized
+  );
+  if (matchedKey) return SECTION_TO_BASE_ENDPOINT[matchedKey];
+
+  return undefined;
 };

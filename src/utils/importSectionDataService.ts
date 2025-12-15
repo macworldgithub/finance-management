@@ -1,6 +1,6 @@
 // src/utils/importSectionDataService.ts
 import { apiClientDotNet } from "@/config/apiClientDotNet";
-import { getEndpointForSection } from "./sectionMappings";
+import { getEndpointForSection, normalizeSectionName } from "./sectionMappings";
 interface ApiResponse {
   success: boolean;
   message: string;
@@ -75,6 +75,15 @@ const SECTION_FIELD_MAPPINGS: Record<string, string[]> = {
     "Standards",
     "Methodologies",
     "Rules and Regulations",
+  ],
+  "Risk Assessment (Inherent Risk)": [
+    "No",
+    "Process",
+    "Risk Type",
+    "Risk Description",
+    "Severity/ Impact",
+    "Probability/ Likelihood",
+    "Classification",
   ],
   "Risk Assessment  (Inherent Risk)": [
     "No",
@@ -151,13 +160,17 @@ const SECTION_FIELD_MAPPINGS: Record<string, string[]> = {
  * Excludes Id and Date fields as per API requirements
  */
 const transformDataForSection = (sectionName: string, data: any[]): any[] => {
-  const fieldMapping = SECTION_FIELD_MAPPINGS[sectionName] || [];
+  const normalizedSectionName = normalizeSectionName(sectionName);
+  const fieldMapping =
+    SECTION_FIELD_MAPPINGS[sectionName] ||
+    SECTION_FIELD_MAPPINGS[normalizedSectionName] ||
+    [];
   return data.map((item, index) => {
     const transformed: any = {};
     // Include all fields from mapping
     fieldMapping.forEach((field) => {
       // Handle special mappings for Ownership
-      if (sectionName === "Ownership") {
+      if (normalizedSectionName === "Ownership") {
         if (field === "Main Process") {
           // In Ownership, Main Process should use the "Main Process" column or fallback to first "Process" value
           transformed[field] = item["Main Process"] || "";
@@ -187,7 +200,7 @@ const transformDataForSection = (sectionName: string, data: any[]): any[] => {
     });
     
     // Log the transformation for Ownership to debug
-    if (sectionName === "Ownership" && index === 0) {
+    if (normalizedSectionName === "Ownership" && index === 0) {
       console.log("[transformDataForSection] Ownership mapping example:", {
         original: item,
         transformed,
@@ -206,14 +219,15 @@ export const importSectionData = async (
   sectionName: string,
   data: any[]
 ): Promise<ApiResponse> => {
+  const normalizedSectionName = normalizeSectionName(sectionName);
   console.log("[importSectionData] Called with:", {
-    sectionName,
+    sectionName: normalizedSectionName,
     dataLength: data.length,
   });
-  const baseEndpoint = getEndpointForSection(sectionName);
+  const baseEndpoint = getEndpointForSection(normalizedSectionName);
   console.log("[importSectionData] Endpoint resolved:", baseEndpoint);
   if (!baseEndpoint) {
-    const errorMsg = `No API endpoint found for section: ${sectionName}`;
+    const errorMsg = `No API endpoint found for section: ${normalizedSectionName}`;
     console.error("[importSectionData]", errorMsg);
     return {
       success: false,
@@ -222,9 +236,9 @@ export const importSectionData = async (
   }
   try {
     // Transform data to match API format
-    const transformedData = transformDataForSection(sectionName, data);
+    const transformedData = transformDataForSection(normalizedSectionName, data);
     console.log("[importSectionData] Transformed data:", {
-      sectionName,
+      sectionName: normalizedSectionName,
       dataCount: transformedData.length,
       firstRecord: transformedData[0],
       allRecords: transformedData,
@@ -237,10 +251,13 @@ export const importSectionData = async (
     return {
       success: true,
       data: response.data,
-      message: `Data imported successfully for ${sectionName}`,
+      message: `Data imported successfully for ${normalizedSectionName}`,
     };
   } catch (error: any) {
-    console.error(`[importSectionData] Error importing ${sectionName}:`, error);
+    console.error(
+      `[importSectionData] Error importing ${normalizedSectionName}:`,
+      error
+    );
     console.error("[importSectionData] Error details:", {
       message: error.message,
       response: error.response?.data,
@@ -250,7 +267,7 @@ export const importSectionData = async (
       success: false,
       message:
         error.response?.data?.message ||
-        `Failed to import data for ${sectionName}`,
+        `Failed to import data for ${normalizedSectionName}`,
     };
   }
 };
