@@ -472,6 +472,7 @@ export function getColumns(
       <div style={{ textAlign: "center" }}>{text || "-"}</div>
     ),
   };
+
   const baseColumns: ColumnsType<DataType> = [
     {
       title: () => (
@@ -482,17 +483,20 @@ export function getColumns(
             size="small"
             icon={<PlusOutlined />}
             onClick={(e) => {
-              e.stopPropagation(); // Prevent row selection
+              e.stopPropagation();
               handlers?.onAddRow?.();
             }}
           />
         </div>
       ),
-      dataIndex: "no",
       key: "no",
       width: 80,
       fixed: "left",
-      render: (text: string) => text || "-",
+
+      render: (text: string, record: DataType, index: number) => {
+        const sequentialNo = `5.${index + 1}`;
+        return <span style={{ fontWeight: "500" }}>{sequentialNo}</span>;
+      },
     },
     {
       title: "Processes",
