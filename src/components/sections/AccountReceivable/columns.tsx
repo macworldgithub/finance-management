@@ -1672,10 +1672,19 @@ export function getColumns(
       width: 110,
       align: "center" as const,
       render: (text: string, record: DataType) => {
+        const normalizeYesNo = (value: any): "Yes" | "No" | "" => {
+          if (value === true) return "Yes";
+          if (value === false) return "No";
+          const v = String(value ?? "").trim().toLowerCase();
+          if (v === "p" || v === "yes") return "Yes";
+          if (v === "o" || v === "no") return "No";
+          return "";
+        };
+
         if (editingKeys.includes(record.key)) {
           const yesNoOptions = [
-            { label: "Yes", key: "P" },
-            { label: "No", key: "O" },
+            { label: "Yes", key: "Yes" },
+            { label: "No", key: "No" },
           ];
           const menu = buildMenu(yesNoOptions, (key) =>
             handlers?.onSelectGeneric?.(key, record.key, "keyControl")
@@ -1683,13 +1692,13 @@ export function getColumns(
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
               <div className="flex items-center cursor-pointer justify-center">
-                {text === "P" ? "Yes" : text === "O" ? "No" : "Select"}
+                {normalizeYesNo(text) || "Select"}
                 <DownOutlined className="ml-1 text-gray-500 text-xs" />
               </div>
             </Dropdown>
           );
         }
-        return text === "P" ? "Yes" : text === "O" ? "No" : "";
+        return normalizeYesNo(text);
       },
     },
   ];

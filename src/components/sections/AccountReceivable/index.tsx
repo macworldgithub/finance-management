@@ -655,6 +655,15 @@ const AccountReceivable = forwardRef<
   );
   // Transform data to match API format before sending
   const transformDataForAPI = (item: DataType, section: string): any => {
+    const toPO = (value: any): "P" | "O" => {
+      if (value === true) return "P";
+      if (value === false) return "O";
+      const v = String(value ?? "").trim().toLowerCase();
+      if (v === "p" || v === "yes" || v === "y" || v === "true") return "P";
+      if (v === "o" || v === "no" || v === "n" || v === "false") return "O";
+      return "O";
+    };
+
     const basePayload = {
       Id: item.id,
       Date: new Date().toISOString(),
@@ -731,8 +740,8 @@ const AccountReceivable = forwardRef<
           "Control Definition": item.controlDefinition,
           "Control Description": item.controlDescription,
           "Control Responsibility": item.controlResponsibility,
-          "Key Control": item.keyControl ? "P" : "O",
-          "Zero Tolerance": item.zeroTolerance ? "P" : "O",
+          "Key Control": toPO(item.keyControl),
+          "Zero Tolerance": toPO(item.zeroTolerance),
         };
 
       case "SOX":
