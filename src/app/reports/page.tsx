@@ -73,7 +73,7 @@ export default function ReportsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const API_URL =
-    "https://financedotnet.omnisuiteai.com/api/AssessmentOfAdequacy?page=1&pageSize=10";
+    "https://financedotnet.omnisuiteai.com/api/AssessmentOfAdequacy?page=1&pageSize=100";
 
   useEffect(() => {
     let mounted = true;
