@@ -1701,6 +1701,43 @@ export function getColumns(
         return normalizeYesNo(text);
       },
     },
+
+    {
+      title: "Zero Tolerance",
+      dataIndex: "zeroTolerance",
+      key: "zeroTolerance",
+      width: 140,
+      align: "center" as const,
+      render: (text: string, record: DataType) => {
+        const normalizeYesNo = (value: any): "Yes" | "No" | "" => {
+          if (value === true) return "Yes";
+          if (value === false) return "No";
+          const v = String(value ?? "").trim().toLowerCase();
+          if (v === "p" || v === "yes") return "Yes";
+          if (v === "o" || v === "no") return "No";
+          return "";
+        };
+
+        if (editingKeys.includes(record.key)) {
+          const yesNoOptions = [
+            { label: "Yes", key: "Yes" },
+            { label: "No", key: "No" },
+          ];
+          const menu = buildMenu(yesNoOptions, (key) =>
+            handlers?.onSelectGeneric?.(key, record.key, "zeroTolerance")
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer justify-center">
+                {normalizeYesNo(text) || "Select"}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return normalizeYesNo(text);
+      },
+    },
   ];
 
   const controlAssessmentColumns: ColumnsType<DataType> = [
