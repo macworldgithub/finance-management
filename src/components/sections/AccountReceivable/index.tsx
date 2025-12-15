@@ -1115,6 +1115,7 @@ const AccountReceivable = forwardRef<
               onChange={handleTabChange}
               className="text-lg"
               items={tabConfigs.map((c) => ({ key: c.key, label: c.label }))}
+              popupClassName="tabs-overflow-dropdown"
               destroyInactiveTabPane={true} // Add this to properly clean up
             />
           </div>
@@ -1133,6 +1134,7 @@ const AccountReceivable = forwardRef<
                   },
                   { key: "other", label: "Other" },
                 ]}
+                popupClassName="tabs-overflow-dropdown"
                 destroyInactiveTabPane={true}
               />
             </div>
@@ -1151,6 +1153,7 @@ const AccountReceivable = forwardRef<
                     label: "Internal Control Over Financial Reporting",
                   },
                 ]}
+                popupClassName="tabs-overflow-dropdown"
                 destroyInactiveTabPane={true}
               />
             </div>
@@ -1165,6 +1168,7 @@ const AccountReceivable = forwardRef<
                   { key: "audit", label: "Internal Audit Test" },
                   { key: "grc", label: "GRC Exception Logs" },
                 ]}
+                popupClassName="tabs-overflow-dropdown"
                 destroyInactiveTabPane={true}
               />
             </div>
@@ -1174,6 +1178,60 @@ const AccountReceivable = forwardRef<
       {/* Content */}
       <div className="flex-1 overflow-auto">
         <div className="p-6 pt-4">
+          <style jsx global>{`
+            /* Keep tabs overflow dropdown visible and clickable */
+            .tabs-overflow-dropdown {
+              z-index: 3000 !important;
+            }
+
+            /* Hide native horizontal scrollbars for the table; use custom top scrollbar instead */
+            .ant-table-body::-webkit-scrollbar {
+              display: none;
+            }
+            .ant-table-body {
+              scrollbar-width: none;
+              -ms-overflow-style: none;
+            }
+            .ant-table-header::-webkit-scrollbar {
+              display: none;
+            }
+            .ant-table-header {
+              scrollbar-width: none;
+              -ms-overflow-style: none;
+            }
+            .row-deactivated {
+              background-color: #e5e7eb !important;
+              color: #6b7280 !important;
+              opacity: 0.7;
+            }
+            .top-scrollbar::-webkit-scrollbar {
+              height: 8px;
+            }
+
+            .top-scrollbar::-webkit-scrollbar-track {
+              background: #f1f1f1;
+              border-radius: 4px;
+            }
+
+            .top-scrollbar::-webkit-scrollbar-thumb {
+              background: #888;
+              border-radius: 4px;
+            }
+
+            .top-scrollbar::-webkit-scrollbar-thumb:hover {
+              background: #555;
+            }
+
+            /* Hide table's horizontal scrollbar */
+            .ant-table-body::-webkit-scrollbar:horizontal {
+              display: none !important;
+              height: 0 !important;
+            }
+
+            .ant-table-body {
+              scrollbar-width: none !important;
+            }
+          `}</style>
           <div className="mb-4">
             <Input.Search
               placeholder="Search..."
@@ -1215,54 +1273,6 @@ const AccountReceivable = forwardRef<
                 className="bg-white shadow-md rounded-b-lg"
                 style={{ maxHeight: "calc(100vh - 280px)", minHeight: "500px" }}
               >
-                <style jsx>{`
-                  .ant-table-body::-webkit-scrollbar {
-                    display: none;
-                  }
-                  .ant-table-body {
-                    scrollbar-width: none;
-                    -ms-overflow-style: none;
-                  }
-                  .ant-table-header::-webkit-scrollbar {
-                    display: none;
-                  }
-                  .ant-table-header {
-                    scrollbar-width: none;
-                    -ms-overflow-style: none;
-                  }
-                  .row-deactivated {
-                    background-color: #e5e7eb !important;
-                    color: #6b7280 !important;
-                    opacity: 0.7;
-                  }
-                  .top-scrollbar::-webkit-scrollbar {
-                    height: 8px;
-                  }
-
-                  .top-scrollbar::-webkit-scrollbar-track {
-                    background: #f1f1f1;
-                    border-radius: 4px;
-                  }
-
-                  .top-scrollbar::-webkit-scrollbar-thumb {
-                    background: #888;
-                    border-radius: 4px;
-                  }
-
-                  .top-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background: #555;
-                  }
-
-                  /* Hide table's horizontal scrollbar */
-                  .ant-table-body::-webkit-scrollbar:horizontal {
-                    display: none !important;
-                    height: 0 !important;
-                  }
-
-                  .ant-table-body {
-                    scrollbar-width: none !important;
-                  }
-                `}</style>
                 <Table
                   key={`table-${activeTab}-${activeSubTab}`}
                   columns={columns}
