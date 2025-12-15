@@ -473,6 +473,20 @@ export function getColumns(
     ),
   };
 
+  const formatNoValue = (value: any, index: number) => {
+    if (value === undefined || value === null || value === "") {
+      return `5.${index + 1}`;
+    }
+
+    const str = String(value);
+    const [majorStr, minorStr] = str.split(".");
+    const major = majorStr || "5";
+    if (minorStr === undefined) return major;
+
+    const minorNum = parseInt(minorStr, 10);
+    return `${major}.${Number.isNaN(minorNum) ? minorStr : minorNum}`;
+  };
+
   const baseColumns: ColumnsType<DataType> = [
     {
       title: () => (
@@ -493,11 +507,35 @@ export function getColumns(
       width: 80,
       fixed: "left",
 
-      render: (text: string, record: DataType, index: number) => {
-        const sequentialNo = `5.${index + 1}`;
-        return <span style={{ fontWeight: "500" }}>{sequentialNo}</span>;
+      render: (_: string, record: DataType, index: number) => {
+        const displayNo = formatNoValue(record.no, index);
+        return <span style={{ fontWeight: "500" }}>{displayNo}</span>;
       },
     },
+
+    // {
+    //   title: () => (
+    //     <div style={{ display: "flex", alignItems: "center" }}>
+    //       <span>No.</span>
+    //       <Button
+    //         style={{ marginLeft: 8 }}
+    //         size="small"
+    //         icon={<PlusOutlined />}
+    //         onClick={(e) => {
+    //           e.stopPropagation();
+    //           handlers?.onAddRow?.();
+    //         }}
+    //       />
+    //     </div>
+    //   ),
+    //   dataIndex: "no", // Map to the actual field in data
+    //   key: "no",
+    //   width: 80,
+    //   fixed: "left",
+    //   render: (value: number) => (
+    //     <span style={{ fontWeight: "500" }}>{value ?? "-"}</span>
+    //   ),
+    // },
     {
       title: "Processes",
       dataIndex: "process",

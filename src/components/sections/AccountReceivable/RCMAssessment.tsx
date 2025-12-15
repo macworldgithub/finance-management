@@ -187,9 +187,61 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           }
         });
 
+        const parseNoParts = (noValue: any) => {
+          const str = String(noValue ?? "");
+          const [majorStr, minorStr] = str.split(".");
+          return {
+            major: parseInt(majorStr, 10) || 5,
+            minor: parseInt(minorStr ?? "0", 10) || 0,
+          };
+        };
+
+        const normalizeNoValues = (records: any[]) => {
+          if (!records.length) return records;
+
+          const defaultMajor = parseNoParts(records[0].no).major || 5;
+          const total = records.length;
+          const seenMinors = new Set<number>();
+          const missingMinors: number[] = [];
+
+          const currentMinors = records.map((r) => parseNoParts(r.no).minor);
+          for (let i = 1; i <= total; i += 1) {
+            if (!currentMinors.includes(i)) missingMinors.push(i);
+          }
+
+          const consumeMissingMinor = () => {
+            if (missingMinors.length > 0) return missingMinors.shift()!;
+            let candidate = total + 1;
+            while (seenMinors.has(candidate)) candidate += 1;
+            return candidate;
+          };
+
+          return records.map((r) => {
+            const { minor } = parseNoParts(r.no);
+            if (!seenMinors.has(minor)) {
+              seenMinors.add(minor);
+              return { ...r, no: `${defaultMajor}.${minor}` };
+            }
+            const reassignedMinor = consumeMissingMinor();
+            seenMinors.add(reassignedMinor);
+            return { ...r, no: `${defaultMajor}.${reassignedMinor}` };
+          });
+        };
+
+        const getSortableNo = (noValue: any) => {
+          const { major, minor } = parseNoParts(noValue);
+          return major * 1000 + minor;
+        };
+
+        const normalizedItems = normalizeNoValues(mappedItems);
+
+        const sortedItems = [...normalizedItems].sort(
+          (a, b) => getSortableNo(a.no) - getSortableNo(b.no)
+        );
+
         setDataBySection((prev) => ({
           ...prev,
-          [section]: mappedItems,
+          [section]: sortedItems,
         }));
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -266,21 +266,21 @@ const AccountReceivable = forwardRef<
               ),
               managementPhilosophy: toCheckboxBool(
                 item["Management’s Philosophy and Operating Style"] ??
-                item.managementPhilosophy
+                  item.managementPhilosophy
               ),
               orgStructure: toCheckboxBool(
                 item["Organizational Structure"] ?? item.orgStructure
               ),
               assignmentAuthority: toCheckboxBool(
                 item["Assignment of Authority and Responsibility"] ??
-                item.assignmentAuthority
+                  item.assignmentAuthority
               ),
               hrPolicies: toCheckboxBool(
                 item["Human Resource Policies and Practices"] ?? item.hrPolicies
               ),
               boardAudit: toCheckboxBool(
                 item[
-                "Board of Directors’ or Audit Committee’s Participation"
+                  "Board of Directors’ or Audit Committee’s Participation"
                 ] ?? item.boardAudit
               ),
               managementControl: toCheckboxBool(
@@ -291,24 +291,24 @@ const AccountReceivable = forwardRef<
               ),
               commitmentInternal: toCheckboxBool(
                 item["Management’s Commitment to Internal Control"] ??
-                item.commitmentInternal
+                  item.commitmentInternal
               ),
               enforcementIntegrity: toCheckboxBool(
                 item[
-                "Communication and Enforcement of Integrity and Ethical Values"
+                  "Communication and Enforcement of Integrity and Ethical Values"
                 ] ?? item.enforcementIntegrity
               ),
               employeeAwareness: toCheckboxBool(
                 item["Employee Awareness and Understanding"] ??
-                item.employeeAwareness
+                  item.employeeAwareness
               ),
               accountability: toCheckboxBool(
                 item["Accountability and Performance Measurement"] ??
-                item.accountability
+                  item.accountability
               ),
               commitmentTransparency: toCheckboxBool(
                 item["Commitment to Transparency and Openness"] ??
-                item.commitmentTransparency
+                  item.commitmentTransparency
               ),
             };
           }
@@ -318,7 +318,7 @@ const AccountReceivable = forwardRef<
               ...base,
               levelResponsibility:
                 item[
-                "Level of Responsibility-Operating Level (Entity / Activity)"
+                  "Level of Responsibility-Operating Level (Entity / Activity)"
                 ] ?? item.levelResponsibility,
               cosoPrinciple: item["COSO Principle #"] ?? item.cosoPrinciple,
               operationalApproach:
@@ -328,7 +328,7 @@ const AccountReceivable = forwardRef<
                 item["Operational Frequency"] ?? item.operationalFrequency,
               controlClassification:
                 item[
-                "Control Classification (Preventive / Detective / Corrective)"
+                  "Control Classification (Preventive / Detective / Corrective)"
                 ] ?? item.controlClassification,
             };
           }
@@ -393,8 +393,8 @@ const AccountReceivable = forwardRef<
                 item["Internal Control Over Financial Reporting?"] === "P"
                   ? true
                   : item["Internal Control Over Financial Reporting?"] === "O"
-                    ? false
-                    : item.internalControlOverFinancialReporting,
+                  ? false
+                  : item.internalControlOverFinancialReporting,
               occurrence: item.Occurrence === "P" ? true : item.occurrence,
               completeness:
                 item.Completeness === "P" ? true : item.completeness,
@@ -428,9 +428,63 @@ const AccountReceivable = forwardRef<
         }
       });
 
+      const parseNoParts = (noValue: any) => {
+        const str = String(noValue ?? "");
+        const [majorStr, minorStr] = str.split(".");
+        return {
+          major: parseInt(majorStr, 10) || 5,
+          minor: parseInt(minorStr ?? "0", 10) || 0,
+        };
+      };
+
+      // Ensure unique, properly ordered No values (handles backend 5.10 -> 5.1 truncation)
+      const normalizeNoValues = (records: any[]) => {
+        if (!records.length) return records;
+
+        const defaultMajor = parseNoParts(records[0].no).major || 5;
+        const total = records.length;
+        const seenMinors = new Set<number>();
+        const missingMinors: number[] = [];
+
+        // Collect current minors and find missing sequence slots 1..total
+        const currentMinors = records.map((r) => parseNoParts(r.no).minor);
+        for (let i = 1; i <= total; i += 1) {
+          if (!currentMinors.includes(i)) missingMinors.push(i);
+        }
+
+        const consumeMissingMinor = () => {
+          if (missingMinors.length > 0) return missingMinors.shift()!;
+          let candidate = total + 1;
+          while (seenMinors.has(candidate)) candidate += 1;
+          return candidate;
+        };
+
+        return records.map((r) => {
+          const { minor } = parseNoParts(r.no);
+          if (!seenMinors.has(minor)) {
+            seenMinors.add(minor);
+            return { ...r, no: `${defaultMajor}.${minor}` };
+          }
+          const reassignedMinor = consumeMissingMinor();
+          seenMinors.add(reassignedMinor);
+          return { ...r, no: `${defaultMajor}.${reassignedMinor}` };
+        });
+      };
+
+      const getSortableNo = (noValue: any) => {
+        const { major, minor } = parseNoParts(noValue);
+        return major * 1000 + minor;
+      };
+
+      const normalizedItems = normalizeNoValues(mappedItems);
+
+      const sortedItems = [...normalizedItems].sort(
+        (a, b) => getSortableNo(a.no) - getSortableNo(b.no)
+      );
+
       setDataBySection((prev) => ({
         ...prev,
-        [section]: mappedItems,
+        [section]: sortedItems,
       }));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -1033,10 +1087,11 @@ const AccountReceivable = forwardRef<
               <button
                 onClick={goPrev}
                 disabled={!hasPrev}
-                className={`p-2 rounded-md transition font-bold ${hasPrev
+                className={`p-2 rounded-md transition font-bold ${
+                  hasPrev
                     ? "text-black hover:bg-gray-50 cursor-pointer"
                     : "text-gray-400 cursor-not-allowed"
-                  }`}
+                }`}
               >
                 <LeftOutlined />
               </button>
@@ -1044,10 +1099,11 @@ const AccountReceivable = forwardRef<
               <button
                 onClick={goNext}
                 disabled={!hasNext}
-                className={`p-2 rounded-md transition font-bold ${hasNext
+                className={`p-2 rounded-md transition font-bold ${
+                  hasNext
                     ? "text-black hover:bg-gray-50 cursor-pointer"
                     : "text-gray-400 cursor-not-allowed"
-                  }`}
+                }`}
               >
                 <RightOutlined />
               </button>

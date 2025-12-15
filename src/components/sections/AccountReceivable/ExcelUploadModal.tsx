@@ -288,12 +288,12 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
             <Title level={4} style={{ margin: 0 }}>
               Excel Data Import
             </Title>
-            <Button
+            {/* <Button
               type="text"
               icon={<CloseOutlined />}
               onClick={handleClose}
               className="flex items-center"
-            />
+            /> */}
           </div>
         }
         open={visible}
