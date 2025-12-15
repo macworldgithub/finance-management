@@ -25,6 +25,7 @@ import { apiClientDotNet } from "@/config/apiClientDotNet";
 import { SECTION_TO_BASE_ENDPOINT } from "@/utils/sectionMappings";
 import ProcessFormModal from "./ProcessFormModal";
 import { importSectionData } from "@/utils/importSectionDataService";
+import { useGlobalSearch } from "@/contexts/GlobalSearchContext";
 
 export interface RCMAssessmentRef {
   triggerImport: (file: File) => void;
@@ -57,7 +58,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     >({});
     const [editingKeys, setEditingKeys] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
-    const [searchText, setSearchText] = useState("");
+    const { searchText } = useGlobalSearch();
     const debouncedSearchText = useDebounce(searchText, 500)[0];
     const [excelModalVisible, setExcelModalVisible] = useState(false);
     const [formModalVisible, setFormModalVisible] = useState(false);
@@ -727,14 +728,6 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         {/* Content */}
         <div className="flex-1 overflow-auto">
           <div className="p-6 pt-4">
-            <div className="mb-4">
-              <Input.Search
-                placeholder="Search..."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                style={{ width: 300 }}
-              />
-            </div>
             {loading ? (
               <div className="flex justify-center items-center h-full">
                 <Spin size="large" />

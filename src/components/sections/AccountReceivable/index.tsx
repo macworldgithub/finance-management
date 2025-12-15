@@ -25,6 +25,7 @@ import { apiClientDotNet } from "@/config/apiClientDotNet"; // Assuming this is 
 import { importSectionData } from "@/utils/importSectionDataService";
 import { SECTION_TO_BASE_ENDPOINT } from "@/utils/sectionMappings";
 import ProcessFormModal from "./ProcessFormModal";
+import { useGlobalSearch } from "@/contexts/GlobalSearchContext";
 const { TextArea } = Input;
 export interface AccountReceivableRef {
   triggerImport: (file: File) => void;
@@ -63,7 +64,7 @@ const AccountReceivable = forwardRef<
   >({});
   const [editingKeys, setEditingKeys] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchText, setSearchText] = useState("");
+  const { searchText } = useGlobalSearch();
   const debouncedSearchText = useDebounce(searchText, 500)[0];
   // Add this state to your component
   const [excelModalVisible, setExcelModalVisible] = useState(false);
@@ -1241,22 +1242,14 @@ const AccountReceivable = forwardRef<
               scrollbar-width: none !important;
             }
           `}</style>
-          <div className="mb-4">
-            <Input.Search
-              placeholder="Search..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              style={{ width: 300 }}
-            />
-          </div>
           {loading ? (
             <div className="flex justify-center items-center h-full">
               <Spin size="large" />
             </div>
           ) : (
             <div className="relative">
-              {/* Custom Top Scrollbar for all columns except 'Processes' */}
               <div
+                ref={topScrollbarRef}
                 className="sticky top-0 z-20 overflow-x-auto bg-white border-b border-gray-200 -mx-6 px-6 mb-3 top-scrollbar"
                 style={{
                   height: "15px",
@@ -1266,7 +1259,6 @@ const AccountReceivable = forwardRef<
                   scrollbarColor: "#787878 #e5e7eb",
                 }}
                 onScroll={handleTopScroll}
-                ref={topScrollbarRef}
               >
                 <div
                   style={{
@@ -1280,7 +1272,10 @@ const AccountReceivable = forwardRef<
               <div
                 ref={tableWrapperRef}
                 className="bg-white shadow-md rounded-b-lg"
-                style={{ maxHeight: "calc(100vh - 280px)", minHeight: "500px" }}
+                style={{
+                  maxHeight: "calc(100vh - 280px)",
+                  minHeight: "500px",
+                }}
               >
                 <Table
                   key={`table-${activeTab}-${activeSubTab}`}

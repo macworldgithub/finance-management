@@ -6,6 +6,7 @@ import { GoBellFill } from "react-icons/go";
 import { MdMessage } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
+import { useGlobalSearch } from "@/contexts/GlobalSearchContext";
 import { Dropdown, message } from "antd";
 
 interface NavbarProps {
@@ -18,6 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
   const notificationRef = useRef<HTMLDivElement>(null);
   const messageRef = useRef<HTMLDivElement>(null);
   const { user, logout } = useAuth();
+  const { searchText, setSearchText } = useGlobalSearch();
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -114,8 +116,10 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
             <input
               type="text"
-              placeholder="Search something"
+              placeholder="Search..."
               className="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 transition"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
         </div>
