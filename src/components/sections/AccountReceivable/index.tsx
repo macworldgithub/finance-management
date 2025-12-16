@@ -1369,6 +1369,41 @@ const AccountReceivable = forwardRef<
             .ant-table-ping-left .ant-table-cell-fix-left-last {
               box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15) !important;
             }
+            /* === FIX FOR FIXED COLUMN HOVER OVERLAP / OVERSHADOWING === */
+            .ant-table-tbody > tr:hover > td {
+              background-color: #fafafa !important;
+            }
+
+            /* Ensure fixed left cells also get hover background */
+            .ant-table-tbody > tr:hover > td.ant-table-cell-fix-left,
+            .ant-table-tbody > tr:hover > td.ant-table-cell-fix-left-last,
+            .ant-table-tbody
+              > tr.ant-table-row:hover
+              > td.ant-table-cell-fix-left,
+            .ant-table-tbody
+              > tr.ant-table-row:hover
+              > td.ant-table-cell-fix-left-last {
+              background-color: #fafafa !important;
+            }
+
+            /* Force fixed cells to have solid background and proper stacking */
+            .ant-table-cell-fix-left,
+            .ant-table-cell-fix-left-last {
+              background: white !important;
+              z-index: 3 !important;
+            }
+
+            /* Stronger shadow when table is scrolled left */
+            .ant-table-ping-left .ant-table-cell-fix-left-last {
+              box-shadow: 8px 0 12px -6px rgba(0, 0, 0, 0.25) !important;
+            }
+
+            /* Prevent text clipping issues in fixed cells */
+            .ant-table-cell-fix-left > .ant-table-cell-content {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
           `}</style>
           {loading ? (
             <div className="flex justify-center items-center h-full">
@@ -1405,23 +1440,6 @@ const AccountReceivable = forwardRef<
                   minHeight: "500px",
                 }}
               >
-                {/* <Table
-                  key={`table-${activeTab}-${activeSubTab}`}
-                  columns={columns}
-                  dataSource={tableData}
-                  pagination={false}
-                  // scroll={{ x: "max-content", y: "calc(100vh - 340px)" }}
-                  bordered
-                  rowKey={(r) => `${r.key}-${r.isActive?.toString()}`}
-                  rowClassName={(r) =>
-                    r.isActive === false ? "row-deactivated" : ""
-                  }
-                  scroll={{
-                    x: "max-content",
-                    // y: "calc(100vh - 340px)"
-                  }}
-                  onScroll={handleScroll}
-                /> */}
                 <Table
                   key={`table-${activeTab}-${activeSubTab}`}
                   columns={columns}

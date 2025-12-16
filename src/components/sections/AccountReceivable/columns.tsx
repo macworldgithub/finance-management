@@ -1675,7 +1675,9 @@ export function getColumns(
         const normalizeYesNo = (value: any): "Yes" | "No" | "" => {
           if (value === true) return "Yes";
           if (value === false) return "No";
-          const v = String(value ?? "").trim().toLowerCase();
+          const v = String(value ?? "")
+            .trim()
+            .toLowerCase();
           if (v === "p" || v === "yes") return "Yes";
           if (v === "o" || v === "no") return "No";
           return "";
@@ -1712,7 +1714,9 @@ export function getColumns(
         const normalizeYesNo = (value: any): "Yes" | "No" | "" => {
           if (value === true) return "Yes";
           if (value === false) return "No";
-          const v = String(value ?? "").trim().toLowerCase();
+          const v = String(value ?? "")
+            .trim()
+            .toLowerCase();
           if (v === "p" || v === "yes") return "Yes";
           if (v === "o" || v === "no") return "No";
           return "";
