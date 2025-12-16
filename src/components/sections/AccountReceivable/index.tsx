@@ -424,6 +424,32 @@ const AccountReceivable = forwardRef<
             return mappedData;
           }
 
+          case "Other- - Control Environment": {
+            return {
+              ...base,
+              responsibilityMatrix: toCheckboxBool(
+                item["Responsibility Delegation Matrix"]
+              ),
+              segregationDuties: toCheckboxBool(item["Segregation of duties"]),
+              reportingLines: toCheckboxBool(item["Reporting Lines"]),
+              mission: toCheckboxBool(item["Mission"]),
+              visionValues: toCheckboxBool(item["Vision and Values"]),
+              goalsObjectives: toCheckboxBool(item["Goals and Objectives"]),
+              structuresSystems: toCheckboxBool(item["Structures & Systems"]),
+              policiesProcedures: toCheckboxBool(
+                item["Policies and Procedures"]
+              ),
+              processes: toCheckboxBool(item["Processes"]),
+              integrityEthical: toCheckboxBool(
+                item["Integrity and Ethical Values"]
+              ),
+              oversightStructure: toCheckboxBool(item["Oversight structure"]),
+              standards: toCheckboxBool(item["Standards"]),
+              methodologies: toCheckboxBool(item["Methodologies"]),
+              rulesRegulations: toCheckboxBool(item["Rules and Regulations"]),
+            };
+          }
+
           default:
             return base;
         }
