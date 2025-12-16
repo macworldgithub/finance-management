@@ -34,7 +34,8 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
   onClose,
   onDataLoaded,
 }) => {
-  const [mode, setMode] = useState<"single" | "multiple">("single");
+  const [mode, setMode] = useState<"single" | "multiple">("single"); // Always single mode
+  // const [mode, setMode] = useState<"single" | "multiple">("single");
   const [sections, setSections] = useState<string[]>([]);
   const [instructions, setInstructions] = useState<string[]>([]);
   const [selectedSection, setSelectedSection] = useState<string | undefined>();
@@ -45,28 +46,30 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [reviewModalVisible, setReviewModalVisible] = useState(false);
-  const [multipleTablesReviewVisible, setMultipleTablesReviewVisible] =
-    useState(false);
+  // const [multipleTablesReviewVisible, setMultipleTablesReviewVisible] =
+  //   useState(false);
   const [importedData, setImportedData] = useState<any>(null);
 
-  // Load sections automatically when modal opens or mode changes
+  // Load sections automatically when modal opens
   useEffect(() => {
     if (visible) {
       loadSections();
     }
-  }, [visible, mode]);
+  }, [visible]); // Removed mode dependency since always single
 
   const loadSections = async () => {
     try {
       setLoading(true);
-      const endpoint =
-        mode === "single" ? "/single-table-allowed" : "/multiple-table-allowed";
+      // Always use single table endpoint
+      const endpoint = "/single-table-allowed";
+      // const endpoint =
+      //   mode === "single" ? "/single-table-allowed" : "/multiple-table-allowed";
       const { data } = await apiClient.get(endpoint);
       setSections(data.sections || []);
       setInstructions(data.instructions || []);
 
-      // Auto-select first section for single table mode
-      if (mode === "single" && data.sections?.length > 0) {
+      // Auto-select first section
+      if (data.sections?.length > 0) {
         setSelectedSection(data.sections[0]);
       } else {
         setSelectedSection(undefined);
@@ -91,7 +94,7 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
       message.warning("Please upload an Excel file");
       return false;
     }
-    if (mode === "single" && !selectedSection) {
+    if (!selectedSection) {
       message.warning("Please select a section");
       return false;
     }
@@ -107,46 +110,48 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
       formData.append("sheet_name", sheetName);
       formData.append("file", file as Blob);
 
-      if (mode === "single") {
-        formData.append("section_name", selectedSection!);
-        const { data } = await apiClient.post("/upload/section", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+      // Single table mode (always)
+      formData.append("section_name", selectedSection!);
+      const { data } = await apiClient.post("/upload/section", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-        // Store the imported data
-        console.log("[ExcelUploadModal] API Response received:", {
-          dataType: typeof data,
-          isArray: Array.isArray(data),
-          keys: !Array.isArray(data) ? Object.keys(data) : "N/A",
-          data,
-        });
-        setImportedData(data);
-        // IMPORTANT: Store section name BEFORE closing the modal
-        setCurrentSectionForReview(selectedSection!);
-        // Close current modal and open review modal
-        handleClose();
-        setReviewModalVisible(true);
-      } else {
-        // Multiple table mode
-        const { data } = await apiClient.post(
-          "/upload/all-sections",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
+      // Store the imported data
+      console.log("[ExcelUploadModal] API Response received:", {
+        dataType: typeof data,
+        isArray: Array.isArray(data),
+        keys: !Array.isArray(data) ? Object.keys(data) : "N/A",
+        data,
+      });
+      setImportedData(data);
+      // IMPORTANT: Store section name BEFORE closing the modal
+      setCurrentSectionForReview(selectedSection!);
+      // Close current modal and open review modal
+      handleClose();
+      setReviewModalVisible(true);
 
-        // Store the imported data
-        console.log("[ExcelUploadModal] Multiple tables API Response:", {
-          dataType: typeof data,
-          keys: Object.keys(data),
-          data,
-        });
-        setImportedData(data);
-        // Close current modal and open multiple tables review modal
-        handleClose();
-        setMultipleTablesReviewVisible(true);
-      }
+      // Multiple table mode (commented out)
+      // else {
+      //   // Multiple table mode
+      //   const { data } = await apiClient.post(
+      //     "/upload/all-sections",
+      //     formData,
+      //     {
+      //       headers: { "Content-Type": "multipart/form-data" },
+      //     }
+      //   );
+
+      //   // Store the imported data
+      //   console.log("[ExcelUploadModal] Multiple tables API Response:", {
+      //     dataType: typeof data,
+      //     keys: Object.keys(data),
+      //     data,
+      //   });
+      //   setImportedData(data);
+      //   // Close current modal and open multiple tables review modal
+      //   handleClose();
+      //   setMultipleTablesReviewVisible(true);
+      // }
     } catch (error: any) {
       message.error(error?.response?.data?.detail || "Upload failed");
     } finally {
@@ -239,42 +244,42 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
     message.success("Data imported successfully");
   };
 
-  const handleMultipleTablesConfirmed = (reviewedData: any) => {
-    // For multiple tables, you might want to handle data differently
-    // This could update multiple tables or show a success message
-    console.log("Multiple tables data confirmed:", reviewedData);
-    message.success("All sections data imported successfully!");
-    setMultipleTablesReviewVisible(false);
+  // const handleMultipleTablesConfirmed = (reviewedData: any) => {
+  //   // For multiple tables, you might want to handle data differently
+  //   // This could update multiple tables or show a success message
+  //   console.log("Multiple tables data confirmed:", reviewedData);
+  //   message.success("All sections data imported successfully!");
+  //   setMultipleTablesReviewVisible(false);
 
-    // If you want to load some data to the current table, you can do:
-    // For example, load the first section's data
-    const firstSectionKey = Object.keys(reviewedData)[0];
-    if (firstSectionKey && reviewedData[firstSectionKey].length > 0) {
-      const transformedData = reviewedData[firstSectionKey].map(
-        (item: any, index: number) => ({
-          key: String(index + 1),
-          no: item.No,
-          process: item["Main Process"],
-          processDescription: item["Process Description"],
-          processObjective: item["Process Objectives"],
-          processSeverityLevels: item["Process Severity Levels"],
-          activity: "",
-          process2: "",
-          stage: "",
-          functions: "Finance",
-          clientSegment: "Account Receivable",
-          operationalUnit: "A",
-          division: "C",
-          entity: "XYZ",
-          unitDepartment: "Account Receivable",
-          productClass: "Non",
-          productName: "Others",
-          isActive: true,
-        })
-      );
-      onDataLoaded(transformedData);
-    }
-  };
+  //   // If you want to load some data to the current table, you can do:
+  //   // For example, load the first section's data
+  //   const firstSectionKey = Object.keys(reviewedData)[0];
+  //   if (firstSectionKey && reviewedData[firstSectionKey].length > 0) {
+  //     const transformedData = reviewedData[firstSectionKey].map(
+  //       (item: any, index: number) => ({
+  //         key: String(index + 1),
+  //         no: item.No,
+  //         process: item["Main Process"],
+  //         processDescription: item["Process Description"],
+  //         processObjective: item["Process Objectives"],
+  //         processSeverityLevels: item["Process Severity Levels"],
+  //         activity: "",
+  //         process2: "",
+  //         stage: "",
+  //         functions: "Finance",
+  //         clientSegment: "Account Receivable",
+  //         operationalUnit: "A",
+  //         division: "C",
+  //         entity: "XYZ",
+  //         unitDepartment: "Account Receivable",
+  //         productClass: "Non",
+  //         productName: "Others",
+  //         isActive: true,
+  //       })
+  //     );
+  //     onDataLoaded(transformedData);
+  //   }
+  // };
 
   const uploadProps: UploadProps = {
     beforeUpload: (fileObj) => {
@@ -317,8 +322,8 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
         destroyOnClose
       >
         <div className="space-y-6">
-          {/* Table Type Selection */}
-          <Card size="small" title="Select Table Type">
+          {/* Table Type Selection - Hidden from user */}
+          {/* <Card size="small" title="Select Table Type">
             <Radio.Group
               value={mode}
               onChange={(e) => setMode(e.target.value)}
@@ -327,7 +332,7 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
               <Radio.Button value="single">Single Table</Radio.Button>
               <Radio.Button value="multiple">Multiple Tables</Radio.Button>
             </Radio.Group>
-          </Card>
+          </Card> */}
 
           {/* Instructions */}
           <Card size="small" title="Instructions">
@@ -340,9 +345,10 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
                 ))
               ) : (
                 <Text type="secondary">
-                  {mode === "single"
-                    ? "Single table mode imports data into the current table view. Select a section and upload your Excel file."
-                    : "Multiple table mode processes all sections from the Excel file. The data will be distributed across relevant tables."}
+                  Single table mode imports data into the current table view.
+                  Select a section and upload your Excel file.
+                  {/* Multiple table instruction commented out:
+                    : "Multiple table mode processes all sections from the Excel file. The data will be distributed across relevant tables." */}
                 </Text>
               )}
             </div>
@@ -362,7 +368,25 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
                 />
               </div>
 
-              {/* Section Selection (Single Table Only) */}
+              {/* Section Selection - Always visible since single table only */}
+              <div>
+                <Text strong>Section Name *</Text>
+                <Select
+                  placeholder="Select section"
+                  value={selectedSection}
+                  onChange={setSelectedSection}
+                  loading={loading}
+                  className="w-full mt-1"
+                  allowClear={false}
+                >
+                  {sections.map((section) => (
+                    <Option key={section} value={section}>
+                      {section}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+              {/* Original conditional section selection commented out:
               {mode === "single" && (
                 <div>
                   <Text strong>Section Name *</Text>
@@ -381,7 +405,7 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
                     ))}
                   </Select>
                 </div>
-              )}
+              )} */}
 
               {/* File Upload */}
               <div>
@@ -409,11 +433,11 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
               type="primary"
               onClick={handleUpload}
               loading={uploading}
-              disabled={
-                !sheetName || !file || (mode === "single" && !selectedSection)
-              }
+              disabled={!sheetName || !file || !selectedSection}
             >
-              {mode === "single" ? "Import Data" : "Upload All Sections"}
+              Import Data
+              {/* Button text for multiple mode commented out:
+                {mode === "single" ? "Import Data" : "Upload All Sections"} */}
             </Button>
           </div>
         </div>
@@ -427,12 +451,13 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
         sectionName={currentSectionForReview}
       />
 
+      {/* MultipleTablesReviewModal commented out - always single table mode
       <MultipleTablesReviewModal
         visible={multipleTablesReviewVisible}
         onClose={() => setMultipleTablesReviewVisible(false)}
         onConfirm={handleMultipleTablesConfirmed}
         importedData={importedData}
-      />
+      /> */}
     </>
   );
 };
