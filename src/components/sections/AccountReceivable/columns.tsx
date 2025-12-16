@@ -1154,7 +1154,8 @@ export function getColumns(
           checked,
           record,
           "responsibilityMatrix",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1167,7 +1168,8 @@ export function getColumns(
           checked,
           record,
           "segregationDuties",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1180,7 +1182,8 @@ export function getColumns(
           checked,
           record,
           "reportingLines",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1193,7 +1196,8 @@ export function getColumns(
           checked,
           record,
           "mission",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1206,7 +1210,8 @@ export function getColumns(
           checked,
           record,
           "visionValues",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1219,7 +1224,8 @@ export function getColumns(
           checked,
           record,
           "goalsObjectives",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1232,7 +1238,8 @@ export function getColumns(
           checked,
           record,
           "structuresSystems",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1245,7 +1252,8 @@ export function getColumns(
           checked,
           record,
           "policiesProcedures",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1258,7 +1266,8 @@ export function getColumns(
           checked,
           record,
           "processes",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1271,7 +1280,8 @@ export function getColumns(
           checked,
           record,
           "integrityEthical",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1284,7 +1294,8 @@ export function getColumns(
           checked,
           record,
           "oversightStructure",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1297,7 +1308,8 @@ export function getColumns(
           checked,
           record,
           "standards",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1310,7 +1322,8 @@ export function getColumns(
           checked,
           record,
           "methodologies",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
     {
@@ -1323,7 +1336,8 @@ export function getColumns(
           checked,
           record,
           "rulesRegulations",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
+          editingKeys
         ),
     },
   ];

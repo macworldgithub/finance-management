@@ -825,6 +825,26 @@ const AccountReceivable = forwardRef<
             item.controlClassification,
         };
 
+      case "Other- - Control Environment": {
+        return {
+          ...basePayload,
+          "Responsibility Delegation Matrix": toPO(item.responsibilityMatrix),
+          "Segregation of duties": toPO(item.segregationDuties),
+          "Reporting Lines": toPO(item.reportingLines),
+          Mission: toPO(item.mission),
+          "Vision and Values": toPO(item.visionValues),
+          "Goals and Objectives": toPO(item.goalsObjectives),
+          "Structures & Systems": toPO(item.structuresSystems),
+          "Policies and Procedures": toPO(item.policiesProcedures),
+          Processes: toPO(item.processes),
+          "Integrity and Ethical Values": toPO(item.integrityEthical),
+          "Oversight structure": toPO(item.oversightStructure),
+          Standards: toPO(item.standards),
+          Methodologies: toPO(item.methodologies),
+          "Rules and Regulations": toPO(item.rulesRegulations),
+        };
+      }
+
       // Add other sections as needed
       default:
         return basePayload;
