@@ -697,17 +697,20 @@ export function getColumns(
       key: "stage",
       width: 180,
       render: (text: any, record: DataType) => {
-        const menu = buildMenu(stageOptions, (key) =>
-          handlers?.onStageChange?.(key, record.key)
-        );
-        return (
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="flex items-center cursor-pointer">
-              {text}
-              <DownOutlined className="ml-1 text-gray-500 text-xs" />
-            </div>
-          </Dropdown>
-        );
+        if (editingKeys && editingKeys.includes(record.key)) {
+          const menu = buildMenu(stageOptions, (key) =>
+            handlers?.onStageChange?.(key, record.key)
+          );
+          return (
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <div className="flex items-center cursor-pointer">
+                {text}
+                <DownOutlined className="ml-1 text-gray-500 text-xs" />
+              </div>
+            </Dropdown>
+          );
+        }
+        return text || "-";
       },
     },
     {
