@@ -659,7 +659,9 @@ const AccountReceivable = forwardRef<
     const toPO = (value: any): "P" | "O" => {
       if (value === true) return "P";
       if (value === false) return "O";
-      const v = String(value ?? "").trim().toLowerCase();
+      const v = String(value ?? "")
+        .trim()
+        .toLowerCase();
       if (v === "p" || v === "yes" || v === "y" || v === "true") return "P";
       if (v === "o" || v === "no" || v === "n" || v === "false") return "O";
       return "O";
@@ -925,6 +927,42 @@ const AccountReceivable = forwardRef<
     setStartSectionKey(null);
     setFormModalVisible(true);
   }, []);
+
+  // ADD THIS NEW FUNCTION HERE
+  const forceTableReflow = useCallback(() => {
+    const wrapper = tableWrapperRef.current;
+    if (!wrapper) return;
+
+    // Force browser to recalculate layout
+    wrapper.offsetHeight;
+
+    const table = wrapper.querySelector(".ant-table") as HTMLElement;
+    if (table) {
+      table.style.transform = "translateZ(0)";
+      requestAnimationFrame(() => {
+        table.style.transform = "";
+      });
+    }
+
+    // Re-calculate fixed left width and scroll width
+    const tableBody = wrapper.querySelector(".ant-table-body") as HTMLElement;
+    const tableEl = wrapper.querySelector(".ant-table") as HTMLElement;
+    if (!tableBody || !tableEl) return;
+
+    const leftCells = Array.from(
+      tableEl.querySelectorAll(".ant-table-cell-fix-left")
+    ) as HTMLElement[];
+
+    const leftWidths = new Set<number>();
+    for (const cell of leftCells) {
+      const w = cell?.offsetWidth ?? 0;
+      if (w > 0) leftWidths.add(w);
+    }
+    const leftWidth = Array.from(leftWidths).reduce((s, w) => s + w, 0);
+
+    setFixedLeftWidth(leftWidth);
+    setTableScrollWidth(Math.max(0, tableBody.scrollWidth - leftWidth));
+  }, []);
   // Memoized handlers object
   const handlers = useMemo(
     () => ({
@@ -1013,62 +1051,84 @@ const AccountReceivable = forwardRef<
     return getColumns(activeTab, activeSubTab, handlers, editingKeys);
   }, [activeTab, activeSubTab, editingKeys, handlers]);
   // Handle tab changes with cleanup
-  const handleTabChange = useCallback((key: string) => {
-    setEditingKeys([]); // Clear editing state
-    setActiveTab(key);
-  }, []);
-  const handleSubTabChange = useCallback((key: string) => {
-    setEditingKeys([]); // Clear editing state
-    setActiveSubTab(key);
-  }, []);
+  const handleTabChange = useCallback(
+    (key: string) => {
+      setEditingKeys([]);
+      setActiveTab(key);
+      // Force layout fix after new columns are rendered
+      setTimeout(() => forceTableReflow(), 100);
+    },
+    [forceTableReflow]
+  );
+
+  const handleSubTabChange = useCallback(
+    (key: string) => {
+      setEditingKeys([]);
+      setActiveSubTab(key);
+      // Force layout fix after new columns are rendered
+      setTimeout(() => forceTableReflow(), 100);
+    },
+    [forceTableReflow]
+  );
   // Scroll handler with cleanup
-  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    if (!scrollSyncRef.current) return;
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      if (!scrollSyncRef.current) return;
 
-    const target = e.target as HTMLDivElement;
-    const scrollLeft = target.scrollLeft;
+      const target = e.target as HTMLDivElement;
+      const scrollLeft = target.scrollLeft;
 
-    if (topScrollbarRef.current) {
-      scrollSyncRef.current = false;
-      topScrollbarRef.current.scrollLeft = scrollLeft;
-      setTimeout(() => {
-        scrollSyncRef.current = true;
-      }, 50);
-    }
+      if (topScrollbarRef.current) {
+        scrollSyncRef.current = false;
+        topScrollbarRef.current.scrollLeft = scrollLeft;
+        scrollSyncRef.current = true; // Removed the setTimeout
+      }
 
-    const header = tableWrapperRef.current?.querySelector(
-      ".ant-table-header"
-    ) as HTMLElement;
-    if (header) {
-      header.scrollLeft = scrollLeft;
-    }
-  }, []);
+      const header = tableWrapperRef.current?.querySelector(
+        ".ant-table-header"
+      ) as HTMLElement;
+      if (header) {
+        header.scrollLeft = scrollLeft;
+      }
 
-  const handleTopScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    if (!scrollSyncRef.current) return;
+      // Fix the overlap when scrolling back to the left
+      if (scrollLeft < 100) {
+        forceTableReflow();
+      }
+    },
+    [forceTableReflow]
+  );
+  const handleTopScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      if (!scrollSyncRef.current) return;
 
-    const target = e.target as HTMLDivElement;
-    const scrollLeft = target.scrollLeft;
+      const target = e.target as HTMLDivElement;
+      const scrollLeft = target.scrollLeft;
 
-    const body = tableWrapperRef.current?.querySelector(
-      ".ant-table-body"
-    ) as HTMLElement;
-    if (body) {
-      scrollSyncRef.current = false;
-      body.scrollLeft = scrollLeft;
-    }
+      const body = tableWrapperRef.current?.querySelector(
+        ".ant-table-body"
+      ) as HTMLElement;
+      if (body) {
+        scrollSyncRef.current = false;
+        body.scrollLeft = scrollLeft;
+      }
 
-    const header = tableWrapperRef.current?.querySelector(
-      ".ant-table-header"
-    ) as HTMLElement;
-    if (header) {
-      header.scrollLeft = scrollLeft;
-    }
+      const header = tableWrapperRef.current?.querySelector(
+        ".ant-table-header"
+      ) as HTMLElement;
+      if (header) {
+        header.scrollLeft = scrollLeft;
+      }
 
-    setTimeout(() => {
-      scrollSyncRef.current = true;
-    }, 50);
-  }, []);
+      scrollSyncRef.current = true; // Removed setTimeout
+
+      // Fix the overlap when scrolling back to the left
+      if (scrollLeft < 100) {
+        forceTableReflow();
+      }
+    },
+    [forceTableReflow]
+  );
   const handleDataLoaded = async (data: DataType[]) => {
     // Existing bulk post functionality remains unchanged
     // But refresh data after import
@@ -1194,26 +1254,60 @@ const AccountReceivable = forwardRef<
               z-index: 3000 !important;
             }
 
+            /* Fix table row gaps - CRITICAL FIX */
+            .ant-table {
+              border-collapse: separate !important;
+              border-spacing: 0 !important;
+            }
+
+            .ant-table-tbody > tr > td {
+              border-bottom: 1px solid #f0f0f0 !important;
+              padding: 16px !important;
+              transition: none !important;
+            }
+
+            .ant-table-tbody > tr:last-child > td {
+              border-bottom: 1px solid #f0f0f0 !important;
+            }
+
+            /* Remove any gap between rows */
+            .ant-table-tbody > tr {
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+
+            /* Ensure consistent row heights */
+            .ant-table-row {
+              height: auto !important;
+              min-height: 48px !important;
+            }
+
             /* Hide native horizontal scrollbars for the table; use custom top scrollbar instead */
             .ant-table-body::-webkit-scrollbar {
               display: none;
             }
+
             .ant-table-body {
               scrollbar-width: none;
               -ms-overflow-style: none;
+              overflow-anchor: none !important; /* Prevent scroll jumping */
             }
+
             .ant-table-header::-webkit-scrollbar {
               display: none;
             }
+
             .ant-table-header {
               scrollbar-width: none;
               -ms-overflow-style: none;
             }
+
             .row-deactivated {
               background-color: #e5e7eb !important;
               color: #6b7280 !important;
               opacity: 0.7;
             }
+
             .top-scrollbar::-webkit-scrollbar {
               height: 8px;
             }
@@ -1240,6 +1334,40 @@ const AccountReceivable = forwardRef<
 
             .ant-table-body {
               scrollbar-width: none !important;
+            }
+
+            /* Additional fix for rendering issues */
+            .ant-table-wrapper {
+              background: white;
+            }
+
+            .ant-table-cell {
+              line-height: 1.5 !important;
+              vertical-align: top !important;
+            }
+
+            /* Fix for text areas inside cells */
+            .ant-table-cell .ant-input-textarea {
+              margin: -8px -8px !important;
+            }
+
+            .ant-table-cell .ant-input-textarea textarea {
+              border: 1px solid #d9d9d9 !important;
+              border-radius: 4px !important;
+            }
+
+            /* Ensure consistent cell padding for editing */
+            .ant-table-cell.ant-table-cell-edit {
+              padding: 8px !important;
+            }
+            .ant-table-cell-fix-left,
+            .ant-table-cell-fix-left-last {
+              background: white !important;
+              z-index: 2 !important;
+            }
+
+            .ant-table-ping-left .ant-table-cell-fix-left-last {
+              box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15) !important;
             }
           `}</style>
           {loading ? (
@@ -1277,7 +1405,7 @@ const AccountReceivable = forwardRef<
                   minHeight: "500px",
                 }}
               >
-                <Table
+                {/* <Table
                   key={`table-${activeTab}-${activeSubTab}`}
                   columns={columns}
                   dataSource={tableData}
@@ -1293,6 +1421,37 @@ const AccountReceivable = forwardRef<
                     // y: "calc(100vh - 340px)"
                   }}
                   onScroll={handleScroll}
+                /> */}
+                <Table
+                  key={`table-${activeTab}-${activeSubTab}`}
+                  columns={columns}
+                  dataSource={tableData}
+                  pagination={false}
+                  bordered
+                  rowKey={(r) => `${r.key}-${r.isActive?.toString()}`}
+                  rowClassName={(r) =>
+                    r.isActive === false ? "row-deactivated" : "row-normal"
+                  }
+                  scroll={{
+                    x: "max-content",
+                    y: "calc(100vh - 340px)",
+                  }}
+                  onScroll={handleScroll}
+                  components={{
+                    body: {
+                      row: (props) => {
+                        const rowProps = { ...props };
+                        // Force consistent styling
+                        if (rowProps.style) {
+                          rowProps.style.height = "auto";
+                          rowProps.style.minHeight = "48px";
+                          rowProps.style.margin = "0";
+                          rowProps.style.padding = "0";
+                        }
+                        return <tr {...rowProps} />;
+                      },
+                    },
+                  }}
                 />
               </div>
 

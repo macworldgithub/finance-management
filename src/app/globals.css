@@ -43,3 +43,20 @@ body {
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
 }
+/* In your global.css or App.css */
+.ant-table-tbody > tr.ant-table-row:hover > td,
+.ant-table-tbody > tr > td.ant-table-cell-row-hover {
+  background: inherit !important;
+}
+
+.ant-table-tbody > tr > td {
+  background-clip: padding-box !important;
+}
+
+/* Remove any inherited margins/padding */
+.ant-table-container table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+}
