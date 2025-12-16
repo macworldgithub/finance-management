@@ -1600,7 +1600,23 @@ export function getColumns(
       key: "controlRef",
       width: 100,
       align: "center" as const,
-      render: () => "—",
+      render: (text: string, record: DataType) => {
+        if (editingKeys && editingKeys.includes(record.key)) {
+          return (
+            <Input
+              value={text}
+              onChange={(e) =>
+                handlers?.onTextChange?.(
+                  record.key,
+                  "controlRef",
+                  e.target.value
+                )
+              }
+            />
+          );
+        }
+        return text || "—";
+      },
     },
     {
       title: "Control Definition",
