@@ -1098,7 +1098,7 @@ export default function ReportsPage() {
                             nameKey="name"
                             cx="50%"
                             cy="50%"
-                            outerRadius="70%"
+                            outerRadius="60%"
                             label={pieLabel as any}
                             animationDuration={900}
                             labelLine={{ stroke: "#6b7280" }}
