@@ -3393,29 +3393,7 @@ export function getColumns(
         return <span style={{ fontWeight: "500" }}>{displayNo}</span>;
       },
     },
-    // {
-    // title: () => (
-    // <div style={{ display: "flex", alignItems: "center" }}>
-    // <span>No.</span>
-    // <Button
-    // style={{ marginLeft: 8 }}
-    // size="small"
-    // icon={<PlusOutlined />}
-    // onClick={(e) => {
-    // e.stopPropagation();
-    // handlers?.onAddRow?.();
-    // }}
-    // />
-    // </div>
-    // ),
-    // dataIndex: "no", // Map to the actual field in data
-    // key: "no",
-    // width: 80,
-    // fixed: "left",
-    // render: (value: number) => (
-    // <span style={{ fontWeight: "500" }}>{value ?? "-"}</span>
-    // ),
-    // },
+ 
     {
       title: "Processes",
       dataIndex: "process",
@@ -3486,25 +3464,7 @@ export function getColumns(
         return text;
       },
     },
-    // {
-    // title: "Process Severity Levels",
-    // dataIndex: "processSeverityLevels",
-    // key: "processSeverityLevels",
-    // width: 200,
-    // render: (text: any, record: DataType) => {
-    // const menu = buildMenu(processSeverityLevelsOptions, (key) =>
-    // handlers?.onSelectGeneric?.(key, record.key, "processSeverityLevels")
-    // );
-    // return (
-    // <Dropdown overlay={menu} trigger={["click"]}>
-    // <div className="flex items-center cursor-pointer">
-    // {text || "Select"}
-    // <DownOutlined className="ml-1 text-gray-500 text-xs" />
-    // </div>
-    // </Dropdown>
-    // );
-    // },
-    // },
+    
     {
       title: "Process Severity Levels",
       dataIndex: "processSeverityLevels",

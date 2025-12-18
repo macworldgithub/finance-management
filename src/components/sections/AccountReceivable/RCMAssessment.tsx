@@ -768,7 +768,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                     minHeight: "500px",
                   }}
                 >
-                  <style jsx>{`
+                  <style jsx global>{`
                     .ant-table-body {
                       scrollbar-width: none;
                       -ms-overflow-style: none;
@@ -776,10 +776,22 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                     .ant-table-body::-webkit-scrollbar {
                       display: none;
                     }
+
                     .row-deactivated {
                       background-color: #e5e7eb !important;
                       color: #6b7280 !important;
                       opacity: 0.7;
+                    }
+
+                    /* Optional: also gray out text in fixed columns when deactivated */
+                    .row-deactivated .ant-table-cell-fix-left,
+                    .row-deactivated .ant-table-cell-fix-left-last {
+                      background-color: #e5e7eb !important;
+                    }
+
+                    /* Ensure hover doesn't override deactivated style */
+                    .row-deactivated:hover > td {
+                      background-color: #e5e7eb !important;
                     }
                   `}</style>
                   <Table
