@@ -165,6 +165,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             case "Assessment of Efficiency": {
               return {
                 ...base,
+                date: item.Date ?? item.date ?? "",
                 objectiveAchievementScore: item.ObjectiveAchievementScore ?? 0,
                 timelinessThroughputScore: item.TimelinessThroughputScore ?? 0,
                 resourceConsumptionScore: item.ResourceConsumptionScore ?? 0,
@@ -239,6 +240,15 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         const sortedItems = [...normalizedItems].sort(
           (a, b) => getSortableNo(a.no) - getSortableNo(b.no)
         );
+
+        // Debug: Log fetched data for specific tabs
+        if (
+          section === "Assessment of Effectiveness" ||
+          section === "Process Severity"
+        ) {
+          console.log(`Fetched data for ${section}:`, sortedItems);
+          console.log(`Items count:`, sortedItems.length);
+        }
 
         setDataBySection((prev) => ({
           ...prev,
@@ -339,12 +349,33 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           .map((c) => c.dataIndex!);
         const section = getSectionFromTabKey(config.key);
         const exportDataSource = dataBySection[section] || [];
+
+        // Debug: Log export data for specific tabs
+        if (
+          section === "Assessment of Effectiveness" ||
+          section === "Process Severity"
+        ) {
+          console.log(`Exporting ${section}:`);
+          console.log(`Fields:`, fields);
+          console.log(`Data source length:`, exportDataSource.length);
+          console.log(`First item:`, exportDataSource[0]);
+        }
+
         const exportData = exportDataSource.map((row) => {
           const obj: any = {};
           //@ts-ignore
           fields.forEach((f) => (obj[f] = row[f as keyof DataType] ?? ""));
           return obj;
         });
+
+        // Debug: Log processed export data
+        if (
+          section === "Assessment of Effectiveness" ||
+          section === "Process Severity"
+        ) {
+          console.log(`Processed export data for ${section}:`, exportData);
+        }
+
         const ws = XLSX.utils.json_to_sheet(exportData);
         XLSX.utils.book_append_sheet(wb, ws, sheetName);
       });

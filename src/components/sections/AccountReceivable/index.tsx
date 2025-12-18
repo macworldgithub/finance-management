@@ -26,6 +26,7 @@ import { importSectionData } from "@/utils/importSectionDataService";
 import { SECTION_TO_BASE_ENDPOINT } from "@/utils/sectionMappings";
 import ProcessFormModal from "./ProcessFormModal";
 import { useGlobalSearch } from "@/contexts/GlobalSearchContext";
+import { usePreloadAllSections } from "./usePreloadAllSections";
 const { TextArea } = Input;
 export interface AccountReceivableRef {
   triggerImport: (file: File) => void;
@@ -94,6 +95,8 @@ const AccountReceivable = forwardRef<
       setActiveSubTab(props.initialSubTabKey);
     }
   }, [props.initialSubTabKey]);
+  // Inside your component, just call:
+  usePreloadAllSections(dataBySection, setDataBySection);
   const getCurrentSection = useCallback((): string => {
     switch (activeTab) {
       case "1":
@@ -607,13 +610,20 @@ const AccountReceivable = forwardRef<
       subTabs: ["audit", "grc"],
     },
   ];
-  const getSectionFromTabKey = (tabKey: string): string => {
+  const getSectionFromTabKey = (
+    tabKey: string,
+    subTab: string = ""
+  ): string => {
     switch (tabKey) {
       case "1":
         return "Process";
       case "2":
         return "Ownership";
       case "3":
+        if (subTab === "coso") return "COSO-Control Environment";
+        if (subTab === "intosai")
+          return "INTOSAI, IFAC, and Government Audit Standards - Control Environment";
+        if (subTab === "other") return "Other- - Control Environment";
         return "COSO-Control Environment";
       case "4":
         return "Risk Assessment (Inherent Risk)";
@@ -626,39 +636,165 @@ const AccountReceivable = forwardRef<
       case "8":
         return "Risk Assessment (Residual Risk)";
       case "9":
-        return "SOX"; // Simplified
+        if (subTab === "sox") return "SOX";
+        if (subTab === "financial" || subTab === "icfr")
+          return "Financial Statement Assertions";
+        return "SOX";
       case "10":
-        return "Internal Audit Test"; // Simplified
+        if (subTab === "audit") return "Internal Audit Test";
+        if (subTab === "grc") return "GRC Exception Log";
+        return "Internal Audit Test";
       default:
         return "Process";
     }
   };
+  // const handleExport = () => {
+  //   const wb = XLSX.utils.book_new();
+  //   tabConfigs.forEach((config) => {
+  //     // Handle tabs with sub-tabs
+  //     if (config.subTabs) {
+  //       config.subTabs.forEach((subTab) => {
+  //         const sheetName = `${config.label}-${subTab}`.slice(0, 31);
+  //         const columnsRaw = getColumns(
+  //           config.key,
+  //           subTab,
+  //           handlers,
+  //           editingKeys
+  //         );
+  //         const fields = columnsRaw
+  //           .filter(
+  //             (c): c is ColumnType<DataType> =>
+  //               "dataIndex" in c && c.dataIndex !== "actions"
+  //           )
+  //           .map((c) => c.dataIndex!);
+  //         const section = getSectionFromTabKey(config.key, subTab);
+  //         const exportDataSource = dataBySection[section] || [];
+
+  //         // Debug: Log export data for first section tabs
+  //         const problemTabs = [
+  //           "COSO-Control Environment",
+  //           "Risk Assessment (Inherent Risk)",
+  //           "Risk Responses",
+  //           "Control Activities",
+  //           "Control Assessment",
+  //           "Risk Assessment (Residual Risk)",
+  //           "SOX",
+  //           "Internal Audit Test",
+  //         ];
+
+  //         if (problemTabs.includes(section)) {
+  //           console.log(`Exporting ${section}:`);
+  //           console.log(`Tab key:`, config.key, `Sub-tab:`, subTab);
+  //           console.log(`Fields:`, fields);
+  //           console.log(`Data source length:`, exportDataSource.length);
+  //           console.log(`First item:`, exportDataSource[0]);
+  //         }
+
+  //         const exportData = exportDataSource.map((row) => {
+  //           const obj: any = {};
+  //           //@ts-ignore
+  //           fields.forEach((f) => (obj[f] = row[f as keyof DataType] ?? ""));
+  //           return obj;
+  //         });
+
+  //         // Debug: Log processed export data for problem tabs
+  //         if (problemTabs.includes(section)) {
+  //           console.log(`Processed export data for ${section}:`, exportData);
+  //         }
+
+  //         const ws = XLSX.utils.json_to_sheet(exportData);
+  //         XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  //       });
+  //     } else {
+  //       // Handle tabs without sub-tabs
+  //       const sheetName = config.label.slice(0, 31);
+  //       const columnsRaw = getColumns(config.key, "", handlers, editingKeys);
+  //       const fields = columnsRaw
+  //         .filter(
+  //           (c): c is ColumnType<DataType> =>
+  //             "dataIndex" in c && c.dataIndex !== "actions"
+  //         )
+  //         .map((c) => c.dataIndex!);
+  //       const section = getSectionFromTabKey(config.key);
+  //       const exportDataSource = dataBySection[section] || [];
+
+  //       const exportData = exportDataSource.map((row) => {
+  //         const obj: any = {};
+  //         //@ts-ignore
+  //         fields.forEach((f) => (obj[f] = row[f as keyof DataType] ?? ""));
+  //         return obj;
+  //       });
+
+  //       const ws = XLSX.utils.json_to_sheet(exportData);
+  //       XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  //     }
+  //   });
+  //   XLSX.writeFile(wb, "AccountReceivable_Export.xlsx");
+  // };
   const handleExport = () => {
     const wb = XLSX.utils.book_new();
-    tabConfigs.forEach((config) => {
-      const sheetName = config.label.slice(0, 31);
-      //@ts-ignore
-      const columnsRaw = getColumns(config.key, "", handlers, editingKeys);
+
+    const exportConfig = [
+      { sheetName: "Processes", tabKey: "1", subTab: "" },
+      { sheetName: "Ownership", tabKey: "2", subTab: "" },
+      { sheetName: "Control Environment-coso", tabKey: "3", subTab: "coso" },
+      {
+        sheetName: "Control Environment-intosai",
+        tabKey: "3",
+        subTab: "intosai",
+      },
+      { sheetName: "Control Environment-other", tabKey: "3", subTab: "other" },
+      { sheetName: "Risk Assessment (Inherent Risk)", tabKey: "4", subTab: "" },
+      { sheetName: "Risk Responses", tabKey: "5", subTab: "" },
+      { sheetName: "Control Activities", tabKey: "6", subTab: "" },
+      { sheetName: "Control Assessment", tabKey: "7", subTab: "" },
+      { sheetName: "Risk Assessment (Residual Risk)", tabKey: "8", subTab: "" },
+      { sheetName: "Compliance Management-sox", tabKey: "9", subTab: "sox" },
+      {
+        sheetName: "Compliance Management-financial",
+        tabKey: "9",
+        subTab: "financial",
+      },
+      { sheetName: "Compliance Management-icfr", tabKey: "9", subTab: "icfr" },
+      {
+        sheetName: "Internal Audit Management-audit",
+        tabKey: "10",
+        subTab: "audit",
+      },
+      {
+        sheetName: "Internal Audit Management-grc",
+        tabKey: "10",
+        subTab: "grc",
+      },
+    ];
+
+    exportConfig.forEach(({ sheetName, tabKey, subTab }) => {
+      const columnsRaw = getColumns(tabKey, subTab, handlers, editingKeys);
       const fields = columnsRaw
         .filter(
           (c): c is ColumnType<DataType> =>
             "dataIndex" in c && c.dataIndex !== "actions"
         )
         .map((c) => c.dataIndex!);
-      const section = getSectionFromTabKey(config.key);
+
+      const section = getSectionFromTabKey(tabKey, subTab);
       const exportDataSource = dataBySection[section] || [];
+
       const exportData = exportDataSource.map((row) => {
         const obj: any = {};
-        //@ts-ignore
-        fields.forEach((f) => (obj[f] = row[f as keyof DataType] ?? ""));
+        fields.forEach((f) => {
+          //@ts-ignore
+          obj[f] = row[f as keyof DataType] ?? "";
+        });
         return obj;
       });
-      const ws = XLSX.utils.json_to_sheet(exportData);
-      XLSX.utils.book_append_sheet(wb, ws, sheetName);
+      //@ts-expect-error tht
+      const ws = XLSX.utils.json_to_sheet(exportData, { header: fields });
+      XLSX.utils.book_append_sheet(wb, ws, sheetName.slice(0, 31));
     });
+
     XLSX.writeFile(wb, "AccountReceivable_Export.xlsx");
   };
-
   const handleDelete = useCallback(
     async (key: string) => {
       const item = tableData.find((r) => r.key === key);
