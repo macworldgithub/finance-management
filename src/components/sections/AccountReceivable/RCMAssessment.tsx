@@ -64,7 +64,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     const [formModalVisible, setFormModalVisible] = useState(false);
     const [editingRecord, setEditingRecord] = useState<DataType | null>(null);
     const [startSectionKey, setStartSectionKey] = useState<string | null>(null);
-
+    const resizeObserverRef = useRef<ResizeObserver | null>(null);
     // Sync with optional initial props when they change
     useEffect(() => {
       if (props.initialTabKey) {
@@ -289,27 +289,6 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     useEffect(() => {
       debouncedResize();
     }, [tableData, activeTab, debouncedResize]);
-
-    useEffect(() => {
-      const updateWidth = () => {
-        if (!topScrollbarRef.current || !tableWrapperRef.current) return;
-        const table = tableWrapperRef.current.querySelector(
-          ".ant-table"
-        ) as HTMLElement;
-        if (table) {
-          const dummy = topScrollbarRef.current.querySelector("div");
-          if (dummy) {
-            dummy.style.width = `${table.scrollWidth}px`;
-          }
-        }
-      };
-      const timeoutId = setTimeout(updateWidth, 100);
-      window.addEventListener("resize", updateWidth);
-      return () => {
-        window.removeEventListener("resize", updateWidth);
-        clearTimeout(timeoutId);
-      };
-    }, [activeTab, tableData]);
 
     const tabConfigs = [
       { key: "1", label: "Processes" },
@@ -662,7 +641,57 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       setEditingKeys([]);
       setActiveTab(key);
     }, []);
+    // NEW: Super reliable scrollbar width updater
+    useEffect(() => {
+      const updateDummyWidth = () => {
+        if (!topScrollbarRef.current || !tableWrapperRef.current) return;
 
+        const tableEl = tableWrapperRef.current.querySelector(
+          ".ant-table"
+        ) as HTMLElement;
+        if (!tableEl) return;
+
+        const dummy = document.getElementById("top-scrollbar-dummy");
+        if (!dummy) return;
+
+        // Use requestAnimationFrame for perfect timing after AntD layout
+        requestAnimationFrame(() => {
+          const realWidth = Math.max(tableEl.scrollWidth, 1600); // minimum 1600px
+          dummy.style.width = `${realWidth}px`;
+          console.log(
+            `✅ Updated dummy width → ${realWidth}px (table: ${tableEl.scrollWidth}px)`
+          );
+        });
+      };
+
+      // Run immediately
+      updateDummyWidth();
+
+      const t1 = setTimeout(updateDummyWidth, 100);
+      const t2 = setTimeout(updateDummyWidth, 400);
+      const t3 = setTimeout(updateDummyWidth, 800);
+      const t4 = setTimeout(updateDummyWidth, 1200);
+
+      // Watch container resize (most important!)
+      if (tableWrapperRef.current && !resizeObserverRef.current) {
+        resizeObserverRef.current = new ResizeObserver(updateDummyWidth);
+        resizeObserverRef.current.observe(tableWrapperRef.current);
+      }
+
+      window.addEventListener("resize", updateDummyWidth);
+
+      return () => {
+        window.removeEventListener("resize", updateDummyWidth);
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+        clearTimeout(t4);
+        if (resizeObserverRef.current) {
+          resizeObserverRef.current.disconnect();
+          resizeObserverRef.current = null;
+        }
+      };
+    }, [activeTab, tableData?.length, columns?.length]); // Stable dependencies
     const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
       if (!scrollSyncRef.current) return;
       const target = e.target as HTMLDivElement;
@@ -765,35 +794,38 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               </div>
             ) : (
               <div className="relative">
-                {(() => {
-                  if (!tableWrapperRef.current) return null;
-                  const table = tableWrapperRef.current.querySelector(
-                    ".ant-table"
-                  ) as HTMLElement;
-                  if (!table || table.scrollWidth <= table.clientWidth + 10)
-                    return null;
-                  return (
-                    <div
-                      ref={topScrollbarRef}
-                      className="sticky top-0 z-20 overflow-x-auto bg-white border-b border-gray-200 -mx-6 px-6 mb-3"
-                      style={{
-                        scrollbarWidth: "thin",
-                        scrollbarColor: "#787878 #121212",
-                      }}
-                      onScroll={handleTopScroll}
-                    >
-                      <div
-                        style={{
-                          width: `${table.scrollWidth}px`,
-                          height: "1px",
-                        }}
-                      />
-                    </div>
-                  );
-                })()}
+                {/* TOP SCROLLBAR – FORCE SHOW FOR ASSESSMENT TABS */}
+                <div
+                  ref={topScrollbarRef}
+                  className={`sticky top-0 z-30 overflow-x-auto bg-white border-b border-gray-300 shadow-sm -mx-6 px-6 mb-2 ${
+                    ["11", "12", "13", "14"].includes(activeTab)
+                      ? "block"
+                      : "hidden"
+                  }`}
+                  style={{
+                    scrollbarWidth: "thin",
+                    scrollbarColor: "#9ca3af #f3f4f6",
+                    height: "20px", // ← TALLER = easier to grab
+                    maxHeight: "20px",
+                  }}
+                  onScroll={handleTopScroll}
+                >
+                  <div
+                    id="top-scrollbar-dummy" // ← CRITICAL: ID for getElementById
+                    style={{
+                      width: "2000px", // fallback wide
+                      height: "20px",
+                      minHeight: "20px",
+                      background:
+                        "linear-gradient(90deg, #e5e7eb 0%, #d1d5db 100%)", // ← VISIBLE GRADIENT
+                    }}
+                  />
+                </div>
+
+                {/* TABLE CONTAINER */}
                 <div
                   ref={tableWrapperRef}
-                  className="bg-white shadow-md rounded-b-lg overflow-hidden"
+                  className="bg-white shadow-md rounded-lg overflow-hidden"
                   style={{
                     maxHeight: "calc(100vh - 280px)",
                     minHeight: "500px",
@@ -801,44 +833,73 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 >
                   <style jsx global>{`
                     .ant-table-body {
-                      scrollbar-width: none;
-                      -ms-overflow-style: none;
+                      overflow-x: auto !important;
+                      scrollbar-width: none !important;
+                      -ms-overflow-style: none !important;
                     }
                     .ant-table-body::-webkit-scrollbar {
-                      display: none;
+                      display: none !important;
+                    }
+
+                    .ant-table-cell-fix-left,
+                    .ant-table-cell-fix-left-last,
+                    .ant-table-cell-fix-right,
+                    .ant-table-cell-fix-right-first {
+                      z-index: 5 !important;
+                      background: white !important;
+                      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1) !important;
                     }
 
                     .row-deactivated {
                       background-color: #e5e7eb !important;
                       color: #6b7280 !important;
-                      opacity: 0.7;
+                      opacity: 0.7 !important;
                     }
-
-                    /* Optional: also gray out text in fixed columns when deactivated */
-                    .row-deactivated .ant-table-cell-fix-left,
-                    .row-deactivated .ant-table-cell-fix-left-last {
-                      background-color: #e5e7eb !important;
-                    }
-
-                    /* Ensure hover doesn't override deactivated style */
                     .row-deactivated:hover > td {
                       background-color: #e5e7eb !important;
                     }
                   `}</style>
-                  <Table
-                    key={`table-${activeTab}`}
+
+                  {/* <Table
+                    key={`table-${activeTab}-${tableData.length}-${loading}`} // ← FORCE REMOUNT
                     columns={columns}
                     dataSource={tableData}
                     pagination={false}
-                    scroll={{ x: 1300, y: "calc(100vh - 340px)" }}
+                    // scroll={{
+                    //   //@ts-ignore
+                    //   x: Math.max(1600, "max-content"), // ← FORCE MINIMUM WIDTH
+                    //   y: "calc(100vh - 340px)",
+                    // }}
+                    scroll={{
+                      x: 2200, // ← Force wide enough (adjust to 2400–2800 if still not enough)
+                      y: "calc(100vh - 340px)",
+                    }}
                     bordered
-                    rowKey={(r) => `${r.key}-${r.isActive?.toString()}`}
+                    size="middle"
+                    rowKey={(r) => `${r.key}-${r.isActive ?? true}`}
                     rowClassName={(r) =>
                       r.isActive === false ? "row-deactivated" : ""
                     }
-                    onHeaderRow={() => ({
-                      onScroll: handleScroll,
-                    })}
+                    onHeaderRow={() => ({ onScroll: handleScroll })}
+                  /> */}
+                  <Table
+                    key={`table-${activeTab}-${tableData.length}-${loading}`}
+                    columns={columns}
+                    dataSource={tableData}
+                    pagination={false}
+                    scroll={{
+                      x: 2400, // ← Most reliable fix — increase if needed (2600, 2800...)
+                      y: "calc(100vh - 340px)",
+                    }}
+                    bordered
+                    size="middle"
+                    rowKey={(r) => `${r.key}-${r.isActive ?? true}`}
+                    rowClassName={(r) =>
+                      r.isActive === false ? "row-deactivated" : ""
+                    }
+                    onHeaderRow={() => ({ onScroll: handleScroll })}
+                    //@ts-ignore
+                    scrollToFirstRowOnChange={false}
                   />
                 </div>
               </div>
