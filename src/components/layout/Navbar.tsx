@@ -5,19 +5,26 @@ import { Search, LogOut, User } from "lucide-react";
 import { GoBellFill } from "react-icons/go";
 import { MdMessage } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useGlobalSearch } from "@/contexts/GlobalSearchContext";
 import { Dropdown, message } from "antd";
 
 interface NavbarProps {
   onExcelUploadClick: () => void;
+  onBackToLanding?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
+const Navbar: React.FC<NavbarProps> = ({
+  onExcelUploadClick,
+  onBackToLanding,
+}) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMessages, setShowMessages] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
   const messageRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const pathname = usePathname();
   const { user, logout } = useAuth();
   const { searchText, setSearchText } = useGlobalSearch();
 
@@ -98,10 +105,20 @@ const Navbar: React.FC<NavbarProps> = ({ onExcelUploadClick }) => {
     <div className="bg-gray-100 flex justify-center items-center py-3 relative">
       <nav className="w-[96%] max-w-[1600px] bg-white rounded-2xl shadow-md px-6 py-3 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-1">
+        <button
+          type="button"
+          onClick={() => {
+            if (pathname === "/") {
+              onBackToLanding?.();
+              return;
+            }
+            router.push("/");
+          }}
+          className="flex items-center space-x-1 cursor-pointer"
+        >
           <span className="text-xl font-semibold text-gray-900">GRC</span>
           <FaPlay className="h-4 w-4 text-blue-500" />
-        </div>
+        </button>
 
         {/* Center: Excel Upload + Search */}
         <div className="flex items-center space-x-3 flex-1 max-w-xl mx-8">

@@ -85,7 +85,10 @@ export default function HomePage() {
   return (
     <ProtectedRoute>
       <main className="relative">
-        <Navbar onExcelUploadClick={() => setExcelModalVisible(true)} />
+        <Navbar
+          onExcelUploadClick={() => setExcelModalVisible(true)}
+          onBackToLanding={handleBackToLanding}
+        />
         {showLanding ? (
           <RCMLanding
             onNavigate={handleNavigateFromLanding}
