@@ -417,10 +417,176 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
     const handleSave = useCallback(
       async (key: string) => {
-        // ... your original handleSave logic remains unchanged ...
-        // (omitted here for brevity - copy your original one)
+        console.log("handleSave called for key:", key);
+        const item = tableData.find((r) => r.key === key);
+        console.log("Found item:", item);
+        if (!item) {
+          console.error("Item not found for key:", key);
+          return;
+        }
+
+        const section = getCurrentSection();
+        console.log("Current section:", section);
+
+        // Check if item has ID for assessment tabs
+        if (section !== "Process" && !item.id) {
+          console.error("Item missing ID for assessment tab:", item);
+          alert("Cannot save: Item missing ID. Please refresh and try again.");
+          return;
+        }
+
+        let endpoint: string;
+        let requestBody: any = {};
+
+        // Convert Yes/No to P/O for boolean fields
+        const convertBooleanToPO = (value: any): string => {
+          if (value === true || value === "P" || value === "Yes") return "P";
+          if (value === false || value === "O" || value === "No") return "O";
+          return value;
+        };
+
+        // Base fields for all requests
+        const baseFields = {
+          Id: item.id || item.key,
+          No: parseFloat(String(item.no)) || 0,
+          Process: item.process || "",
+        };
+
+        switch (section) {
+          case "Process":
+            endpoint = "Processes";
+            requestBody = {
+              ...baseFields,
+              "Main Process": item.process,
+              "Process Description": item.processDescription || "",
+              "Process Objectives": item.processObjective || "",
+              "Process Severity Levels": item.processSeverityLevels || "",
+            };
+            break;
+
+          case "Assessment of Adequacy":
+            endpoint = `AssessmentOfAdequacy/${item.id}`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              // Date removed as per your requirement
+              DesignAdequacyScore:
+                parseFloat(String(item.designAdequacyScore)) || 0,
+              SustainabilityScore:
+                parseFloat(String(item.sustainabilityScore)) || 0,
+              ScalabilityScore: parseFloat(String(item.scalabilityScore)) || 0,
+              AdequacyScore: parseFloat(String(item.adequacyScore)) || 0,
+              TotalScore: String(item.totalScore || ""),
+              Scale: parseFloat(String(item.scale)) || 0,
+              Rating: item.rating || "",
+            };
+            break;
+
+          case "Assessment of Effectiveness":
+            endpoint = `AssessmentOfEffectiveness/${item.id}`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              // Date removed as per your requirement
+              DesignScore: parseFloat(String(item.designScore)) || 0,
+              OperatingScore: parseFloat(String(item.operatingScore)) || 0,
+              SustainabilityScore:
+                parseFloat(String(item.sustainabilityScore)) || 0,
+              EffectivenessScore:
+                parseFloat(String(item.effectivenessScore)) || 0,
+              TotalScore: String(item.totalScore || ""),
+              Scale: parseFloat(String(item.scale)) || 0,
+              Rating: item.rating || "",
+            };
+            break;
+
+          case "Assessment of Efficiency":
+            endpoint = `AssessmentOfEfficiency/${item.id}`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              // Date removed as per your requirement
+              ObjectiveAchievementScore:
+                parseFloat(String(item.objectiveAchievementScore)) || 0,
+              TimelinessThroughputScore:
+                parseFloat(String(item.timelinessThroughputScore)) || 0,
+              ResourceConsumptionScore:
+                parseFloat(String(item.resourceConsumptionScore)) || 0,
+              EfficiencyScore: parseFloat(String(item.efficiencyScore)) || 0,
+              TotalScore: String(item.totalScore || ""),
+              Scale: parseFloat(String(item.scale)) || 0,
+              Rating: item.rating || "",
+            };
+            break;
+
+          case "Process Severity":
+            endpoint = `ProcessSeverity/${item.id}`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              // Date removed as per your requirement
+              Scale: parseFloat(String(item.scale)) || 0,
+              Rating: item.rating || "",
+            };
+            break;
+
+          default:
+            console.error("Unknown section:", section);
+            return;
+        }
+
+        try {
+          console.log("Making API call to:", `/${endpoint}`);
+          console.log("Request body:", requestBody);
+
+          // Convert boolean fields to P/O for all boolean fields in the request
+          const convertedBody = { ...requestBody };
+          Object.keys(convertedBody).forEach((key) => {
+            if (typeof convertedBody[key] === "boolean") {
+              convertedBody[key] = convertBooleanToPO(convertedBody[key]);
+            }
+          });
+
+          console.log("Final request body:", convertedBody);
+
+          let response;
+          if (section === "Process") {
+            // For Process tab, use POST for new items or PUT for existing
+            if (item.id) {
+              response = await apiClientDotNet.put(
+                `/Processes/${item.id}`,
+                convertedBody
+              );
+            } else {
+              response = await apiClientDotNet.post(
+                "/Processes",
+                convertedBody
+              );
+            }
+          } else {
+            // For assessment tabs, use PUT with correct endpoint
+            response = await apiClientDotNet.put(`/${endpoint}`, convertedBody);
+          }
+
+          console.log("API response:", response);
+
+          // Remove from editing keys after successful save
+          setEditingKeys((prev) => prev.filter((k) => k !== key));
+
+          // Refresh data to get latest from server
+          await fetchData();
+
+          console.log("Save successful:", response.data);
+        } catch (error) {
+          console.error("Error saving item:", error);
+          alert("Error saving item: " + (error as Error).message);
+        }
       },
-      [tableData, getCurrentSection]
+      [tableData, getCurrentSection, fetchData]
     );
 
     const handleCancel = useCallback((key: string) => {

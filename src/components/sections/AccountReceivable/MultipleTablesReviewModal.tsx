@@ -271,7 +271,7 @@ const MultipleTablesReviewModal: React.FC<MultipleTablesReviewModalProps> = ({
               onClick={() => handleSave(sectionKey, record.key!)}
               size="small"
             >
-              Save
+              Savevfgrf
             </Button>
             <Button
               type="link"
