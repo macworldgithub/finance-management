@@ -1,58 +1,82 @@
 "use client";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { Spin, Alert } from "antd";
+import EffectivenessChart from "./EffectivenessChart";
+import EffectivenessTable from "./EffectivenessTable";
+
+type EffectivenessItem = {
+  Id: string;
+  No: string | number;
+  Process: string;
+  Date: string;
+  DesignScore: number;
+  OperatingScore: number;
+  SustainabilityScore: number;
+  EffectivenessScore: number;
+  TotalScore: string;
+  Scale: number;
+  Rating: string;
+};
 
 export default function EffectivenessReport() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white p-6 rounded-xl shadow-md"
-    >
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">
-        Assessment of Effectiveness
-      </h2>
-      <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-          <svg
-            className="w-8 h-8 text-blue-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-            />
-          </svg>
-        </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
-          Effectiveness Reports
-        </h3>
-        <p className="text-gray-600 max-w-md mx-auto">
-          Assessment of Effectiveness reports and analytics will be available
-          here. This section will display charts and statistics related to
-          process effectiveness metrics.
-        </p>
-        <div className="mt-6 flex items-center justify-center text-sm text-gray-500">
-          <svg
-            className="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          Coming soon
-        </div>
+  const [data, setData] = useState<EffectivenessItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const API_URL =
+    "https://financedotnet.omnisuiteai.com/api/AssessmentOfEffectiveness?page=1&pageSize=100";
+
+  useEffect(() => {
+    let mounted = true;
+    async function fetchData() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(API_URL, {
+          headers: { accept: "application/json" },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        const items: EffectivenessItem[] = Array.isArray(json.items)
+          ? json.items
+          : Array.isArray(json)
+          ? json
+          : [];
+        if (mounted) setData(items);
+      } catch (err: any) {
+        console.error(err);
+        setError(err?.message || "Failed to fetch data");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    fetchData();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-12 text-center bg-white rounded-xl shadow-sm">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+        <p className="mt-4 text-gray-600">Loading Effectiveness data...</p>
       </div>
-    </motion.div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 bg-red-50 text-red-700 rounded-xl border border-red-200">
+        Error: {error}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <EffectivenessChart data={data} />
+      <EffectivenessTable data={data} />
+    </div>
   );
 }
