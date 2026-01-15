@@ -40,6 +40,17 @@ const COLORS = [
   "#f6ad55", // Standard Effectiveness
 ];
 
+const LEGEND_ITEMS = [
+  { color: COLORS[0], label: "Actual - Design Score" },
+  { color: COLORS[1], label: "Actual - Operating Score" },
+  { color: COLORS[2], label: "Actual - Sustainability Score" },
+  { color: COLORS[3], label: "Actual - Effectiveness Score" },
+  { color: COLORS[4], label: "Standard - Design Score (0-10)" },
+  { color: COLORS[5], label: "Standard - Operating Score (0-10)" },
+  { color: COLORS[6], label: "Standard - Sustainability Score (0-5)" },
+  { color: COLORS[7], label: "Standard - Effectiveness Score (0-25)" },
+];
+
 export default function EffectivenessChart({ data }: EffectivenessChartProps) {
   const chartData = useMemo(() => {
     return data.map((item) => ({
@@ -59,7 +70,7 @@ export default function EffectivenessChart({ data }: EffectivenessChartProps) {
   }, [data]);
 
   const truncateLabel = (label: string) =>
-    label.length > 20 ? `${label.slice(0, 20)}...` : label;
+    label.length > 15 ? `${label.slice(0, 15)}...` : label;
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-md">
@@ -67,11 +78,11 @@ export default function EffectivenessChart({ data }: EffectivenessChartProps) {
         Assessment of Effectiveness
       </h2>
 
-      <div className="h-96 w-full">
+      <div className="h-80 w-full mb-8">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
-            margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+            margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis
@@ -79,9 +90,10 @@ export default function EffectivenessChart({ data }: EffectivenessChartProps) {
               interval={0}
               angle={-45}
               textAnchor="end"
-              height={100}
-              tick={{ fontSize: 11 }}
+              height={80}
+              tick={{ fontSize: 10 }}
               stroke="#6b7280"
+              tickFormatter={(value) => truncateLabel(value)}
             />
             <YAxis domain={[0, 30]} tick={{ fontSize: 11 }} stroke="#6b7280" />
             <Tooltip
@@ -90,13 +102,8 @@ export default function EffectivenessChart({ data }: EffectivenessChartProps) {
                 border: "1px solid #e5e7eb",
                 borderRadius: "8px",
               }}
-            />
-            <Legend
-              wrapperStyle={{
-                fontSize: "12px",
-                paddingTop: "20px",
-              }}
-              iconType="rect"
+              formatter={(value, name) => [value, name]}
+              labelFormatter={(label) => `Process: ${label}`}
             />
 
             {/* Actual Scores */}
@@ -160,6 +167,24 @@ export default function EffectivenessChart({ data }: EffectivenessChartProps) {
             />
           </BarChart>
         </ResponsiveContainer>
+      </div>
+
+      {/* Custom Color Legend */}
+      <div className="border-t border-gray-200 pt-4">
+        <h3 className="text-sm font-semibold text-gray-700 mb-3">
+          Color Legend
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {LEGEND_ITEMS.map((item, index) => (
+            <div key={index} className="flex items-center space-x-2">
+              <div
+                className="w-4 h-4 rounded"
+                style={{ backgroundColor: item.color }}
+              />
+              <span className="text-xs text-gray-600">{item.label}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
