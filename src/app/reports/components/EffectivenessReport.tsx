@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Spin, Alert } from "antd";
 import EffectivenessChart from "./EffectivenessChart";
 import EffectivenessHorizontalChart from "./EffectivenessHorizontalChart";
+import EffectivenessRadarChart from "./EffectivenessRadarChart";
 import EffectivenessTable from "./EffectivenessTable";
 
 type EffectivenessItem = {
@@ -78,6 +79,7 @@ export default function EffectivenessReport() {
     <div className="space-y-6">
       <EffectivenessChart data={data} />
       <EffectivenessHorizontalChart data={data} />
+      <EffectivenessRadarChart data={data} />
       <EffectivenessTable data={data} />
     </div>
   );
