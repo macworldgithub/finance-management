@@ -58,6 +58,9 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       Record<string, DataType[]>
     >({});
     const [editingKeys, setEditingKeys] = useState<string[]>([]);
+    const [originalData, setOriginalData] = useState<Record<string, DataType>>(
+      {}
+    );
     const [loading, setLoading] = useState(false);
     const { searchText } = useGlobalSearch();
     const debouncedSearchText = useDebounce(searchText, 500)[0];
@@ -435,6 +438,19 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           return;
         }
 
+        // Check if there are any actual changes
+        const originalItem = originalData[key];
+        if (originalItem) {
+          const hasChanges =
+            JSON.stringify(item) !== JSON.stringify(originalItem);
+          if (!hasChanges) {
+            console.log("No changes detected, skipping API call");
+            // Remove from editing keys and revert to normal state
+            setEditingKeys((prev) => prev.filter((k) => k !== key));
+            return;
+          }
+        }
+
         let endpoint: string;
         let requestBody: any = {};
 
@@ -583,15 +599,45 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           console.log("Save successful:", response.data);
         } catch (error) {
           console.error("Error saving item:", error);
+          // Don't show alert for no changes scenario
+          if (
+            (error as Error).message.includes("Failed to update") &&
+            originalItem &&
+            JSON.stringify(item) === JSON.stringify(originalItem)
+          ) {
+            console.log("No changes made, treating as success");
+            // Remove from editing keys and revert to normal state
+            setEditingKeys((prev) => prev.filter((k) => k !== key));
+            return;
+          }
           alert("Error saving item: " + (error as Error).message);
+          // Revert to normal state even on error
+          setEditingKeys((prev) => prev.filter((k) => k !== key));
         }
       },
-      [tableData, getCurrentSection, fetchData]
+      [tableData, getCurrentSection, fetchData, originalData]
     );
 
-    const handleCancel = useCallback((key: string) => {
-      setEditingKeys((prev) => prev.filter((k) => k !== key));
-    }, []);
+    const handleCancel = useCallback(
+      (key: string) => {
+        // Restore original data if available
+        const originalItem = originalData[key];
+        if (originalItem) {
+          const newData = tableData.map((r) =>
+            r.key === key ? originalItem : r
+          );
+          setTableData(newData);
+          // Clean up original data
+          setOriginalData((prev) => {
+            const newData = { ...prev };
+            delete newData[key];
+            return newData;
+          });
+        }
+        setEditingKeys((prev) => prev.filter((k) => k !== key));
+      },
+      [originalData, setTableData, tableData]
+    );
 
     const handleCheckboxChange = useCallback(
       (rowKey: string, field: keyof DataType, checked: boolean) => {
@@ -635,9 +681,17 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       setEditingKeys((prev) => [...prev, newRow.key]);
     }, [tableData, setTableData]);
 
-    const handleEditRow = useCallback((key: string) => {
-      setEditingKeys((prev) => [...prev, key]);
-    }, []);
+    const handleEditRow = useCallback(
+      (key: string) => {
+        // Store original data before editing
+        const item = tableData.find((r) => r.key === key);
+        if (item) {
+          setOriginalData((prev) => ({ ...prev, [key]: { ...item } }));
+        }
+        setEditingKeys((prev) => [...prev, key]);
+      },
+      [tableData]
+    );
 
     const handleDeleteRow = useCallback(
       (key: string) => {
