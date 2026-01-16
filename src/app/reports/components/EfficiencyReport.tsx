@@ -1,58 +1,102 @@
 "use client";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import EfficiencyChart from "./EfficiencyChart";
+import EfficiencyHorizontalChart from "./EfficiencyHorizontalChart";
+import EfficiencyRadarChart from "./EfficiencyRadarChart";
+import EfficiencyLineChart from "./EfficiencyLineChart";
+import EfficiencyTable from "./EfficiencyTable";
+import EffectivenessSpeedometerChart from "./EffectivenessSpeedometerChart";
+
+type EfficiencyItem = {
+  Id: string;
+  No: string | number;
+  Process: string;
+  Date: string;
+  ObjectiveAchievementScore: number;
+  TimelinessThroughputScore: number;
+  ResourceConsumptionScore: number;
+  EfficiencyScore: number;
+  TotalScore: string;
+  Scale: number;
+  Rating: string;
+};
 
 export default function EfficiencyReport() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white p-6 rounded-xl shadow-md"
-    >
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">
-        Assessment of Efficiency
-      </h2>
-      <div className="text-center py-12">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-          <svg
-            className="w-8 h-8 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13 10V3L4 14h7v7l9-11h-7z"
-            />
-          </svg>
-        </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">
-          Efficiency Reports
-        </h3>
-        <p className="text-gray-600 max-w-md mx-auto">
-          Assessment of Efficiency reports and analytics will be available here.
-          This section will display charts and statistics related to process
-          efficiency metrics.
-        </p>
-        <div className="mt-6 flex items-center justify-center text-sm text-gray-500">
-          <svg
-            className="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          Coming soon
-        </div>
+  const [data, setData] = useState<EfficiencyItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const avgScale = useMemo(() => {
+    const scales = data
+      .map((d) => Number(d.Scale))
+      .filter((n) => Number.isFinite(n));
+    if (!scales.length) return 1;
+    return scales.reduce((a, b) => a + b, 0) / scales.length;
+  }, [data]);
+
+  const API_URL =
+    "https://financedotnet.omnisuiteai.com/api/AssessmentOfEfficiency?page=1&pageSize=100";
+
+  useEffect(() => {
+    let mounted = true;
+    async function fetchData() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(API_URL, {
+          headers: { accept: "application/json" },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        const items: EfficiencyItem[] = Array.isArray(json.items)
+          ? json.items
+          : Array.isArray(json)
+          ? json
+          : [];
+        if (mounted) setData(items);
+      } catch (err: any) {
+        console.error(err);
+        setError(err?.message || "Failed to fetch data");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    fetchData();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="p-12 text-center bg-white rounded-xl shadow-sm">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+        <p className="mt-4 text-gray-600">Loading Efficiency data...</p>
       </div>
-    </motion.div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 bg-red-50 text-red-700 rounded-xl border border-red-200">
+        Error: {error}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <EfficiencyChart data={data} />
+      <EfficiencyHorizontalChart data={data} />
+      <EfficiencyRadarChart data={data} />
+      <EffectivenessSpeedometerChart
+        title="Assessment of Efficiency - Speedometer Chart"
+        value={avgScale}
+        min={1}
+        max={5}
+      />
+      <EfficiencyLineChart data={data} />
+      <EfficiencyTable data={data} />
+    </div>
   );
 }
