@@ -4,6 +4,7 @@ import { Spin, Alert } from "antd";
 import EffectivenessChart from "./EffectivenessChart";
 import EffectivenessHorizontalChart from "./EffectivenessHorizontalChart";
 import EffectivenessRadarChart from "./EffectivenessRadarChart";
+import EffectivenessLineChart from "./EffectivenessLineChart";
 import EffectivenessTable from "./EffectivenessTable";
 
 type EffectivenessItem = {
@@ -80,6 +81,7 @@ export default function EffectivenessReport() {
       <EffectivenessChart data={data} />
       <EffectivenessHorizontalChart data={data} />
       <EffectivenessRadarChart data={data} />
+      <EffectivenessLineChart />
       <EffectivenessTable data={data} />
     </div>
   );
