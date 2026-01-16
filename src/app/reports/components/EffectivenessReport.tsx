@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Spin, Alert } from "antd";
+import { useEffect, useMemo, useState } from "react";
 import EffectivenessChart from "./EffectivenessChart";
 import EffectivenessHorizontalChart from "./EffectivenessHorizontalChart";
 import EffectivenessRadarChart from "./EffectivenessRadarChart";
 import EffectivenessLineChart from "./EffectivenessLineChart";
+import EffectivenessSpeedometerChart from "./EffectivenessSpeedometerChart";
 import EffectivenessTable from "./EffectivenessTable";
 
 type EffectivenessItem = {
@@ -25,6 +25,14 @@ export default function EffectivenessReport() {
   const [data, setData] = useState<EffectivenessItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const avgScale = useMemo(() => {
+    const scales = data
+      .map((d) => Number(d.Scale))
+      .filter((n) => Number.isFinite(n));
+    if (!scales.length) return 1;
+    return scales.reduce((a, b) => a + b, 0) / scales.length;
+  }, [data]);
 
   const API_URL =
     "https://financedotnet.omnisuiteai.com/api/AssessmentOfEffectiveness?page=1&pageSize=100";
@@ -81,6 +89,12 @@ export default function EffectivenessReport() {
       <EffectivenessChart data={data} />
       <EffectivenessHorizontalChart data={data} />
       <EffectivenessRadarChart data={data} />
+      <EffectivenessSpeedometerChart
+        title="Assessment of Effectiveness - Speedometer Chart"
+        value={avgScale}
+        min={1}
+        max={5}
+      />
       <EffectivenessLineChart />
       <EffectivenessTable data={data} />
     </div>

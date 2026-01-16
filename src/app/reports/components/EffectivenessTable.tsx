@@ -144,7 +144,7 @@ export default function EffectivenessTable({ data }: EffectivenessTableProps) {
           dataSource={data}
           rowKey="Id"
           pagination={{
-            pageSize: 10,
+            pageSize: 12,
             showSizeChanger: true,
             showQuickJumper: true,
             showTotal: (total, range) =>
