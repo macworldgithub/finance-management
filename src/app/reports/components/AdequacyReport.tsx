@@ -352,12 +352,12 @@ export default function AdequacyReport() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45 }}
-          className="xl:col-span-8 col-span-1 bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+          className="xl:col-span-12 col-span-1 bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
         >
           <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
             Assessment of Adequacy
           </h2>
-          <div className="h-80 w-full flex-1">
+          <div className="h-[500px] w-full flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={chartData}
@@ -478,7 +478,7 @@ export default function AdequacyReport() {
             <h3 className="text-sm sm:text-base font-semibold mb-3 text-gray-800">
               Assessment of Adequacy
             </h3>
-            <div className="h-72 w-full">
+            <div className="h-[500px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={chartData}
