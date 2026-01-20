@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { Table } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import EffectivenessSpeedometerChart from "./EffectivenessSpeedometerChart";
 import {
   ResponsiveContainer,
   LineChart,
@@ -66,17 +69,52 @@ const donutLabel = (props: any) => {
   ).toFixed(0)}%)`;
 };
 
-interface AdequacyReportProps {
-  data: AssessmentItem[];
-  loading: boolean;
-  error: string | null;
-}
+export default function AdequacyReport() {
+  const [data, setData] = useState<AssessmentItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-export default function AdequacyReport({
-  data,
-  loading,
-  error,
-}: AdequacyReportProps) {
+  const avgScale = useMemo(() => {
+    const scales = data
+      .map((d) => Number(d.Scale))
+      .filter((n) => Number.isFinite(n));
+    if (!scales.length) return 1;
+    return scales.reduce((a, b) => a + b, 0) / scales.length;
+  }, [data]);
+
+  const API_URL =
+    "https://financedotnet.omnisuiteai.com/api/AssessmentOfAdequacy?page=1&pageSize=100";
+
+  useEffect(() => {
+    let mounted = true;
+    async function fetchData() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(API_URL, {
+          headers: { accept: "application/json" },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        const items: AssessmentItem[] = Array.isArray(json.items)
+          ? json.items
+          : Array.isArray(json)
+          ? json
+          : [];
+        if (mounted) setData(items);
+      } catch (err: any) {
+        console.error(err);
+        setError(err?.message || "Failed to fetch data");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+    fetchData();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   // Pre-process: change second occurrence of "5.1" to "5.10"
   const processedData = useMemo(() => {
     const result: AssessmentItem[] = [];
@@ -133,8 +171,12 @@ export default function AdequacyReport({
         Sustainability: Number(d.SustainabilityScore ?? 0),
         Scalability: Number(d.ScalabilityScore ?? 0),
         Adequacy: Number(d.AdequacyScore ?? 0),
-        Rating: d.Rating || "-",
+        StdDesign: 10,
+        StdSustainability: 10,
+        StdScalability: 5,
+        StdAdequacy: 25,
         fullScore: 10,
+        Rating: d.Rating || "-",
       }))
       .slice(0, 50);
   }, [sortedData]);
@@ -156,6 +198,134 @@ export default function AdequacyReport({
       value: Number(d.DesignAdequacyScore || 0),
     }));
   }, [sortedData]);
+
+  const columns: ColumnsType<AssessmentItem> = [
+    {
+      title: "No",
+      dataIndex: "No",
+      key: "No",
+      width: 80,
+      align: "center" as const,
+      render: (_v: any, row) => displayNo(row.No),
+    },
+    {
+      title: "Process",
+      dataIndex: "Process",
+      key: "Process",
+      width: 260,
+      ellipsis: true,
+    },
+    {
+      title: "Design Adequacy Score",
+      children: [
+        {
+          title: "Actual",
+          dataIndex: "DesignAdequacyScore",
+          key: "DesignAdequacyScore",
+          width: 90,
+          align: "center" as const,
+          render: (value: number) => value || 0,
+        },
+        {
+          title: "Standard",
+          key: "StandardDesignAdequacy",
+          width: 90,
+          align: "center" as const,
+          render: () => "10",
+        },
+      ],
+    },
+    {
+      title: "Sustainability Score",
+      children: [
+        {
+          title: "Actual",
+          dataIndex: "SustainabilityScore",
+          key: "SustainabilityScore",
+          width: 90,
+          align: "center" as const,
+          render: (value: number) => value || 0,
+        },
+        {
+          title: "Standard",
+          key: "StandardSustainability",
+          width: 90,
+          align: "center" as const,
+          render: () => "10",
+        },
+      ],
+    },
+    {
+      title: "Scalability Score",
+      children: [
+        {
+          title: "Actual",
+          dataIndex: "ScalabilityScore",
+          key: "ScalabilityScore",
+          width: 90,
+          align: "center" as const,
+          render: (value: number) => value || 0,
+        },
+        {
+          title: "Standard",
+          key: "StandardScalability",
+          width: 90,
+          align: "center" as const,
+          render: () => "5",
+        },
+      ],
+    },
+    {
+      title: "Adequacy Score",
+      children: [
+        {
+          title: "Actual",
+          dataIndex: "AdequacyScore",
+          key: "AdequacyScore",
+          width: 90,
+          align: "center" as const,
+          render: (value: number) => value || 0,
+        },
+        {
+          title: "Standard",
+          key: "StandardAdequacy",
+          width: 90,
+          align: "center" as const,
+          render: () => "25",
+        },
+      ],
+    },
+    {
+      title: "Rating",
+      dataIndex: "Rating",
+      key: "Rating",
+      width: 120,
+      align: "center" as const,
+      render: (rating: string) => (
+        <span
+          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+            rating === "Excellent"
+              ? "bg-green-100 text-green-800"
+              : rating === "Good"
+              ? "bg-blue-100 text-blue-800"
+              : rating === "Average"
+              ? "bg-yellow-100 text-yellow-800"
+              : "bg-gray-100 text-gray-800"
+          }`}
+        >
+          {rating || "-"}
+        </span>
+      ),
+    },
+    {
+      title: "Date",
+      dataIndex: "Date",
+      key: "Date",
+      width: 140,
+      align: "center" as const,
+      render: (value: string) => value || "-",
+    },
+  ];
 
   if (loading) {
     return (
@@ -184,13 +354,13 @@ export default function AdequacyReport({
           className="xl:col-span-8 col-span-1 bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
         >
           <h2 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
-            Design Adequacy — Trend (Line)
+            Assessment of Adequacy
           </h2>
-          <div className="h-64 w-full flex-1">
+          <div className="h-80 w-full flex-1">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={chartData}
-                margin={{ top: 8, right: 12, left: -20, bottom: 8 }}
+                margin={{ top: 8, right: 12, left: -20, bottom: 28 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis
@@ -198,13 +368,252 @@ export default function AdequacyReport({
                   interval={0}
                   angle={-45}
                   textAnchor="end"
-                  height={70}
+                  height={90}
                   tick={{ fontSize: 11 }}
                   stroke="#6b7280"
                 />
                 <YAxis
                   allowDecimals={false}
                   tick={{ fontSize: 11 }}
+                  stroke="#6b7280"
+                  domain={[0, 30]}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#fff",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                  }}
+                />
+                <Legend
+                  verticalAlign="bottom"
+                  height={72}
+                  wrapperStyle={{ fontSize: "11px" }}
+                />
+
+                {/* Actual Scores - Solid Lines */}
+                <Line
+                  type="monotone"
+                  dataKey="Design"
+                  stroke="#2563eb"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  name="Actual - Design Adequacy Score"
+                  animationDuration={900}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="Sustainability"
+                  stroke="#f97316"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  name="Actual - Sustainability Score"
+                  animationDuration={900}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="Scalability"
+                  stroke="#9ca3af"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  name="Actual - Scalability Score"
+                  animationDuration={900}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="Adequacy"
+                  stroke="#eab308"
+                  strokeWidth={2}
+                  dot={{ r: 3 }}
+                  name="Actual - Adequacy Score"
+                  animationDuration={900}
+                />
+
+                {/* Standard Scores - Dashed Lines (flat at max) */}
+                <Line
+                  type="monotone"
+                  dataKey="StdDesign"
+                  stroke="#93c5fd"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={false}
+                  name="Standard - Design Adequacy Score(0-10)"
+                  animationDuration={900}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="StdSustainability"
+                  stroke="#22c55e"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={false}
+                  name="Standard - Sustainability Score(0-10)"
+                  animationDuration={900}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="StdScalability"
+                  stroke="#1e40af"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={false}
+                  name="Standard - Scalability Score(0-5)"
+                  animationDuration={900}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="StdAdequacy"
+                  stroke="#92400e"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  dot={false}
+                  name="Standard - Adequacy Score(0-25)"
+                  animationDuration={900}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <h3 className="text-sm sm:text-base font-semibold mb-3 text-gray-800">
+              Assessment of Adequacy
+            </h3>
+            <div className="h-72 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={chartData}
+                  margin={{ top: 8, right: 12, left: -20, bottom: 28 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis
+                    dataKey="processLabel"
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={90}
+                    tick={{ fontSize: 11 }}
+                    stroke="#6b7280"
+                  />
+                  <YAxis
+                    allowDecimals={false}
+                    tick={{ fontSize: 11 }}
+                    stroke="#6b7280"
+                    domain={[0, 30]}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#fff",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <Legend
+                    verticalAlign="bottom"
+                    height={72}
+                    wrapperStyle={{ fontSize: "11px" }}
+                  />
+
+                  <Bar
+                    dataKey="Design"
+                    fill="#2563eb"
+                    name="Actual - Design Adequacy Score"
+                    barSize={chartData.length > 12 ? 10 : 14}
+                    animationDuration={900}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="Sustainability"
+                    fill="#f97316"
+                    name="Actual - Sustainability Score"
+                    barSize={chartData.length > 12 ? 10 : 14}
+                    animationDuration={900}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="Scalability"
+                    fill="#9ca3af"
+                    name="Actual - Scalability Score"
+                    barSize={chartData.length > 12 ? 10 : 14}
+                    animationDuration={900}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="Adequacy"
+                    fill="#eab308"
+                    name="Actual - Adequacy Score"
+                    barSize={chartData.length > 12 ? 10 : 14}
+                    animationDuration={900}
+                    radius={[4, 4, 0, 0]}
+                  />
+
+                  <Bar
+                    dataKey="StdDesign"
+                    fill="#93c5fd"
+                    name="Standard - Design Adequacy Score(0-10)"
+                    barSize={chartData.length > 12 ? 10 : 14}
+                    animationDuration={900}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="StdSustainability"
+                    fill="#22c55e"
+                    name="Standard - Sustainability Score(0-10)"
+                    barSize={chartData.length > 12 ? 10 : 14}
+                    animationDuration={900}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="StdScalability"
+                    fill="#1e40af"
+                    name="Standard - Scalability Score(0-5)"
+                    barSize={chartData.length > 12 ? 10 : 14}
+                    animationDuration={900}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="StdAdequacy"
+                    fill="#92400e"
+                    name="Standard - Adequacy Score(0-25)"
+                    barSize={chartData.length > 12 ? 10 : 14}
+                    animationDuration={900}
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55 }}
+        className="xl:col-span-12 col-span-1 bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col gap-6"
+      >
+        <div>
+          <h2 className="text-base sm:text-lg font-semibold mb-3 text-gray-800">
+            Assessment of Adequacy
+          </h2>
+          <div className="h-[500px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                layout="vertical"
+                data={chartData}
+                margin={{ top: 8, right: 12, left: 0, bottom: 28 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis
+                  type="number"
+                  allowDecimals={false}
+                  tick={{ fontSize: 11 }}
+                  stroke="#6b7280"
+                  domain={[0, 30]}
+                />
+                <YAxis
+                  dataKey="processLabel"
+                  type="category"
+                  width={120}
+                  tick={{ fontSize: 10 }}
                   stroke="#6b7280"
                 />
                 <Tooltip
@@ -214,398 +623,156 @@ export default function AdequacyReport({
                     borderRadius: "8px",
                   }}
                 />
-                <Legend wrapperStyle={{ fontSize: "13px" }} />
-                <Line
-                  type="monotone"
-                  dataKey="Design"
-                  stroke={COLORS[0]}
-                  strokeWidth={2.5}
-                  dot={{ r: 3, strokeWidth: 2 }}
-                  activeDot={{ r: 5 }}
-                  animationDuration={900}
+                <Legend
+                  verticalAlign="bottom"
+                  height={72}
+                  wrapperStyle={{ fontSize: "11px" }}
                 />
-              </LineChart>
+
+                {/* Actual Scores */}
+                <Bar
+                  dataKey="Design"
+                  fill="#2563eb"
+                  name="Actual - Design Adequacy Score"
+                  animationDuration={900}
+                  radius={[0, 4, 4, 0]}
+                  barSize={10}
+                />
+                <Bar
+                  dataKey="Sustainability"
+                  fill="#f97316"
+                  name="Actual - Sustainability Score"
+                  animationDuration={900}
+                  radius={[0, 4, 4, 0]}
+                  barSize={10}
+                />
+                <Bar
+                  dataKey="Scalability"
+                  fill="#9ca3af"
+                  name="Actual - Scalability Score"
+                  animationDuration={900}
+                  radius={[0, 4, 4, 0]}
+                  barSize={10}
+                />
+                <Bar
+                  dataKey="Adequacy"
+                  fill="#eab308"
+                  name="Actual - Adequacy Score"
+                  animationDuration={900}
+                  radius={[0, 4, 4, 0]}
+                  barSize={10}
+                />
+
+                {/* Standard Scores (flat at max) */}
+                <Bar
+                  dataKey="StdDesign"
+                  fill="#93c5fd"
+                  name="Standard - Design Adequacy Score(0-10)"
+                  animationDuration={900}
+                  radius={[0, 4, 4, 0]}
+                  barSize={10}
+                />
+                <Bar
+                  dataKey="StdSustainability"
+                  fill="#22c55e"
+                  name="Standard - Sustainability Score(0-10)"
+                  animationDuration={900}
+                  radius={[0, 4, 4, 0]}
+                  barSize={10}
+                />
+                <Bar
+                  dataKey="StdScalability"
+                  fill="#1e40af"
+                  name="Standard - Scalability Score(0-5)"
+                  animationDuration={900}
+                  radius={[0, 4, 4, 0]}
+                  barSize={10}
+                />
+                <Bar
+                  dataKey="StdAdequacy"
+                  fill="#92400e"
+                  name="Standard - Adequacy Score(0-25)"
+                  animationDuration={900}
+                  radius={[0, 4, 4, 0]}
+                  barSize={10}
+                />
+              </BarChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <h3 className="text-sm sm:text-base font-semibold mb-3 text-gray-800">
-              Design Adequacy — Vertical Bar
-            </h3>
-            <div className="h-56 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={chartData}
-                  margin={{ top: 8, right: 12, left: -20, bottom: 8 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis
-                    dataKey="processLabel"
-                    interval={0}
-                    angle={-45}
-                    textAnchor="end"
-                    height={80}
-                    tick={{ fontSize: 11 }}
-                    stroke="#6b7280"
-                  />
-                  <YAxis
-                    allowDecimals={false}
-                    tick={{ fontSize: 11 }}
-                    stroke="#6b7280"
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#fff",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                    }}
-                  />
-                  <Legend wrapperStyle={{ fontSize: "13px" }} />
-                  <Bar
-                    dataKey="Design"
-                    fill="#fbbf24"
-                    name="Obtained Score"
-                    barSize={chartData.length > 12 ? 14 : 20}
-                    animationDuration={900}
-                    radius={[4, 4, 0, 0]}
-                  />
-                  <Bar
-                    dataKey="fullScore"
-                    fill="#a855f7"
-                    name="Full Score"
-                    barSize={chartData.length > 12 ? 14 : 20}
-                    animationDuration={900}
-                    radius={[4, 4, 0, 0]}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+        </div>
+        <div className="pt-6 border-t border-gray-200">
+          <h2 className="text-base sm:text-lg font-semibold mb-3 text-gray-800">
+            Overall — Design Adequacy (Radar)
+          </h2>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
+                <PolarGrid stroke="#e5e7eb" />
+                <PolarAngleAxis
+                  dataKey="short"
+                  tick={{ fontSize: 10, fill: "#6b7280" }}
+                />
+                <PolarRadiusAxis
+                  angle={30}
+                  domain={[0, Math.max(10, ...chartData.map((c) => c.Design))]}
+                  tick={{ fontSize: 10, fill: "#6b7280" }}
+                />
+                <Radar
+                  name="Design"
+                  dataKey="Design"
+                  stroke={COLORS[2]}
+                  fill={COLORS[2]}
+                  fillOpacity={0.4}
+                  animationDuration={900}
+                  strokeWidth={2}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#fff",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                  }}
+                />
+              </RadarChart>
+            </ResponsiveContainer>
           </div>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
-          className="xl:col-span-4 col-span-1 bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col gap-6"
-        >
-          <div>
-            <h2 className="text-base sm:text-lg font-semibold mb-3 text-gray-800">
-              Design Adequacy — Horizontal
-            </h2>
-            <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  layout="vertical"
-                  data={chartData}
-                  margin={{ top: 8, right: 12, left: 0, bottom: 8 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis
-                    type="number"
-                    allowDecimals={false}
-                    tick={{ fontSize: 11 }}
-                    stroke="#6b7280"
-                  />
-                  <YAxis
-                    dataKey="processLabel"
-                    type="category"
-                    width={90}
-                    tick={{ fontSize: 10 }}
-                    stroke="#6b7280"
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#fff",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                    }}
-                  />
-                  <Legend wrapperStyle={{ fontSize: "13px" }} />
-                  <Bar
-                    dataKey="Design"
-                    fill="#fbbf24"
-                    name="Obtained Score"
-                    animationDuration={900}
-                    radius={[0, 4, 4, 0]}
-                    barSize={chartData.length > 12 ? 12 : 16}
-                  />
-                  <Bar
-                    dataKey="fullScore"
-                    fill="#a855f7"
-                    name="Full Score"
-                    animationDuration={900}
-                    radius={[0, 4, 4, 0]}
-                    barSize={chartData.length > 12 ? 12 : 16}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-          <div className="pt-6 border-t border-gray-200">
-            <h2 className="text-base sm:text-lg font-semibold mb-3 text-gray-800">
-              Overall — Design Adequacy (Radar)
-            </h2>
-            <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart
-                  cx="50%"
-                  cy="50%"
-                  outerRadius="70%"
-                  data={chartData}
-                >
-                  <PolarGrid stroke="#e5e7eb" />
-                  <PolarAngleAxis
-                    dataKey="short"
-                    tick={{ fontSize: 10, fill: "#6b7280" }}
-                  />
-                  <PolarRadiusAxis
-                    angle={30}
-                    domain={[
-                      0,
-                      Math.max(10, ...chartData.map((c) => c.Design)),
-                    ]}
-                    tick={{ fontSize: 10, fill: "#6b7280" }}
-                  />
-                  <Radar
-                    name="Design"
-                    dataKey="Design"
-                    stroke={COLORS[2]}
-                    fill={COLORS[2]}
-                    fillOpacity={0.4}
-                    animationDuration={900}
-                    strokeWidth={2}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#fff",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                    }}
-                  />
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
+
+      <EffectivenessSpeedometerChart
+        title="Assessment of Adequacy - Speedometer Chart"
+        value={avgScale}
+        min={1}
+        max={5}
+      />
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.45 }}
         className="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 flex-1 flex flex-col"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 flex-shrink-0">
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="text-sm sm:text-base font-semibold mb-3 text-gray-800">
-              Rating Distribution (Pie)
-            </h4>
-            <div className="h-56 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={ratingDistribution}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius="60%"
-                    label={pieLabel as any}
-                    animationDuration={900}
-                    labelLine={{ stroke: "#6b7280" }}
-                  >
-                    {ratingDistribution.map((_, idx) => (
-                      <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#fff",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="text-sm sm:text-base font-semibold mb-3 text-gray-800">
-              Design Share (Donut)
-            </h4>
-            <div className="h-56 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={designShare}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius="40%"
-                    outerRadius="70%"
-                    label={donutLabel as any}
-                    animationDuration={900}
-                    labelLine={{ stroke: "#6b7280" }}
-                  >
-                    {designShare.map((_, idx) => (
-                      <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#fff",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4 sm:p-5">
-            <h4 className="text-sm sm:text-base font-semibold mb-4 text-gray-800">
-              Quick Stats
-            </h4>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center p-2 bg-white rounded-lg">
-                <span className="text-xs sm:text-sm text-gray-600 font-medium">
-                  Total Processes
-                </span>
-                <span className="text-sm sm:text-base font-bold text-blue-600">
-                  {sortedData.length}
-                </span>
-              </div>
-              <div className="flex justify-between items-center p-2 bg-white rounded-lg">
-                <span className="text-xs sm:text-sm text-gray-600 font-medium">
-                  Avg Design
-                </span>
-                <span className="text-sm sm:text-base font-bold text-green-600">
-                  {sortedData.length
-                    ? (
-                        sortedData.reduce(
-                          (s, d) => s + Number(d.DesignAdequacyScore || 0),
-                          0
-                        ) / sortedData.length
-                      ).toFixed(2)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center p-2 bg-white rounded-lg">
-                <span className="text-xs sm:text-sm text-gray-600 font-medium">
-                  Avg Sustainability
-                </span>
-                <span className="text-sm sm:text-base font-bold text-teal-600">
-                  {sortedData.length
-                    ? (
-                        sortedData.reduce(
-                          (s, d) => s + Number(d.SustainabilityScore || 0),
-                          0
-                        ) / sortedData.length
-                      ).toFixed(2)
-                    : "-"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center p-2 bg-white rounded-lg">
-                <span className="text-xs sm:text-sm text-gray-600 font-medium">
-                  Avg Scalability
-                </span>
-                <span className="text-sm sm:text-base font-bold text-purple-600">
-                  {sortedData.length
-                    ? (
-                        sortedData.reduce(
-                          (s, d) => s + Number(d.ScalabilityScore || 0),
-                          0
-                        ) / sortedData.length
-                      ).toFixed(2)
-                    : "-"}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
         <div className="mt-6 pt-6 border-t border-gray-200">
           <h3 className="text-base sm:text-lg font-semibold mb-4 text-gray-800">
             Data Table
           </h3>
-          <div className="overflow-auto flex-1 -mx-4 sm:mx-0">
-            <div className="inline-block min-w-full align-middle">
-              <div className="overflow-hidden border border-gray-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                        No
-                      </th>
-                      <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        Process
-                      </th>
-                      <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                        Design
-                      </th>
-                      <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                        Sustainability
-                      </th>
-                      <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                        Scalability
-                      </th>
-                      <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                        Adequacy
-                      </th>
-                      <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                        Rating
-                      </th>
-                      <th className="px-3 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider whitespace-nowrap">
-                        Date
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {sortedData.map((row) => (
-                      <tr
-                        key={row.Id}
-                        className="hover:bg-gray-50 transition-colors duration-150"
-                      >
-                        <td className="px-3 py-3 text-sm text-gray-900 whitespace-nowrap">
-                          {displayNo(row.No)}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-gray-900">
-                          {row.Process}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-gray-900 whitespace-nowrap">
-                          {row.DesignAdequacyScore}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-gray-900 whitespace-nowrap">
-                          {row.SustainabilityScore}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-gray-900 whitespace-nowrap">
-                          {row.ScalabilityScore}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-gray-900 whitespace-nowrap">
-                          {row.AdequacyScore}
-                        </td>
-                        <td className="px-3 py-3 whitespace-nowrap">
-                          <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              row.Rating === "Excellent"
-                                ? "bg-green-100 text-green-800"
-                                : row.Rating === "Good"
-                                ? "bg-blue-100 text-blue-800"
-                                : row.Rating === "Average"
-                                ? "bg-yellow-100 text-yellow-800"
-                                : "bg-gray-100 text-gray-800"
-                            }`}
-                          >
-                            {row.Rating}
-                          </span>
-                        </td>
-                        <td className="px-3 py-3 text-sm text-gray-500 whitespace-nowrap">
-                          {row.Date}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+          <div className="overflow-auto">
+            <Table
+              columns={columns}
+              dataSource={sortedData}
+              rowKey="Id"
+              pagination={{
+                pageSize: 12,
+                showSizeChanger: true,
+                showQuickJumper: true,
+                showTotal: (total, range) =>
+                  `${range[0]}-${range[1]} of ${total} items`,
+              }}
+              scroll={{ x: 1600 }}
+              size="small"
+              bordered
+              className="shadow-sm"
+            />
           </div>
         </div>
       </motion.div>

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Tabs } from "antd";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Navbar from "@/components/layout/Navbar";
@@ -8,66 +8,14 @@ import EffectivenessReport from "./components/EffectivenessReport";
 import EfficiencyReport from "./components/EfficiencyReport";
 import SeverityReport from "./components/SeverityReport";
 
-type AssessmentItem = {
-  Id: string;
-  No: string | number;
-  Process: string;
-  Date: string;
-  DesignAdequacyScore: number;
-  SustainabilityScore: number;
-  ScalabilityScore: number;
-  AdequacyScore: number;
-  TotalScore: string;
-  Scale: number;
-  Rating: string;
-};
-
 export default function ReportsPage() {
-  const [adequacyData, setAdequacyData] = useState<AssessmentItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("1");
-
-  const API_URL =
-    "https://financedotnet.omnisuiteai.com/api/AssessmentOfAdequacy?page=1&pageSize=100";
-
-  useEffect(() => {
-    let mounted = true;
-    async function fetchData() {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(API_URL, {
-          headers: { accept: "application/json" },
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        const items: AssessmentItem[] = Array.isArray(json.items)
-          ? json.items
-          : Array.isArray(json)
-          ? json
-          : [];
-        if (mounted) setAdequacyData(items);
-      } catch (err: any) {
-        console.error(err);
-        setError(err?.message || "Failed to fetch data");
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    }
-    fetchData();
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   const tabItems = [
     {
       key: "1",
       label: "Assessment of Adequacy",
-      children: (
-        <AdequacyReport data={adequacyData} loading={loading} error={error} />
-      ),
+      children: <AdequacyReport />,
     },
     {
       key: "2",
