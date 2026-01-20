@@ -361,7 +361,7 @@ export default function AdequacyReport() {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={chartData}
-                margin={{ top: 8, right: 12, left: -20, bottom: 28 }}
+                margin={{ top: 8, right: 12, left: 40, bottom: 28 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis
@@ -482,7 +482,7 @@ export default function AdequacyReport() {
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={chartData}
-                  margin={{ top: 8, right: 12, left: -20, bottom: 28 }}
+                  margin={{ top: 8, right: 12, left: 40, bottom: 28 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis
