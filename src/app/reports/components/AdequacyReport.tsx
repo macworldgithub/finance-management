@@ -167,6 +167,7 @@ export default function AdequacyReport() {
         id: d.No ?? 0,
         short: displayNo(d.No),
         processLabel: truncateLabel(d.Process || "(unnamed)"),
+        fullProcess: `${displayNo(d.No)} - ${d.Process || "(unnamed)"}`,
         Design: Number(d.DesignAdequacyScore ?? 0),
         Sustainability: Number(d.SustainabilityScore ?? 0),
         Scalability: Number(d.ScalabilityScore ?? 0),
@@ -702,36 +703,101 @@ export default function AdequacyReport() {
         </div>
         <div className="pt-6 border-t border-gray-200">
           <h2 className="text-base sm:text-lg font-semibold mb-3 text-gray-800">
-            Overall — Design Adequacy (Radar)
+            Assessment of Adequacy
           </h2>
-          <div className="h-64 w-full">
+          <div className="h-[500px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
                 <PolarGrid stroke="#e5e7eb" />
                 <PolarAngleAxis
-                  dataKey="short"
-                  tick={{ fontSize: 10, fill: "#6b7280" }}
+                  dataKey="fullProcess"
+                  tick={{ fontSize: 12, fill: "#6b7280" }}
                 />
                 <PolarRadiusAxis
                   angle={30}
-                  domain={[0, Math.max(10, ...chartData.map((c) => c.Design))]}
+                  domain={[0, 30]}
                   tick={{ fontSize: 10, fill: "#6b7280" }}
                 />
+
+                {/* Actual Scores */}
                 <Radar
-                  name="Design"
+                  name="Actual - Design Adequacy Score"
                   dataKey="Design"
-                  stroke={COLORS[2]}
-                  fill={COLORS[2]}
-                  fillOpacity={0.4}
+                  stroke="#2563eb"
+                  fill="transparent"
                   animationDuration={900}
                   strokeWidth={2}
                 />
+                <Radar
+                  name="Actual - Sustainability Score"
+                  dataKey="Sustainability"
+                  stroke="#f97316"
+                  fill="transparent"
+                  animationDuration={900}
+                  strokeWidth={2}
+                />
+                <Radar
+                  name="Actual - Scalability Score"
+                  dataKey="Scalability"
+                  stroke="#9ca3af"
+                  fill="transparent"
+                  animationDuration={900}
+                  strokeWidth={2}
+                />
+                <Radar
+                  name="Actual - Adequacy Score"
+                  dataKey="Adequacy"
+                  stroke="#eab308"
+                  fill="transparent"
+                  animationDuration={900}
+                  strokeWidth={2}
+                />
+
+                {/* Standard Scores (flat at max) */}
+                <Radar
+                  name="Standard - Design Adequacy Score(0-10)"
+                  dataKey="StdDesign"
+                  stroke="#93c5fd"
+                  fill="transparent"
+                  animationDuration={900}
+                  strokeWidth={2}
+                />
+                <Radar
+                  name="Standard - Sustainability Score(0-10)"
+                  dataKey="StdSustainability"
+                  stroke="#22c55e"
+                  fill="transparent"
+                  animationDuration={900}
+                  strokeWidth={2}
+                />
+                <Radar
+                  name="Standard - Scalability Score(0-5)"
+                  dataKey="StdScalability"
+                  stroke="#1e40af"
+                  fill="transparent"
+                  animationDuration={900}
+                  strokeWidth={2}
+                />
+                <Radar
+                  name="Standard - Adequacy Score(0-25)"
+                  dataKey="StdAdequacy"
+                  stroke="#92400e"
+                  fill="transparent"
+                  animationDuration={900}
+                  strokeWidth={2}
+                />
+
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#fff",
                     border: "1px solid #e5e7eb",
                     borderRadius: "8px",
                   }}
+                />
+                <Legend
+                  verticalAlign="bottom"
+                  height={72}
+                  wrapperStyle={{ fontSize: "11px" }}
                 />
               </RadarChart>
             </ResponsiveContainer>
