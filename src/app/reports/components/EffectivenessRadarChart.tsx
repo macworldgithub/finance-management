@@ -27,15 +27,15 @@ const to25From10 = (v: number) => (v / 10) * 25;
 const to25From5 = (v: number) => (v / 5) * 25;
 
 const COLORS = {
-  actualDesign: "#2563eb",
-  actualOperating: "#dc2626",
-  actualSustainability: "#f59e0b",
-  actualEffectiveness: "#16a34a",
+  actualDesign: "#2563eb", // Blue like Design
+  actualOperating: "#f97316", // Orange like Sustainability
+  actualSustainability: "#9ca3af", // Gray like Scalability
+  actualEffectiveness: "#eab308", // Yellow like Adequacy
 
-  stdDesign: "#1e3a8a",
-  stdOperating: "#7f1d1d",
-  stdSustainability: "#92400e",
-  stdEffectiveness: "#065f46",
+  stdDesign: "#93c5fd", // Light blue like Design Standard
+  stdOperating: "#22c55e", // Green like Sustainability Standard
+  stdSustainability: "#1e40af", // Dark blue like Scalability Standard
+  stdEffectiveness: "#92400e", // Dark orange like Adequacy Standard
 };
 
 const CustomAngleTick = (props: any) => {
@@ -93,7 +93,7 @@ export default function EffectivenessRadarChart({ data }: Props) {
         stdSustainability: 25,
         stdEffectiveness: 25,
       })),
-    [data]
+    [data],
   );
 
   return (

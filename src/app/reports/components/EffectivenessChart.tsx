@@ -30,14 +30,14 @@ interface EffectivenessChartProps {
 }
 
 const COLORS = [
-  "#8884d8", // Actual Design
-  "#82ca9d", // Actual Operating
-  "#ffc658", // Actual Sustainability
-  "#ff7f7f", // Actual Effectiveness
-  "#d0ed57", // Standard Design
-  "#8dd1e1", // Standard Operating
-  "#b794f6", // Standard Sustainability
-  "#f6ad55", // Standard Effectiveness
+  "#2563eb", // Actual Design (blue like Design)
+  "#f97316", // Actual Operating (orange like Sustainability)
+  "#9ca3af", // Actual Sustainability (gray like Scalability)
+  "#eab308", // Actual Effectiveness (yellow like Adequacy)
+  "#93c5fd", // Standard Design (light blue like Design Standard)
+  "#22c55e", // Standard Operating (green like Sustainability Standard)
+  "#1e40af", // Standard Sustainability (dark blue like Scalability Standard)
+  "#92400e", // Standard Effectiveness (dark orange like Adequacy Standard)
 ];
 
 const LEGEND_ITEMS = [

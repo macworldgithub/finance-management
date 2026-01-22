@@ -8,7 +8,7 @@ import { apiClientDotNet } from "@/config/apiClientDotNet";
 import { getEndpointForSection } from "./sectionMappings";
 export const submitSectionData = async (
   section: string,
-  data: any
+  data: any,
 ): Promise<ApiResponse> => {
   const endpoint = getEndpointForSection(section);
   if (!endpoint) {
@@ -31,7 +31,7 @@ export const submitSectionData = async (
     });
     const response = await apiClientDotNet.post(
       `/${endpoint}/bulk`,
-      requestData
+      requestData,
     ); // Keep bulk post
     return {
       success: true,

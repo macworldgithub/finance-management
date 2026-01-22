@@ -30,14 +30,14 @@ interface EfficiencyChartProps {
 }
 
 const COLORS = [
-  "#8884d8",
-  "#82ca9d",
-  "#ffc658",
-  "#ff7f7f",
-  "#d0ed57",
-  "#8dd1e1",
-  "#b794f6",
-  "#f6ad55",
+  "#2563eb", // Actual - Objective Achievement (blue like Design)
+  "#f97316", // Actual - Timeliness Throughput (orange like Sustainability)
+  "#9ca3af", // Actual - Resource Consumption (gray like Scalability)
+  "#eab308", // Actual - Efficiency (yellow like Adequacy)
+  "#93c5fd", // Standard - Objective Achievement (light blue like Design Standard)
+  "#22c55e", // Standard - Timeliness Throughput (green like Sustainability Standard)
+  "#1e40af", // Standard - Resource Consumption (dark blue like Scalability Standard)
+  "#92400e", // Standard - Efficiency (dark orange like Adequacy Standard)
 ];
 
 const LEGEND_ITEMS = [
@@ -114,6 +114,7 @@ export default function EfficiencyChart({ data }: EfficiencyChartProps) {
               barSize={12}
               radius={[2, 2, 0, 0]}
             />
+
             <Bar
               dataKey="actualTimelinessThroughput"
               fill={COLORS[1]}
@@ -137,7 +138,7 @@ export default function EfficiencyChart({ data }: EfficiencyChartProps) {
             />
 
             <Bar
-              dataKey="standardObjectiveAchievement"    
+              dataKey="standardObjectiveAchievement"
               fill={COLORS[4]}
               name="Standard - Objective Achievement Score (0-10)"
               barSize={12}

@@ -27,15 +27,15 @@ const to25From10 = (v: number) => (v / 10) * 25;
 const to25From5 = (v: number) => (v / 5) * 25;
 
 const COLORS = {
-  actualObjectiveAchievement: "#2563eb",
-  actualTimelinessThroughput: "#dc2626",
-  actualResourceConsumption: "#f59e0b",
-  actualEfficiency: "#16a34a",
+  actualObjectiveAchievement: "#2563eb", // Blue like Design
+  actualTimelinessThroughput: "#f97316", // Orange like Sustainability
+  actualResourceConsumption: "#9ca3af", // Gray like Scalability
+  actualEfficiency: "#eab308", // Yellow like Adequacy
 
-  stdObjectiveAchievement: "#1e3a8a",
-  stdTimelinessThroughput: "#7f1d1d",
-  stdResourceConsumption: "#92400e",
-  stdEfficiency: "#065f46",
+  stdObjectiveAchievement: "#93c5fd", // Light blue like Design Standard
+  stdTimelinessThroughput: "#22c55e", // Green like Sustainability Standard
+  stdResourceConsumption: "#1e40af", // Dark blue like Scalability Standard
+  stdEfficiency: "#92400e", // Dark orange like Adequacy Standard
 };
 
 const CustomAngleTick = (props: any) => {
@@ -82,13 +82,13 @@ export default function EfficiencyRadarChart({ data }: Props) {
         processLabel: `5.${index + 1} ${item.Process}`,
 
         actualObjectiveAchievement: to25From10(
-          item.ObjectiveAchievementScore || 0
+          item.ObjectiveAchievementScore || 0,
         ),
         actualTimelinessThroughput: to25From10(
-          item.TimelinessThroughputScore || 0
+          item.TimelinessThroughputScore || 0,
         ),
         actualResourceConsumption: to25From5(
-          item.ResourceConsumptionScore || 0
+          item.ResourceConsumptionScore || 0,
         ),
         actualEfficiency: item.EfficiencyScore || 0,
 
@@ -97,7 +97,7 @@ export default function EfficiencyRadarChart({ data }: Props) {
         stdResourceConsumption: 25,
         stdEfficiency: 25,
       })),
-    [data]
+    [data],
   );
 
   return (
