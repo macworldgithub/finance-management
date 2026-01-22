@@ -51,8 +51,8 @@ export default function EfficiencyReport() {
         const items: EfficiencyItem[] = Array.isArray(json.items)
           ? json.items
           : Array.isArray(json)
-          ? json
-          : [];
+            ? json
+            : [];
         if (mounted) setData(items);
       } catch (err: any) {
         console.error(err);
@@ -86,6 +86,7 @@ export default function EfficiencyReport() {
 
   return (
     <div className="space-y-6">
+      <EfficiencyLineChart data={data} />
       <EfficiencyChart data={data} />
       <EfficiencyHorizontalChart data={data} />
       <EfficiencyRadarChart data={data} />
@@ -95,7 +96,6 @@ export default function EfficiencyReport() {
         min={1}
         max={5}
       />
-      <EfficiencyLineChart data={data} />
       <EfficiencyTable data={data} />
     </div>
   );

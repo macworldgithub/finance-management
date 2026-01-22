@@ -32,7 +32,7 @@ export const submitSectionData = async (
     const response = await apiClientDotNet.post(
       `/${endpoint}/bulk`,
       requestData,
-    ); // Keep bulk post
+    );  
     return {
       success: true,
       data: response.data,

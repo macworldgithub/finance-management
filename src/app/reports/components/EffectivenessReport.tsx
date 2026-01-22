@@ -51,8 +51,8 @@ export default function EffectivenessReport() {
         const items: EffectivenessItem[] = Array.isArray(json.items)
           ? json.items
           : Array.isArray(json)
-          ? json
-          : [];
+            ? json
+            : [];
         if (mounted) setData(items);
       } catch (err: any) {
         console.error(err);
@@ -86,6 +86,7 @@ export default function EffectivenessReport() {
 
   return (
     <div className="space-y-6">
+      <EffectivenessLineChart />
       <EffectivenessChart data={data} />
       <EffectivenessHorizontalChart data={data} />
       <EffectivenessRadarChart data={data} />
@@ -95,7 +96,6 @@ export default function EffectivenessReport() {
         min={1}
         max={5}
       />
-      <EffectivenessLineChart />
       <EffectivenessTable data={data} />
     </div>
   );
