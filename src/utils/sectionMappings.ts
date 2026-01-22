@@ -1,7 +1,7 @@
 // src/utils/sectionMappings.ts
 export const SECTION_TO_BASE_ENDPOINT: Record<string, string> = {
   Process: "Processes",
-  Ownership: "OwnershipScorings",
+  Ownership: "Ownerships",
   "COSO-Control Environment": "CosoControlEnvironments",
   "INTOSAI, IFAC, and Government Audit Standards - Control Environment":
     "IntosaiIfacControlEnvironments",
