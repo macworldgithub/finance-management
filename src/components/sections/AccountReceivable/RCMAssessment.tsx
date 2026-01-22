@@ -59,7 +59,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     >({});
     const [editingKeys, setEditingKeys] = useState<string[]>([]);
     const [originalData, setOriginalData] = useState<Record<string, DataType>>(
-      {}
+      {},
     );
     const [loading, setLoading] = useState(false);
     const { searchText } = useGlobalSearch();
@@ -81,6 +81,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "12": "Assessment of Effectiveness",
         "13": "Assessment of Efficiency",
         "14": "Process Severity",
+        "15": "Ownership",
       };
       return map[activeTab] || "Process";
     }, [activeTab]);
@@ -175,6 +176,37 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 rating: item.Rating ?? "",
                 processSeverityLevels: item.Rating ?? "",
               };
+            case "Ownership":
+              return {
+                ...base,
+                date: item.Date ?? item.date ?? "",
+                activity: item.Activity ?? "",
+                activityScore: item.ActivityScore ?? 0,
+                process: item.Process ?? "",
+                processScore: item.ProcessScore ?? 0,
+                processStage: item.ProcessStage ?? "",
+                processStageScore: item.ProcessStageScore ?? 0,
+                totalScore: item.TotalScore ?? "",
+                scale: item.Scale ?? 0,
+                rating: item.Rating ?? "",
+                function: item.Function ?? "",
+                functionScore: item.FunctionScore ?? 0,
+                clientSegmentAndOrFunctionalSegment:
+                  item.ClientSegmentAndOrFunctionalSegment ?? "",
+                clientSegmentScore: item.ClientSegmentScore ?? 0,
+                operationalUnit: item.OperationalUnit ?? "",
+                operationalUnitScore: item.OperationalUnitScore ?? 0,
+                division: item.Division ?? "",
+                divisionScore: item.DivisionScore ?? 0,
+                entity: item.Entity ?? "",
+                entityScore: item.EntityScore ?? 0,
+                unitOrDepartment: item.UnitOrDepartment ?? "",
+                unitOrDepartmentScore: item.UnitOrDepartmentScore ?? 0,
+                productClass: item.ProductClass ?? "",
+                productClassScore: item.ProductClassScore ?? 0,
+                productName: item.ProductName ?? "",
+                productNameScore: item.ProductNameScore ?? 0,
+              };
             default:
               return base;
           }
@@ -228,7 +260,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
         const normalizedItems = normalizeNoValues(mappedItems);
         const sortedItems = [...normalizedItems].sort(
-          (a, b) => getSortableNo(a.no) - getSortableNo(b.no)
+          (a, b) => getSortableNo(a.no) - getSortableNo(b.no),
         );
 
         setDataBySection((prev) => ({
@@ -279,7 +311,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           }, 30);
         });
       },
-      []
+      [],
     );
 
     const handleBottomScroll = useCallback(
@@ -287,18 +319,18 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         const target = e.target as HTMLDivElement;
         syncScroll(target, topScrollbarRef.current);
       },
-      [syncScroll]
+      [syncScroll],
     );
 
     const handleTopScroll = useCallback(
       (e: React.UIEvent<HTMLDivElement>) => {
         const target = e.target as HTMLDivElement;
         const bottom = tableWrapperRef.current?.querySelector(
-          ".ant-table-body"
+          ".ant-table-body",
         ) as HTMLElement | null;
         if (bottom) syncScroll(target, bottom);
       },
-      [syncScroll]
+      [syncScroll],
     );
 
     // 3. Better update function + force re-calculation
@@ -310,7 +342,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       const clientWidth = body.clientWidth;
 
       const fakeDiv = topScrollbarRef.current.querySelector(
-        "div"
+        "div",
       ) as HTMLElement;
       if (fakeDiv) {
         fakeDiv.style.width = `${Math.max(scrollWidth, clientWidth)}px`;
@@ -357,6 +389,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       { key: "12", label: "Assessment of Effectiveness" },
       { key: "13", label: "Assessment of Efficiency" },
       { key: "14", label: "Process Severity" },
+      { key: "15", label: "Ownership" },
     ];
 
     const getSectionFromTabKey = (tabKey: string): string => {
@@ -366,6 +399,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "12": "Assessment of Effectiveness",
         "13": "Assessment of Efficiency",
         "14": "Process Severity",
+        "15": "Ownership",
       };
       return map[tabKey] || "Process";
     };
@@ -378,7 +412,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         const fields = columnsRaw
           .filter(
             (c): c is ColumnType<DataType> =>
-              "dataIndex" in c && c.dataIndex !== "actions"
+              "dataIndex" in c && c.dataIndex !== "actions",
           )
           .map((c) => c.dataIndex!);
         const section = getSectionFromTabKey(config.key);
@@ -415,7 +449,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           console.error("Error deleting item:", error);
         }
       },
-      [tableData, getCurrentSection]
+      [tableData, getCurrentSection],
     );
 
     const handleSave = useCallback(
@@ -432,7 +466,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         console.log("Current section:", section);
 
         // Check if item has ID for assessment tabs
-        if (section !== "Process" && !item.id) {
+        if (section !== "Process" && section !== "Ownership" && !item.id) {
           console.error("Item missing ID for assessment tab:", item);
           alert("Cannot save: Item missing ID. Please refresh and try again.");
           return;
@@ -550,6 +584,87 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             };
             break;
 
+          case "Ownership":
+            // For Ownership, use POST for new items or PUT for existing
+            if (item.id) {
+              endpoint = `OwnershipScorings/${item.id}`;
+              requestBody = { 
+                Id: item.id,
+                No: parseFloat(String(item.no)) || 0,
+                Activity: item.activity || "",
+                ActivityScore: parseFloat(String(item.activityScore)) || 0,
+                Process: item.process || "",
+                ProcessScore: parseFloat(String(item.processScore)) || 0,
+                ProcessStage: item.processStage || "",
+                ProcessStageScore:
+                  parseFloat(String(item.processStageScore)) || 0,
+                TotalScore: String(item.totalScore || ""),
+                Scale: parseFloat(String(item.scale)) || 0,
+                Rating: item.rating || "",
+                Function: item.function || "",
+                FunctionScore: parseFloat(String(item.functionScore)) || 0,
+                ClientSegmentAndOrFunctionalSegment:
+                  item.clientSegmentAndOrFunctionalSegment || "",
+                ClientSegmentScore:
+                  parseFloat(String(item.clientSegmentScore)) || 0,
+                OperationalUnit: item.operationalUnit || "",
+                OperationalUnitScore:
+                  parseFloat(String(item.operationalUnitScore)) || 0,
+                Division: item.division || "",
+                DivisionScore: parseFloat(String(item.divisionScore)) || 0,
+                Entity: item.entity || "",
+                EntityScore: parseFloat(String(item.entityScore)) || 0,
+                UnitOrDepartment: item.unitOrDepartment || "",
+                UnitOrDepartmentScore:
+                  parseFloat(String(item.unitOrDepartmentScore)) || 0,
+                ProductClass: item.productClass || "",
+                ProductClassScore:
+                  parseFloat(String(item.productClassScore)) || 0,
+                ProductName: item.productName || "",
+                ProductNameScore:
+                  parseFloat(String(item.productNameScore)) || 0,
+              };
+            } else {
+              // For new Ownership items, use POST without Id and Date
+              endpoint = "OwnershipScorings";
+              requestBody = {
+                No: parseFloat(String(item.no)) || 0,
+                Activity: item.activity || "",
+                ActivityScore: parseFloat(String(item.activityScore)) || 0,
+                Process: item.process || "",
+                ProcessScore: parseFloat(String(item.processScore)) || 0,
+                ProcessStage: item.processStage || "",
+                ProcessStageScore:
+                  parseFloat(String(item.processStageScore)) || 0,
+                TotalScore: String(item.totalScore || ""),
+                Scale: parseFloat(String(item.scale)) || 0,
+                Rating: item.rating || "",
+                Function: item.function || "",
+                FunctionScore: parseFloat(String(item.functionScore)) || 0,
+                ClientSegmentAndOrFunctionalSegment:
+                  item.clientSegmentAndOrFunctionalSegment || "",
+                ClientSegmentScore:
+                  parseFloat(String(item.clientSegmentScore)) || 0,
+                OperationalUnit: item.operationalUnit || "",
+                OperationalUnitScore:
+                  parseFloat(String(item.operationalUnitScore)) || 0,
+                Division: item.division || "",
+                DivisionScore: parseFloat(String(item.divisionScore)) || 0,
+                Entity: item.entity || "",
+                EntityScore: parseFloat(String(item.entityScore)) || 0,
+                UnitOrDepartment: item.unitOrDepartment || "",
+                UnitOrDepartmentScore:
+                  parseFloat(String(item.unitOrDepartmentScore)) || 0,
+                ProductClass: item.productClass || "",
+                ProductClassScore:
+                  parseFloat(String(item.productClassScore)) || 0,
+                ProductName: item.productName || "",
+                ProductNameScore:
+                  parseFloat(String(item.productNameScore)) || 0,
+              };
+            }
+            break;
+
           default:
             console.error("Unknown section:", section);
             return;
@@ -575,12 +690,25 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             if (item.id) {
               response = await apiClientDotNet.put(
                 `/Processes/${item.id}`,
-                convertedBody
+                convertedBody,
               );
             } else {
               response = await apiClientDotNet.post(
                 "/Processes",
-                convertedBody
+                convertedBody,
+              );
+            }
+          } else if (section === "Ownership") {
+            // For Ownership tab, use POST for new items or PUT for existing
+            if (item.id) {
+              response = await apiClientDotNet.put(
+                `/OwnershipScorings/${item.id}`,
+                convertedBody,
+              );
+            } else {
+              response = await apiClientDotNet.post(
+                "/OwnershipScorings",
+                convertedBody,
               );
             }
           } else {
@@ -615,7 +743,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           setEditingKeys((prev) => prev.filter((k) => k !== key));
         }
       },
-      [tableData, getCurrentSection, fetchData, originalData]
+      [tableData, getCurrentSection, fetchData, originalData],
     );
 
     const handleCancel = useCallback(
@@ -624,7 +752,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         const originalItem = originalData[key];
         if (originalItem) {
           const newData = tableData.map((r) =>
-            r.key === key ? originalItem : r
+            r.key === key ? originalItem : r,
           );
           setTableData(newData);
           // Clean up original data
@@ -636,38 +764,38 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         }
         setEditingKeys((prev) => prev.filter((k) => k !== key));
       },
-      [originalData, setTableData, tableData]
+      [originalData, setTableData, tableData],
     );
 
     const handleCheckboxChange = useCallback(
       (rowKey: string, field: keyof DataType, checked: boolean) => {
         const newData = tableData.map((r) =>
-          r.key === rowKey ? { ...r, [field]: checked } : r
+          r.key === rowKey ? { ...r, [field]: checked } : r,
         );
         setTableData(newData);
       },
-      [tableData, setTableData]
+      [tableData, setTableData],
     );
 
     const handleSelectGeneric = useCallback(
       (value: string, rowKey: string, field?: string) => {
         if (!field) return;
         const newData = tableData.map((r) =>
-          r.key === rowKey ? { ...r, [field]: value } : r
+          r.key === rowKey ? { ...r, [field]: value } : r,
         );
         setTableData(newData);
       },
-      [tableData, setTableData]
+      [tableData, setTableData],
     );
 
     const handleTextChange = useCallback(
       (rowKey: string, field: keyof DataType, value: string) => {
         const newData = tableData.map((r) =>
-          r.key === rowKey ? { ...r, [field]: value } : r
+          r.key === rowKey ? { ...r, [field]: value } : r,
         );
         setTableData(newData);
       },
-      [tableData, setTableData]
+      [tableData, setTableData],
     );
 
     const handleAddRow = useCallback(() => {
@@ -690,25 +818,25 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         }
         setEditingKeys((prev) => [...prev, key]);
       },
-      [tableData]
+      [tableData],
     );
 
     const handleDeleteRow = useCallback(
       (key: string) => {
         handleDelete(key);
       },
-      [handleDelete]
+      [handleDelete],
     );
 
     const handleToggleStatus = useCallback(
       (rowKey: string) => {
         const newData = tableData.map((r) =>
-          r.key === rowKey ? { ...r, isActive: !(r.isActive !== false) } : r
+          r.key === rowKey ? { ...r, isActive: !(r.isActive !== false) } : r,
         );
         setTableData(newData);
         setEditingKeys((prev) => prev.filter((k) => k !== rowKey));
       },
-      [tableData]
+      [tableData],
     );
 
     const handleFormSubmit = () => {
@@ -762,12 +890,12 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         handleDeleteRow,
         handleToggleStatus,
         getCurrentSection,
-      ]
+      ],
     );
 
     const columns = useMemo(
       () => getColumns(activeTab, "", handlers, editingKeys),
-      [activeTab, editingKeys, handlers]
+      [activeTab, editingKeys, handlers],
     );
 
     const handleTabChange = useCallback((key: string) => {
@@ -929,7 +1057,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                       //@ts-ignore
                       tableBodyRef.current =
                         tableInstance?.nativeElement?.querySelector(
-                          ".ant-table-body"
+                          ".ant-table-body",
                         );
                     }
                   }}
@@ -957,7 +1085,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
 RCMAssessment.displayName = "RCMAssessment";

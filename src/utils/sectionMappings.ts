@@ -1,7 +1,7 @@
 // src/utils/sectionMappings.ts
 export const SECTION_TO_BASE_ENDPOINT: Record<string, string> = {
   Process: "Processes",
-  Ownership: "Ownerships",
+  Ownership: "OwnershipScorings",
   "COSO-Control Environment": "CosoControlEnvironments",
   "INTOSAI, IFAC, and Government Audit Standards - Control Environment":
     "IntosaiIfacControlEnvironments",
@@ -34,7 +34,7 @@ export const getEndpointForSection = (section: string): string | undefined => {
 
   const normalized = normalizeSectionName(section);
   const matchedKey = Object.keys(SECTION_TO_BASE_ENDPOINT).find(
-    (k) => normalizeSectionName(k) === normalized
+    (k) => normalizeSectionName(k) === normalized,
   );
   if (matchedKey) return SECTION_TO_BASE_ENDPOINT[matchedKey];
 

@@ -24,11 +24,26 @@ export interface DataType {
   severityLevel?: string;
   impact?: string;
   likelihood?: string;
+  // Ownership fields
+  activity?: string;
+  activityScore?: number;
+  processScore?: number;
+  processStage?: string;
+  processStageScore?: number;
+  function?: string;
+  functionScore?: number;
+  clientSegmentAndOrFunctionalSegment?: string;
+  clientSegmentScore?: number;
+  operationalUnitScore?: number;
+  divisionScore?: number;
+  entityScore?: number;
+  unitOrDepartmentScore?: number;
+  productClassScore?: number;
+  productNameScore?: number;
   // Existing fields
   processDescription?: string;
   processObjective?: string;
   processSeverityLevels?: string;
-  activity?: string;
   process2?: string;
   stage?: string;
   functions?: string;

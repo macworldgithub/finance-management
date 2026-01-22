@@ -17,6 +17,7 @@ export const stageOptions = [
   { label: "Posting", key: "Posting" },
   { label: "Initiation", key: "Initiation" },
   { label: "Confirmation", key: "Confirmation" },
+  { label: "Validation", key: "Validation" },
 ];
 export const severityOptions = [
   { label: "Catastrophic", key: "Catastrophic" },
@@ -30,6 +31,42 @@ export const processSeverityLevelsOptions = [
   { label: "High", key: "High" },
   { label: "Medium", key: "Medium" },
   { label: "Low", key: "Low" },
+];
+// Ownership-specific options
+export const ownershipProcessStageOptions = [
+  { label: "Processing", key: "Processing" },
+  { label: "Posting", key: "Posting" },
+  { label: "Initiation", key: "Initiation" },
+  { label: "Confirmation", key: "Confirmation" },
+  { label: "Validation", key: "Validation" },
+];
+export const ownershipTotalScoreOptions = [
+  { label: "20.1 – 25", key: "20.1 – 25" },
+  { label: "15.1 – 20", key: "15.1 – 20" },
+  { label: "10.1 – 15", key: "10.1 – 15" },
+  { label: "5.1 – 10", key: "5.1 – 10" },
+  { label: "0 – 5", key: "0 – 5" },
+];
+export const ownershipScaleOptions = [
+  { label: "5", key: "5" },
+  { label: "4", key: "4" },
+  { label: "3", key: "3" },
+  { label: "2", key: "2" },
+  { label: "1", key: "1" },
+];
+export const ownershipRatingOptions = [
+  { label: "Optimized / Mature", key: "Optimized / Mature" },
+  { label: "Managed / Controlled", key: "Managed / Controlled" },
+  { label: "Defined / Developing", key: "Defined / Developing" },
+  {
+    label: "Basic / Partially Implemented",
+    key: "Basic / Partially Implemented",
+  },
+  { label: "Initial / Ad-hoc", key: "Initial / Ad-hoc" },
+];
+export const productNameOptions = [
+  { label: "Others", key: "Others" },
+  { label: "Non-Product", key: "Non-Product" },
 ];
 // Assessment Rating Options
 export const adequacyRatingOptions = [
@@ -211,7 +248,7 @@ const EditableTextArea = ({
 
 const buildMenu = (
   items: { label: string; key: string }[],
-  onClick?: (key: string) => void
+  onClick?: (key: string) => void,
 ) => {
   return (
     <Menu
@@ -236,9 +273,9 @@ const renderEditableCheckbox = (
   onCheckboxChange?: (
     rowKey: string,
     field: keyof DataType,
-    checked: boolean
+    checked: boolean,
   ) => void,
-  editingKeys?: string[]
+  editingKeys?: string[],
 ) => {
   if (editingKeys && editingKeys.includes(record.key)) {
     return (
@@ -267,10 +304,10 @@ const renderEditableInput = (
     onTextChange?: (
       rowKey: string,
       field: keyof DataType,
-      value: string
+      value: string,
     ) => void;
   },
-  editingKeys: string[] = []
+  editingKeys: string[] = [],
 ) => {
   if (editingKeys.includes(recordKey)) {
     return (
@@ -287,7 +324,7 @@ const renderEditableInput = (
 //abc
 // Helper function to get color based on severity/impact level
 const getColorForSeverity = (
-  value: string
+  value: string,
 ): { bgColor: string; textColor: string; borderColor: string } => {
   switch (value) {
     case "Catastrophic":
@@ -398,12 +435,12 @@ export function getColumns(
     onCheckboxChange?: (
       rowKey: string,
       field: keyof DataType,
-      checked: boolean
+      checked: boolean,
     ) => void;
     onTextChange?: (
       rowKey: string,
       field: keyof DataType,
-      value: string
+      value: string,
     ) => void;
     onAddRow?: () => void;
     onSaveRow?: (rowKey: string) => void;
@@ -411,7 +448,7 @@ export function getColumns(
     onDeleteRow?: (rowKey: string) => void;
     onToggleStatus?: (rowKey: string) => void;
   },
-  editingKeys: string[] = []
+  editingKeys: string[] = [],
 ): ColumnsType<DataType> {
   // No, Process, Actions columns for all tabs
   // Duplicate baseColumns removed above. Only one definition remains.
@@ -601,7 +638,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "processDescription",
-                  newValue
+                  newValue,
                 )
               }
               autoSize={{ minRows: 2 }}
@@ -625,7 +662,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "processObjective",
-                  newValue
+                  newValue,
                 )
               }
               autoSize={{ minRows: 2 }}
@@ -647,8 +684,8 @@ export function getColumns(
             handlers?.onSelectGeneric?.(
               key,
               record.key,
-              "processSeverityLevels"
-            )
+              "processSeverityLevels",
+            ),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -710,7 +747,7 @@ export function getColumns(
       render: (text: any, record: DataType) => {
         if (editingKeys && editingKeys.includes(record.key)) {
           const menu = buildMenu(stageOptions, (key) =>
-            handlers?.onStageChange?.(key, record.key)
+            handlers?.onStageChange?.(key, record.key),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -776,7 +813,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "operationalUnit",
-                  newValue
+                  newValue,
                 )
               }
             />
@@ -893,7 +930,7 @@ export function getColumns(
           record,
           "integrityEthical",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -907,7 +944,7 @@ export function getColumns(
           record,
           "boardOversight",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -921,7 +958,7 @@ export function getColumns(
           record,
           "orgStructure",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -935,7 +972,7 @@ export function getColumns(
           record,
           "commitmentCompetence",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -949,7 +986,7 @@ export function getColumns(
           record,
           "managementPhilosophy",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
   ];
@@ -964,7 +1001,7 @@ export function getColumns(
           checked,
           record,
           "integrityEthical",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -977,7 +1014,7 @@ export function getColumns(
           checked,
           record,
           "commitmentCompetence",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -990,7 +1027,7 @@ export function getColumns(
           checked,
           record,
           "managementPhilosophy",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1003,7 +1040,7 @@ export function getColumns(
           checked,
           record,
           "orgStructure",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1016,7 +1053,7 @@ export function getColumns(
           checked,
           record,
           "assignmentAuthority",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1029,7 +1066,7 @@ export function getColumns(
           checked,
           record,
           "hrPolicies",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1042,7 +1079,7 @@ export function getColumns(
           checked,
           record,
           "boardAudit",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1055,7 +1092,7 @@ export function getColumns(
           checked,
           record,
           "managementControl",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1068,7 +1105,7 @@ export function getColumns(
           checked,
           record,
           "externalInfluences",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1081,7 +1118,7 @@ export function getColumns(
           checked,
           record,
           "commitmentInternal",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1094,7 +1131,7 @@ export function getColumns(
           checked,
           record,
           "enforcementIntegrity",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1107,7 +1144,7 @@ export function getColumns(
           checked,
           record,
           "employeeAwareness",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1120,7 +1157,7 @@ export function getColumns(
           checked,
           record,
           "accountability",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
     {
@@ -1133,7 +1170,7 @@ export function getColumns(
           checked,
           record,
           "commitmentTransparency",
-          handlers?.onCheckboxChange
+          handlers?.onCheckboxChange,
         ),
     },
   ];
@@ -1149,7 +1186,7 @@ export function getColumns(
           record,
           "responsibilityMatrix",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1163,7 +1200,7 @@ export function getColumns(
           record,
           "segregationDuties",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1177,7 +1214,7 @@ export function getColumns(
           record,
           "reportingLines",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1191,7 +1228,7 @@ export function getColumns(
           record,
           "mission",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1205,7 +1242,7 @@ export function getColumns(
           record,
           "visionValues",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1219,7 +1256,7 @@ export function getColumns(
           record,
           "goalsObjectives",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1233,7 +1270,7 @@ export function getColumns(
           record,
           "structuresSystems",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1247,7 +1284,7 @@ export function getColumns(
           record,
           "policiesProcedures",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1261,7 +1298,7 @@ export function getColumns(
           record,
           "processes",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1275,7 +1312,7 @@ export function getColumns(
           record,
           "integrityEthical",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1289,7 +1326,7 @@ export function getColumns(
           record,
           "oversightStructure",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1303,7 +1340,7 @@ export function getColumns(
           record,
           "standards",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1317,7 +1354,7 @@ export function getColumns(
           record,
           "methodologies",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -1331,7 +1368,7 @@ export function getColumns(
           record,
           "rulesRegulations",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
   ];
@@ -1369,7 +1406,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "riskDescription",
-                  newValue
+                  newValue,
                 )
               }
               autoSize={{ minRows: 2 }}
@@ -1386,7 +1423,7 @@ export function getColumns(
       width: 180,
       render: (text: any, record: DataType) => {
         const menu = buildMenu(severityOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "severityImpact")
+          handlers?.onSelectGeneric?.(key, record.key, "severityImpact"),
         );
         const { bgColor, textColor, borderColor } = getColorForSeverity(text);
         if (editingKeys.includes(record.key)) {
@@ -1436,7 +1473,7 @@ export function getColumns(
           { label: "Rare", key: "Rare" },
         ];
         const menu = buildMenu(probabilityOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "probabilityLikelihood")
+          handlers?.onSelectGeneric?.(key, record.key, "probabilityLikelihood"),
         );
         const { bgColor, textColor, borderColor } = getColorForSeverity(text);
         if (editingKeys.includes(record.key)) {
@@ -1486,7 +1523,7 @@ export function getColumns(
           { label: "Lowest", key: "Lowest" },
         ];
         const menu = buildMenu(classificationOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "classification")
+          handlers?.onSelectGeneric?.(key, record.key, "classification"),
         );
         const { bgColor, textColor, borderColor } = getColorForSeverity(text);
         if (editingKeys.includes(record.key)) {
@@ -1539,7 +1576,7 @@ export function getColumns(
         ];
         if (editingKeys.includes(record.key)) {
           const menu = buildMenu(responseOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "riskResponseType")
+            handlers?.onSelectGeneric?.(key, record.key, "riskResponseType"),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -1569,7 +1606,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "controlObjectives",
-                  newValue
+                  newValue,
                 )
               }
               autoSize={{ minRows: 3 }}
@@ -1617,7 +1654,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "controlDefinition",
-                  newValue
+                  newValue,
                 )
               }
               autoSize={{ minRows: 3 }}
@@ -1645,7 +1682,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "controlDescription",
-                  newValue
+                  newValue,
                 )
               }
               autoSize={{ minRows: 3 }}
@@ -1673,7 +1710,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "controlResponsibility",
-                  newValue
+                  newValue,
                 )
               }
             />
@@ -1705,7 +1742,7 @@ export function getColumns(
             { label: "No", key: "No" },
           ];
           const menu = buildMenu(yesNoOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "keyControl")
+            handlers?.onSelectGeneric?.(key, record.key, "keyControl"),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -1742,7 +1779,7 @@ export function getColumns(
             { label: "No", key: "No" },
           ];
           const menu = buildMenu(yesNoOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "zeroTolerance")
+            handlers?.onSelectGeneric?.(key, record.key, "zeroTolerance"),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -1773,7 +1810,7 @@ export function getColumns(
             { label: "Entity Level", key: "Entity Level" },
           ];
           const menu = buildMenu(levelOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "levelResponsibility")
+            handlers?.onSelectGeneric?.(key, record.key, "levelResponsibility"),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -1864,7 +1901,7 @@ export function getColumns(
             },
           ];
           const menu = buildMenu(cosoOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "cosoPrinciple")
+            handlers?.onSelectGeneric?.(key, record.key, "cosoPrinciple"),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -1890,7 +1927,7 @@ export function getColumns(
             { label: "Manual", key: "Manual" },
           ];
           const menu = buildMenu(approachOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "operationalApproach")
+            handlers?.onSelectGeneric?.(key, record.key, "operationalApproach"),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -1923,7 +1960,11 @@ export function getColumns(
             { label: "As and When", key: "As and When" },
           ];
           const menu = buildMenu(frequencyOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "operationalFrequency")
+            handlers?.onSelectGeneric?.(
+              key,
+              record.key,
+              "operationalFrequency",
+            ),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -1954,8 +1995,8 @@ export function getColumns(
             handlers?.onSelectGeneric?.(
               key,
               record.key,
-              "controlClassification"
-            )
+              "controlClassification",
+            ),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -2002,7 +2043,7 @@ export function getColumns(
       render: (text: any, record: DataType) => {
         if (editingKeys.includes(record.key)) {
           const menu = buildMenu(soxControlActivityOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "soxControlActivity")
+            handlers?.onSelectGeneric?.(key, record.key, "soxControlActivity"),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -2030,7 +2071,7 @@ export function getColumns(
           record,
           "occurrence",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2044,7 +2085,7 @@ export function getColumns(
           record,
           "completeness",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2058,7 +2099,7 @@ export function getColumns(
           record,
           "accuracy",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2072,7 +2113,7 @@ export function getColumns(
           record,
           "authorization",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2086,7 +2127,7 @@ export function getColumns(
           record,
           "cutoff",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2100,7 +2141,7 @@ export function getColumns(
           record,
           "classificationAndUnderstandability",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2114,7 +2155,7 @@ export function getColumns(
           record,
           "existence",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2128,7 +2169,7 @@ export function getColumns(
           record,
           "rightsAndObligations",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2142,7 +2183,7 @@ export function getColumns(
           record,
           "valuationAndAllocation",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2156,7 +2197,7 @@ export function getColumns(
           record,
           "presentationDisclosure",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
   ];
@@ -2173,18 +2214,18 @@ export function getColumns(
           value === "P" || value === true
             ? "Yes"
             : value === "O" || value === false
-            ? "No"
-            : value === "Yes" || value === "No"
-            ? value
-            : "";
+              ? "No"
+              : value === "Yes" || value === "No"
+                ? value
+                : "";
         // Only show dropdown when editing
         if (editingKeys.includes(record.key)) {
           const menu = buildMenu(yesNoOptions, (key) =>
             handlers?.onSelectGeneric?.(
               key,
               record.key,
-              "internalControlOverFinancialReporting"
-            )
+              "internalControlOverFinancialReporting",
+            ),
           );
           return (
             <Dropdown overlay={menu} trigger={["click"]}>
@@ -2212,7 +2253,7 @@ export function getColumns(
           record,
           "check",
           handlers?.onCheckboxChange,
-          editingKeys
+          editingKeys,
         ),
     },
     {
@@ -2229,7 +2270,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "internalAuditTest",
-                  newValue
+                  newValue,
                 )
               }
               autoSize={{ minRows: 2 }}
@@ -2294,7 +2335,7 @@ export function getColumns(
                 handlers?.onTextChange?.(
                   record.key,
                   "grcEffectiveness",
-                  newValue
+                  newValue,
                 )
               }
               placeholder="Enter GRC Effectiveness"
@@ -2380,7 +2421,7 @@ export function getColumns(
               record.key,
               "designAdequacyScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2394,7 +2435,7 @@ export function getColumns(
               record.key,
               "sustainabilityScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2408,7 +2449,7 @@ export function getColumns(
               record.key,
               "scalabilityScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2422,7 +2463,7 @@ export function getColumns(
               record.key,
               "adequacyScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2433,7 +2474,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(totalScoreOptions, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "totalScore")
+                handlers?.onSelectGeneric?.(key, record.key, "totalScore"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2455,7 +2496,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(scale5Options, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "scale")
+                handlers?.onSelectGeneric?.(key, record.key, "scale"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2477,7 +2518,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(adequacyRatingOptions, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "rating")
+                handlers?.onSelectGeneric?.(key, record.key, "rating"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2506,7 +2547,7 @@ export function getColumns(
               record.key,
               "designScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2520,7 +2561,7 @@ export function getColumns(
               record.key,
               "operatingScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2534,7 +2575,7 @@ export function getColumns(
               record.key,
               "sustainabilityScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2548,7 +2589,7 @@ export function getColumns(
               record.key,
               "effectivenessScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2559,7 +2600,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(totalScoreOptions, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "totalScore")
+                handlers?.onSelectGeneric?.(key, record.key, "totalScore"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2581,7 +2622,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(scale5Options, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "scale")
+                handlers?.onSelectGeneric?.(key, record.key, "scale"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2603,7 +2644,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(effectivenessRatingOptions, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "rating")
+                handlers?.onSelectGeneric?.(key, record.key, "rating"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2632,7 +2673,7 @@ export function getColumns(
               record.key,
               "objectiveAchievementScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2646,7 +2687,7 @@ export function getColumns(
               record.key,
               "timelinessThroughputScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2660,7 +2701,7 @@ export function getColumns(
               record.key,
               "resourceConsumptionScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2674,7 +2715,7 @@ export function getColumns(
               record.key,
               "efficiencyScore",
               handlers,
-              editingKeys
+              editingKeys,
             ),
         },
         {
@@ -2685,7 +2726,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(totalScoreOptions, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "totalScore")
+                handlers?.onSelectGeneric?.(key, record.key, "totalScore"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2707,7 +2748,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(scale5Options, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "scale")
+                handlers?.onSelectGeneric?.(key, record.key, "scale"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2729,7 +2770,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(effectivenessRatingOptions, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "rating")
+                handlers?.onSelectGeneric?.(key, record.key, "rating"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2755,7 +2796,7 @@ export function getColumns(
           render: (text: any, record: DataType) => {
             if (editingKeys.includes(record.key)) {
               const menu = buildMenu(scale4Options, (key) =>
-                handlers?.onSelectGeneric?.(key, record.key, "scale")
+                handlers?.onSelectGeneric?.(key, record.key, "scale"),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2780,8 +2821,8 @@ export function getColumns(
                 handlers?.onSelectGeneric?.(
                   key,
                   record.key,
-                  "processSeverityLevels"
-                )
+                  "processSeverityLevels",
+                ),
               );
               return (
                 <Dropdown overlay={menu} trigger={["click"]}>
@@ -2793,6 +2834,634 @@ export function getColumns(
               );
             }
             return text || "";
+          },
+        },
+      ];
+      break;
+    case "15":
+      dynamicColumns = [
+        {
+          title: "Activity",
+          dataIndex: "activity",
+          key: "activity",
+          width: 200,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(record.key, "activity", value)
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Activity Score(0-25)",
+          dataIndex: "activityScore",
+          key: "activityScore",
+          width: 150,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "activityScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Process",
+          dataIndex: "process",
+          key: "process",
+          width: 200,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(record.key, "process", value)
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Process Score(0-25)",
+          dataIndex: "processScore",
+          key: "processScore",
+          width: 150,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "processScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Process Stage",
+          dataIndex: "processStage",
+          key: "processStage",
+          width: 150,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(ownershipProcessStageOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "processStage"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Process Stage Score(0-25)",
+          dataIndex: "processStageScore",
+          key: "processStageScore",
+          width: 180,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "processStageScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Total Score (0-25)",
+          dataIndex: "totalScore",
+          key: "totalScore",
+          width: 150,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(ownershipTotalScoreOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "totalScore"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Scale",
+          dataIndex: "scale",
+          key: "scale",
+          width: 100,
+          align: "center" as const,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(ownershipScaleOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "scale"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Rating",
+          dataIndex: "rating",
+          key: "rating",
+          width: 180,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(ownershipRatingOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "rating"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Function",
+          dataIndex: "function",
+          key: "function",
+          width: 150,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(record.key, "function", value)
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Function Score(0-25)",
+          dataIndex: "functionScore",
+          key: "functionScore",
+          width: 150,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "functionScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Client Segment and/or Functional Segment",
+          dataIndex: "clientSegmentAndOrFunctionalSegment",
+          key: "clientSegmentAndOrFunctionalSegment",
+          width: 250,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(
+                      record.key,
+                      "clientSegmentAndOrFunctionalSegment",
+                      value,
+                    )
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Client Segment Score(0-25)",
+          dataIndex: "clientSegmentScore",
+          key: "clientSegmentScore",
+          width: 180,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "clientSegmentScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Operational Unit",
+          dataIndex: "operationalUnit",
+          key: "operationalUnit",
+          width: 150,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(
+                      record.key,
+                      "operationalUnit",
+                      value,
+                    )
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Operational Unit Score(0-25)",
+          dataIndex: "operationalUnitScore",
+          key: "operationalUnitScore",
+          width: 180,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "operationalUnitScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Division",
+          dataIndex: "division",
+          key: "division",
+          width: 120,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(record.key, "division", value)
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Division Score(0-25)",
+          dataIndex: "divisionScore",
+          key: "divisionScore",
+          width: 150,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "divisionScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Entity",
+          dataIndex: "entity",
+          key: "entity",
+          width: 120,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(record.key, "entity", value)
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Entity Score(0-25)",
+          dataIndex: "entityScore",
+          key: "entityScore",
+          width: 130,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "entityScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Unit / Department",
+          dataIndex: "unitOrDepartment",
+          key: "unitOrDepartment",
+          width: 160,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(
+                      record.key,
+                      "unitOrDepartment",
+                      value,
+                    )
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Unit / Department Score(0-25)",
+          dataIndex: "unitOrDepartmentScore",
+          key: "unitOrDepartmentScore",
+          width: 180,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "unitOrDepartmentScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Product Class",
+          dataIndex: "productClass",
+          key: "productClass",
+          width: 130,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text || ""}
+                  onSave={(value) =>
+                    handlers?.onTextChange?.(record.key, "productClass", value)
+                  }
+                />
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Product Class Score(0-25)",
+          dataIndex: "productClassScore",
+          key: "productClassScore",
+          width: 170,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "productClassScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
+          },
+        },
+        {
+          title: "Product Name",
+          dataIndex: "productName",
+          key: "productName",
+          width: 130,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(productNameOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "productName"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text || "";
+          },
+        },
+        {
+          title: "Product Name Score(0-25)",
+          dataIndex: "productNameScore",
+          key: "productNameScore",
+          width: 170,
+          align: "center" as const,
+          render: (value: number, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={String(value || 0)}
+                  onSave={(newValue) => {
+                    const numValue = Number(newValue);
+                    if (numValue >= 0 && numValue <= 25) {
+                      handlers?.onTextChange?.(
+                        record.key,
+                        "productNameScore",
+                        String(numValue),
+                      );
+                    }
+                  }}
+                  type="number"
+                  min={0}
+                  max={25}
+                />
+              );
+            }
+            return value || 0;
           },
         },
       ];
