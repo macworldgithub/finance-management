@@ -7,6 +7,7 @@ import AdequacyReport from "./components/AdequacyReport";
 import EffectivenessReport from "./components/EffectivenessReport";
 import EfficiencyReport from "./components/EfficiencyReport";
 import SeverityReport from "./components/SeverityReport";
+import OwnershipScoringReport from "./components/OwnershipScoringReport";
 
 export default function ReportsPage() {
   const [activeTab, setActiveTab] = useState("1");
@@ -31,6 +32,11 @@ export default function ReportsPage() {
       key: "4",
       label: "Process Severity",
       children: <SeverityReport />,
+    },
+    {
+      key: "5",
+      label: "Ownership Scoring",
+      children: <OwnershipScoringReport />,
     },
   ];
 
