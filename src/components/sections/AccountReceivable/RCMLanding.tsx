@@ -114,7 +114,7 @@ export default function RCMLanding({
         <div className="bg-[#2f5b1e] text-white text-center font-bold text-lg py-2 rounded-sm mb-4">
           RCM ASSESSMENT
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-6 text-center text-xs font-semibold">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-2 mb-6 text-center text-xs font-semibold">
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
@@ -149,6 +149,13 @@ export default function RCMLanding({
             onClick={() => onNavigateToAssessment("14")}
           >
             Process Severity
+          </button>
+          <button
+            type="button"
+            className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
+            onClick={() => onNavigateToAssessment("15")}
+          >
+            Ownership
           </button>
         </div>
 

@@ -150,7 +150,7 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
         UnitOrDepartmentScore,
         ProductClass,
         ProductClassScore,
-        ProductName,
+        ProductName,  
         ProductNameScore,
         ...restStepValues
       } = stepValues;
