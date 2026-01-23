@@ -28,84 +28,84 @@ type OwnershipScoringItem = {
   Entity: string;
   EntityScore: number;
   UnitOrDepartment: string;
-  UnitDepartmentScore: number;
+  UnitOrDepartmentScore: number;
   ProductClass: string;
   ProductClassScore: number;
   ProductName: string;
   ProductNameScore: number;
 };
 
-// Score configurations
+// Score configurations - using same colors as Process Severity chart
 const SCORE_CONFIGS = [
   {
     key: "ActivityScore",
     label: "Activity Score(0-25)",
     standard: 25,
-    color: "#2563eb",
+    color: "#2563eb", // Same as Process Severity Scale
     standardColor: "#93c5fd",
   },
   {
     key: "ProcessScore",
     label: "Process Score(0-25)",
     standard: 25,
-    color: "#f97316",
+    color: "#f97316", // Same as Process Severity Levels
     standardColor: "#fed7aa",
   },
   {
     key: "FunctionScore",
     label: "Function Score(0-25)",
     standard: 25,
-    color: "#22c55e",
-    standardColor: "#86efac",
+    color: "#2563eb", // Same as Process Severity Scale
+    standardColor: "#93c5fd",
   },
   {
     key: "ClientSegmentScore",
     label: "Client Segment Score(0-25)",
     standard: 25,
-    color: "#eab308",
-    standardColor: "#fde047",
+    color: "#f97316", // Same as Process Severity Levels
+    standardColor: "#fed7aa",
   },
   {
     key: "OperationalUnitScore",
     label: "Operational Unit Score(0-25)",
     standard: 25,
-    color: "#a855f7",
-    standardColor: "#d8b4fe",
+    color: "#2563eb", // Same as Process Severity Scale
+    standardColor: "#93c5fd",
   },
   {
     key: "DivisionScore",
     label: "Division Score(0-25)",
     standard: 25,
-    color: "#ef4444",
-    standardColor: "#fca5a5",
+    color: "#f97316", // Same as Process Severity Levels
+    standardColor: "#fed7aa",
   },
   {
     key: "EntityScore",
     label: "Entity Score(0-25)",
     standard: 25,
-    color: "#06b6d4",
-    standardColor: "#67e8f9",
+    color: "#2563eb", // Same as Process Severity Scale
+    standardColor: "#93c5fd",
   },
   {
-    key: "UnitDepartmentScore",
+    key: "UnitOrDepartmentScore",
     label: "Unit / Department Score(0-25)",
     standard: 25,
-    color: "#f59e0b",
-    standardColor: "#fcd34d",
+    color: "#f97316", // Same as Process Severity Levels
+    standardColor: "#fed7aa",
   },
   {
     key: "ProductClassScore",
     label: "Product Class Score(0-25)",
     standard: 25,
-    color: "#10b981",
-    standardColor: "#6ee7b7",
+    color: "#2563eb", // Same as Process Severity Scale
+    standardColor: "#93c5fd",
   },
   {
     key: "ProductNameScore",
     label: "Product Name Score(0-25)",
     standard: 25,
-    color: "#8b5cf6",
-    standardColor: "#c4b5fd",
+    color: "#f97316", // Same as Process Severity Levels
+    standardColor: "#fed7aa",
   },
 ];
 
@@ -263,7 +263,7 @@ export default function OwnershipScoringReport() {
               <ReusableChart
                 title={config.label}
                 data={getScoreData(config)}
-                scoreKey="actual"
+                scoreKey="score"
                 standardKey="standard"
                 scoreColor={config.color}
                 standardColor={config.standardColor}
@@ -275,7 +275,7 @@ export default function OwnershipScoringReport() {
                 <ReusableChart
                   title={config.label}
                   data={getScoreData(config)}
-                  scoreKey="actual"
+                  scoreKey="score"
                   standardKey="standard"
                   scoreColor={config.color}
                   standardColor={config.standardColor}
@@ -288,7 +288,7 @@ export default function OwnershipScoringReport() {
                 <ReusableChart
                   title={config.label}
                   data={getScoreData(config)}
-                  scoreKey="actual"
+                  scoreKey="score"
                   standardKey="standard"
                   scoreColor={config.color}
                   standardColor={config.standardColor}

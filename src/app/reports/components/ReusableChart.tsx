@@ -110,7 +110,7 @@ export default function ReusableChart({
               <Line
                 type="monotone"
                 dataKey={scoreKey}
-                stroke={scoreColor}
+                stroke="#2563eb" // Always blue for actual scores
                 strokeWidth={2}
                 dot={{ r: 3 }}
                 name={`Actual - ${title}`}
@@ -119,9 +119,8 @@ export default function ReusableChart({
               <Line
                 type="monotone"
                 dataKey={standardKey}
-                stroke={standardColor}
+                stroke="#f97316" // Always orange for standard scores
                 strokeWidth={2}
-                strokeDasharray="5 5"
                 dot={false}
                 name={`Standard - ${title}`}
                 animationDuration={900}
@@ -160,7 +159,7 @@ export default function ReusableChart({
               <Legend {...legendProps} />
               <Bar
                 dataKey={scoreKey}
-                fill={scoreColor}
+                fill="#2563eb" // Always blue for actual scores
                 name={`Actual - ${title}`}
                 barSize={data.length > 12 ? 10 : 14}
                 animationDuration={900}
@@ -168,7 +167,7 @@ export default function ReusableChart({
               />
               <Bar
                 dataKey={standardKey}
-                fill={standardColor}
+                fill="#f97316" // Always orange for standard scores
                 name={`Standard - ${title}`}
                 barSize={data.length > 12 ? 10 : 14}
                 animationDuration={900}
@@ -212,7 +211,7 @@ export default function ReusableChart({
               <Legend {...legendProps} />
               <Bar
                 dataKey={scoreKey}
-                fill={scoreColor}
+                fill="#2563eb" // Always blue for actual scores
                 name={`Actual - ${title}`}
                 animationDuration={900}
                 radius={[0, 4, 4, 0]}
@@ -220,7 +219,7 @@ export default function ReusableChart({
               />
               <Bar
                 dataKey={standardKey}
-                fill={standardColor}
+                fill="#f97316" // Always orange for standard scores
                 name={`Standard - ${title}`}
                 animationDuration={900}
                 radius={[0, 4, 4, 0]}
