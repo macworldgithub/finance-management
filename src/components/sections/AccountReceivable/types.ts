@@ -28,17 +28,9 @@ export interface DataType {
   processDescription?: string;
   processObjective?: string;
   processSeverityLevels?: string;
-  activity?: string;
-  process2?: string;
   stage?: string;
   functions?: string;
   clientSegment?: string;
-  operationalUnit?: string;
-  division?: string;
-  entity?: string;
-  unitDepartment?: string;
-  productClass?: string;
-  productName?: string;
   integrityEthical?: boolean;
   boardOversight?: boolean;
   orgStructure?: boolean;
@@ -75,6 +67,29 @@ export interface DataType {
   employeeAwareness?: boolean;
   accountability?: boolean;
   commitmentTransparency?: boolean;
+  // OwnershipScorings fields
+  activity?: string;
+  activityScore?: number;
+  process2?: string;
+  processScore?: number;
+  processStage?: string;
+  processStageScore?: number;
+  function?: string;
+  functionScore?: number;
+  clientSegmentAndOrFunctionalSegment?: string;
+  clientSegmentScore?: number;
+  operationalUnit?: string;
+  operationalUnitScore?: number;
+  division?: string;
+  divisionScore?: number;
+  entity?: string;
+  entityScore?: number;
+  unitDepartment?: string;
+  unitDepartmentScore?: number;
+  productClass?: string;
+  productClassScore?: number;
+  productName?: string;
+  productNameScore?: number;
   [key: string]: any; // flexible for dynamic columns
 }
 // Add this to your types.ts file

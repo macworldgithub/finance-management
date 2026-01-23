@@ -71,6 +71,7 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     { key: "assessment-effectivenesses", title: "Assessment of Effectiveness" },
     { key: "assessment-efficiencies", title: "Assessment of Efficiency" },
     { key: "process-severities", title: "Process Severity" },
+    { key: "ownership-scorings", title: "Ownership Scoring" },
     { key: "internal-audit-tests", title: "Internal Audit Tests" },
     {
       key: "intosai-ifac-control-environments",
@@ -1152,6 +1153,125 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
             <Option value="Medium">Medium</Option>
             <Option value="Low">Low</Option>
           </Select>
+        </Form.Item>
+      </>
+    ),
+    // OwnershipScorings
+    "ownership-scorings": (
+      <>
+        {commonFields}
+        <Form.Item name="Activity" label="Activity">
+          <TextArea rows={2} />
+        </Form.Item>
+        <Form.Item name="ActivityScore" label="Activity Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="Process" label="Process">
+          <TextArea rows={2} />
+        </Form.Item>
+        <Form.Item name="ProcessScore" label="Process Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="ProcessStage" label="Process Stage">
+          <Select>
+            <Option value="Processing">Processing</Option>
+            <Option value="Posting">Posting</Option>
+            <Option value="Initiation">Initiation</Option>
+            <Option value="Confirmation">Confirmation</Option>
+            <Option value="Validation">Validation</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="ProcessStageScore" label="Process Stage Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="TotalScore" label="Total Score(0-25)">
+          <Select>
+            <Option value="20.1 – 25">20.1 – 25</Option>
+            <Option value="15.1 – 20">15.1 – 20</Option>
+            <Option value="10.1 – 15">10.1 – 15</Option>
+            <Option value="5.1 – 10">5.1 – 10</Option>
+            <Option value="0 – 5">0 – 5</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Scale" label="Scale">
+          <Select>
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Rating" label="Rating">
+          <Select>
+            <Option value="Optimized / Mature">Optimized / Mature</Option>
+            <Option value="Managed / Controlled">Managed / Controlled</Option>
+            <Option value="Defined / Developing">Defined / Developing</Option>
+            <Option value="Basic / Partially Implemented">
+              Basic / Partially Implemented
+            </Option>
+            <Option value="Initial / Ad-hoc">Initial / Ad-hoc</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Function" label="Function">
+          <Input />
+        </Form.Item>
+        <Form.Item name="FunctionScore" label="Function Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item
+          name="ClientSegmentAndOrFunctionalSegment"
+          label="Client Segment and/or Functional Segment"
+        >
+          <TextArea rows={2} />
+        </Form.Item>
+        <Form.Item name="ClientSegmentScore" label="Client Segment Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="OperationalUnit" label="Operational Unit">
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="OperationalUnitScore"
+          label="Operational Unit Score(0-25)"
+        >
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="Division" label="Division">
+          <Input />
+        </Form.Item>
+        <Form.Item name="DivisionScore" label="Division Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="Entity" label="Entity">
+          <Input />
+        </Form.Item>
+        <Form.Item name="EntityScore" label="Entity Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="UnitOrDepartment" label="Unit / Department">
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="UnitOrDepartmentScore"
+          label="Unit / Department Score(0-25)"
+        >
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="ProductClass" label="Product Class">
+          <Input />
+        </Form.Item>
+        <Form.Item name="ProductClassScore" label="Product Class Score(0-25)">
+          <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="ProductName" label="Product Name">
+          <Select>
+            <Option value="Others">Others</Option>
+            <Option value="Non-Product">Non-Product</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="ProductNameScore" label="Product Name Score(0-25)">
+          <Input type="number" min={0} max={25} />
         </Form.Item>
       </>
     ),

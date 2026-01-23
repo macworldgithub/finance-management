@@ -17,6 +17,7 @@ export const stageOptions = [
   { label: "Posting", key: "Posting" },
   { label: "Initiation", key: "Initiation" },
   { label: "Confirmation", key: "Confirmation" },
+  { label: "Validation", key: "Validation" },
 ];
 export const severityOptions = [
   { label: "Catastrophic", key: "Catastrophic" },
@@ -30,6 +31,21 @@ export const processSeverityLevelsOptions = [
   { label: "High", key: "High" },
   { label: "Medium", key: "Medium" },
   { label: "Low", key: "Low" },
+];
+// OwnershipScorings Rating Options
+export const ownershipRatingOptions = [
+  { label: "Optimized / Mature", key: "Optimized / Mature" },
+  { label: "Managed / Controlled", key: "Managed / Controlled" },
+  { label: "Defined / Developing", key: "Defined / Developing" },
+  {
+    label: "Basic / Partially Implemented",
+    key: "Basic / Partially Implemented",
+  },
+  { label: "Initial / Ad-hoc", key: "Initial / Ad-hoc" },
+];
+export const productNameOptions = [
+  { label: "Others", key: "Others" },
+  { label: "Non-Product", key: "Non-Product" },
 ];
 // Assessment Rating Options
 export const adequacyRatingOptions = [
@@ -2798,6 +2814,461 @@ export function getColumns(
             }
             return text || "";
           },
+        },
+      ];
+      break;
+    case "15":
+      dynamicColumns = [
+        {
+          title: "Activity",
+          dataIndex: "activity",
+          key: "activity",
+          width: 250,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(record.key, "activity", newValue)
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Activity Score(0-25)",
+          dataIndex: "activityScore",
+          key: "activityScore",
+          width: 140,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "activityScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Process",
+          dataIndex: "process2",
+          key: "process2",
+          width: 200,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(record.key, "process2", newValue)
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Process Score(0-25)",
+          dataIndex: "processScore",
+          key: "processScore",
+          width: 140,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "processScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Process Stage",
+          dataIndex: "processStage",
+          key: "processStage",
+          width: 140,
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(stageOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "processStage"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Process Stage Score(0-25)",
+          dataIndex: "processStageScore",
+          key: "processStageScore",
+          width: 160,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "processStageScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Total Score(0-25)",
+          dataIndex: "totalScore",
+          key: "totalScore",
+          width: 140,
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(totalScoreOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "totalScore"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Scale",
+          dataIndex: "scale",
+          key: "scale",
+          width: 80,
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(scale5Options, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "scale"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Rating",
+          dataIndex: "rating",
+          key: "rating",
+          width: 180,
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(ownershipRatingOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "rating"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Function",
+          dataIndex: "function",
+          key: "function",
+          width: 120,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(record.key, "function", newValue)
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Function Score(0-25)",
+          dataIndex: "functionScore",
+          key: "functionScore",
+          width: 140,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "functionScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Client Segment and/or Functional Segment",
+          dataIndex: "clientSegmentAndOrFunctionalSegment",
+          key: "clientSegmentAndOrFunctionalSegment",
+          width: 250,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(
+                      record.key,
+                      "clientSegmentAndOrFunctionalSegment",
+                      newValue,
+                    )
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Client Segment Score(0-25)",
+          dataIndex: "clientSegmentScore",
+          key: "clientSegmentScore",
+          width: 160,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "clientSegmentScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Operational Unit",
+          dataIndex: "operationalUnit",
+          key: "operationalUnit",
+          width: 140,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(
+                      record.key,
+                      "operationalUnit",
+                      newValue,
+                    )
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Operational Unit Score(0-25)",
+          dataIndex: "operationalUnitScore",
+          key: "operationalUnitScore",
+          width: 180,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "operationalUnitScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Division",
+          dataIndex: "division",
+          key: "division",
+          width: 100,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(record.key, "division", newValue)
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Division Score(0-25)",
+          dataIndex: "divisionScore",
+          key: "divisionScore",
+          width: 140,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "divisionScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Entity",
+          dataIndex: "entity",
+          key: "entity",
+          width: 100,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(record.key, "entity", newValue)
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Entity Score(0-25)",
+          dataIndex: "entityScore",
+          key: "entityScore",
+          width: 120,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "entityScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Unit / Department",
+          dataIndex: "unitDepartment",
+          key: "unitDepartment",
+          width: 160,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(
+                      record.key,
+                      "unitDepartment",
+                      newValue,
+                    )
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Unit / Department Score(0-25)",
+          dataIndex: "unitDepartmentScore",
+          key: "unitDepartmentScore",
+          width: 180,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "unitDepartmentScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Product Class",
+          dataIndex: "productClass",
+          key: "productClass",
+          width: 120,
+          render: (text: string, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              return (
+                <EditableInput
+                  initialValue={text}
+                  onSave={(newValue) =>
+                    handlers?.onTextChange?.(
+                      record.key,
+                      "productClass",
+                      newValue,
+                    )
+                  }
+                />
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Product Class Score(0-25)",
+          dataIndex: "productClassScore",
+          key: "productClassScore",
+          width: 160,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "productClassScore",
+              handlers,
+              editingKeys,
+            ),
+        },
+        {
+          title: "Product Name",
+          dataIndex: "productName",
+          key: "productName",
+          width: 120,
+          render: (text: any, record: DataType) => {
+            if (editingKeys.includes(record.key)) {
+              const menu = buildMenu(productNameOptions, (key) =>
+                handlers?.onSelectGeneric?.(key, record.key, "productName"),
+              );
+              return (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <div className="flex items-center cursor-pointer">
+                    {text || "Select"}
+                    <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                  </div>
+                </Dropdown>
+              );
+            }
+            return text;
+          },
+        },
+        {
+          title: "Product Name Score(0-25)",
+          dataIndex: "productNameScore",
+          key: "productNameScore",
+          width: 160,
+          render: (text: any, record: DataType) =>
+            renderEditableInput(
+              text,
+              record.key,
+              "productNameScore",
+              handlers,
+              editingKeys,
+            ),
         },
       ];
       break;

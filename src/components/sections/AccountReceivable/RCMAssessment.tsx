@@ -81,6 +81,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "12": "Assessment of Effectiveness",
         "13": "Assessment of Efficiency",
         "14": "Process Severity",
+        "15": "OwnershipScorings",
       };
       return map[activeTab] || "Process";
     }, [activeTab]);
@@ -175,6 +176,37 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 rating: item.Rating ?? "",
                 processSeverityLevels: item.Rating ?? "",
               };
+            case "OwnershipScorings":
+              return {
+                ...base,
+                date: item.Date ?? item.date ?? "",
+                activity: item.Activity ?? "",
+                activityScore: item.ActivityScore ?? 0,
+                process2: item.Process ?? "",
+                processScore: item.ProcessScore ?? 0,
+                processStage: item.ProcessStage ?? "",
+                processStageScore: item.ProcessStageScore ?? 0,
+                totalScore: item.TotalScore ?? "",
+                scale: item.Scale ?? 0,
+                rating: item.Rating ?? "",
+                function: item.Function ?? "",
+                functionScore: item.FunctionScore ?? 0,
+                clientSegmentAndOrFunctionalSegment:
+                  item.ClientSegmentAndOrFunctionalSegment ?? "",
+                clientSegmentScore: item.ClientSegmentScore ?? 0,
+                operationalUnit: item.OperationalUnit ?? "",
+                operationalUnitScore: item.OperationalUnitScore ?? 0,
+                division: item.Division ?? "",
+                divisionScore: item.DivisionScore ?? 0,
+                entity: item.Entity ?? "",
+                entityScore: item.EntityScore ?? 0,
+                unitDepartment: item.UnitOrDepartment ?? "",
+                unitDepartmentScore: item.UnitOrDepartmentScore ?? 0,
+                productClass: item.ProductClass ?? "",
+                productClassScore: item.ProductClassScore ?? 0,
+                productName: item.ProductName ?? "",
+                productNameScore: item.ProductNameScore ?? 0,
+              };
             default:
               return base;
           }
@@ -247,7 +279,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     }, [debouncedSearchText, activeTab, fetchData]);
 
     // ── Navigation ───────────────────────────────────────────────────────
-    const tabKeys = ["1", "11", "12", "13", "14"];
+    const tabKeys = ["1", "11", "12", "13", "14", "15"];
     const currentTabIndex = tabKeys.indexOf(activeTab);
     const hasPrev = currentTabIndex > 0;
     const hasNext = currentTabIndex < tabKeys.length - 1;
@@ -357,6 +389,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       { key: "12", label: "Assessment of Effectiveness" },
       { key: "13", label: "Assessment of Efficiency" },
       { key: "14", label: "Process Severity" },
+      { key: "15", label: "Ownership" },
     ];
 
     const getSectionFromTabKey = (tabKey: string): string => {
@@ -366,6 +399,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "12": "Assessment of Effectiveness",
         "13": "Assessment of Efficiency",
         "14": "Process Severity",
+        "15": "OwnershipScorings",
       };
       return map[tabKey] || "Process";
     };
@@ -547,6 +581,45 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               // Date removed as per your requirement
               Scale: parseFloat(String(item.scale)) || 0,
               Rating: item.rating || "",
+            };
+            break;
+
+          case "OwnershipScorings":
+            endpoint = `OwnershipScorings/${item.id}`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Activity: item.activity || "",
+              ActivityScore: parseFloat(String(item.activityScore)) || 0,
+              Process: item.process2 || "",
+              ProcessScore: parseFloat(String(item.processScore)) || 0,
+              ProcessStage: item.processStage || "",
+              ProcessStageScore:
+                parseFloat(String(item.processStageScore)) || 0,
+              TotalScore: String(item.totalScore || ""),
+              Scale: parseFloat(String(item.scale)) || 0,
+              Rating: item.rating || "",
+              Function: item.function || "",
+              FunctionScore: parseFloat(String(item.functionScore)) || 0,
+              ClientSegmentAndOrFunctionalSegment:
+                item.clientSegmentAndOrFunctionalSegment || "",
+              ClientSegmentScore:
+                parseFloat(String(item.clientSegmentScore)) || 0,
+              OperationalUnit: item.operationalUnit || "",
+              OperationalUnitScore:
+                parseFloat(String(item.operationalUnitScore)) || 0,
+              Division: item.division || "",
+              DivisionScore: parseFloat(String(item.divisionScore)) || 0,
+              Entity: item.entity || "",
+              EntityScore: parseFloat(String(item.entityScore)) || 0,
+              UnitOrDepartment: item.unitDepartment || "",
+              UnitOrDepartmentScore:
+                parseFloat(String(item.unitDepartmentScore)) || 0,
+              ProductClass: item.productClass || "",
+              ProductClassScore:
+                parseFloat(String(item.productClassScore)) || 0,
+              ProductName: item.productName || "",
+              ProductNameScore: parseFloat(String(item.productNameScore)) || 0,
             };
             break;
 
@@ -742,6 +815,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             "Assessment of Effectiveness": "assessment-effectivenesses",
             "Assessment of Efficiency": "assessment-efficiencies",
             "Process Severity": "process-severities",
+            OwnershipScorings: "ownership-scorings",
           };
           setStartSectionKey(map[section] || "processes");
           setFormModalVisible(true);
