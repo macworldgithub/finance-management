@@ -2853,9 +2853,9 @@ export function getColumns(
             ),
         },
         {
-          title: "Process",
-          dataIndex: "process2",
-          key: "process2",
+          title: "Activation Process",
+          dataIndex: "activationProcess",
+          key: "activationProcess",
           width: 200,
           render: (text: string, record: DataType) => {
             if (editingKeys.includes(record.key)) {
@@ -2863,7 +2863,11 @@ export function getColumns(
                 <EditableInput
                   initialValue={text}
                   onSave={(newValue) =>
-                    handlers?.onTextChange?.(record.key, "process2", newValue)
+                    handlers?.onTextChange?.(
+                      record.key,
+                      "activationProcess",
+                      newValue,
+                    )
                   }
                 />
               );

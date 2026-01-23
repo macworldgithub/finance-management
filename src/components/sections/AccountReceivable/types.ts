@@ -72,6 +72,7 @@ export interface DataType {
   activityScore?: number;
   process2?: string;
   processScore?: number;
+  activationProcess?: string;
   processStage?: string;
   processStageScore?: number;
   function?: string;

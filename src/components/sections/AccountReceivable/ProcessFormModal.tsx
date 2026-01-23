@@ -131,6 +131,7 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
         ActivityScore,
         Process: processField,
         ProcessScore,
+        ActivationProcess,
         ProcessStage,
         ProcessStageScore,
         TotalScore,
@@ -161,6 +162,7 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
         Activity: Activity || "",
         ActivityScore: parseFloat(String(ActivityScore || 0)),
         ProcessScore: parseFloat(String(ProcessScore || 0)),
+        ActivationProcess: ActivationProcess || "",
         ProcessStage: ProcessStage || "",
         ProcessStageScore: parseFloat(String(ProcessStageScore || 0)),
         TotalScore: TotalScore || "",
@@ -1237,6 +1239,9 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
         </Form.Item>
         <Form.Item name="ProcessScore" label="Process Score(0-25)">
           <Input type="number" min={0} max={25} />
+        </Form.Item>
+        <Form.Item name="ActivationProcess" label="Activation Process">
+          <TextArea rows={2} />
         </Form.Item>
         <Form.Item name="ProcessStage" label="Process Stage">
           <Select>
