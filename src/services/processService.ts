@@ -201,6 +201,34 @@ export interface ProcessSeverity extends BaseProcessData {
   Rating?: string;
 }
 
+// OwnershipScorings
+export interface OwnershipScorings extends BaseProcessData {
+  Activity?: string;
+  ActivityScore?: number;
+  ProcessScore?: number;
+  ProcessStage?: string;
+  ProcessStageScore?: number;
+  TotalScore?: string;
+  Scale?: number;
+  Rating?: string;
+  Function?: string;
+  FunctionScore?: number;
+  ClientSegmentAndOrFunctionalSegment?: string;
+  ClientSegmentScore?: number;
+  OperationalUnit?: string;
+  OperationalUnitScore?: number;
+  Division?: string;
+  DivisionScore?: number;
+  Entity?: string;
+  EntityScore?: number;
+  UnitOrDepartment?: string;
+  UnitOrDepartmentScore?: number;
+  ProductClass?: string;
+  ProductClassScore?: number;
+  ProductName?: string;
+  ProductNameScore?: number;
+}
+
 // API Service Functions
 export const processService = {
   // Create a new record
@@ -246,6 +274,7 @@ export const processService = {
       "intosai-ifac-control-environments": "IntosaiIfacControlEnvironments",
       "other-control-environments": "OtherControlEnvironments",
       ownerships: "Ownerships",
+      "ownership-scorings": "OwnershipScorings",
       "risk-assessment-inherent-risks": "RiskAssessmentInherentRisks",
       "risk-assessment-residual-risks": "RiskAssessmentResidualRisks",
       "risk-responses": "RiskResponses",
@@ -270,28 +299,28 @@ export const processService = {
   },
 
   createControlAssessment: async (
-    data: Omit<ControlAssessment, "Id" | "Date">
+    data: Omit<ControlAssessment, "Id" | "Date">,
   ) => {
     const response = await apiClientDotNet.post("/ControlAssessments", data);
     return response.data;
   },
 
   createCosoControlEnvironment: async (
-    data: Omit<CosoControlEnvironment, "Id" | "Date">
+    data: Omit<CosoControlEnvironment, "Id" | "Date">,
   ) => {
     const response = await apiClientDotNet.post(
       "/CosoControlEnvironments",
-      data
+      data,
     );
     return response.data;
   },
 
   createFinancialStatementAssertion: async (
-    data: Omit<FinancialStatementAssertion, "Id" | "Date">
+    data: Omit<FinancialStatementAssertion, "Id" | "Date">,
   ) => {
     const response = await apiClientDotNet.post(
       "/FinancialStatementAssertions",
-      data
+      data,
     );
     return response.data;
   },
@@ -302,28 +331,28 @@ export const processService = {
   },
 
   createInternalAuditTest: async (
-    data: Omit<InternalAuditTest, "Id" | "Date">
+    data: Omit<InternalAuditTest, "Id" | "Date">,
   ) => {
     const response = await apiClientDotNet.post("/InternalAuditTests", data);
     return response.data;
   },
 
   createIntosaiIfacControlEnvironment: async (
-    data: Omit<IntosaiIfacControlEnvironment, "Id" | "Date">
+    data: Omit<IntosaiIfacControlEnvironment, "Id" | "Date">,
   ) => {
     const response = await apiClientDotNet.post(
       "/IntosaiIfacControlEnvironments",
-      data
+      data,
     );
     return response.data;
   },
 
   createOtherControlEnvironment: async (
-    data: Omit<OtherControlEnvironment, "Id" | "Date">
+    data: Omit<OtherControlEnvironment, "Id" | "Date">,
   ) => {
     const response = await apiClientDotNet.post(
       "/OtherControlEnvironments",
-      data
+      data,
     );
     return response.data;
   },
@@ -334,21 +363,21 @@ export const processService = {
   },
 
   createRiskAssessmentInherentRisk: async (
-    data: Omit<RiskAssessment, "Id" | "Date">
+    data: Omit<RiskAssessment, "Id" | "Date">,
   ) => {
     const response = await apiClientDotNet.post(
       "/RiskAssessmentInherentRisks",
-      data
+      data,
     );
     return response.data;
   },
 
   createRiskAssessmentResidualRisk: async (
-    data: Omit<RiskAssessment, "Id" | "Date">
+    data: Omit<RiskAssessment, "Id" | "Date">,
   ) => {
     const response = await apiClientDotNet.post(
       "/RiskAssessmentResidualRisks",
-      data
+      data,
     );
     return response.data;
   },

@@ -124,6 +124,72 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
       };
 
       console.log("[ProcessFormModal] Ownership fullValues:", fullValues);
+    } else if (sectionKey === "ownership-scorings") {
+      // For OwnershipScorings, map form fields to API fields
+      const {
+        Activity,
+        ActivityScore,
+        Process: processField,
+        ProcessScore,
+        ProcessStage,
+        ProcessStageScore,
+        TotalScore,
+        Scale,
+        Rating,
+        Function,
+        FunctionScore,
+        ClientSegmentAndOrFunctionalSegment,
+        ClientSegmentScore,
+        OperationalUnit,
+        OperationalUnitScore,
+        Division,
+        DivisionScore,
+        Entity,
+        EntityScore,
+        UnitOrDepartment,
+        UnitOrDepartmentScore,
+        ProductClass,
+        ProductClassScore,
+        ProductName,
+        ProductNameScore,
+        ...restStepValues
+      } = stepValues;
+
+      fullValues = {
+        No: noValue,
+        Process: processField || commonProcess || "", // Use the form Process field if available, otherwise common process
+        Activity: Activity || "",
+        ActivityScore: parseFloat(String(ActivityScore || 0)),
+        ProcessScore: parseFloat(String(ProcessScore || 0)),
+        ProcessStage: ProcessStage || "",
+        ProcessStageScore: parseFloat(String(ProcessStageScore || 0)),
+        TotalScore: TotalScore || "",
+        Scale: parseFloat(String(Scale || 0)),
+        Rating: Rating || "",
+        Function: Function || "",
+        FunctionScore: parseFloat(String(FunctionScore || 0)),
+        ClientSegmentAndOrFunctionalSegment:
+          ClientSegmentAndOrFunctionalSegment || "",
+        ClientSegmentScore: parseFloat(String(ClientSegmentScore || 0)),
+        OperationalUnit: OperationalUnit || "",
+        OperationalUnitScore: parseFloat(String(OperationalUnitScore || 0)),
+        Division: Division || "",
+        DivisionScore: parseFloat(String(DivisionScore || 0)),
+        Entity: Entity || "",
+        EntityScore: parseFloat(String(EntityScore || 0)),
+        UnitOrDepartment: UnitOrDepartment || "",
+        UnitOrDepartmentScore: parseFloat(String(UnitOrDepartmentScore || 0)),
+        ProductClass: ProductClass || "",
+        ProductClassScore: parseFloat(String(ProductClassScore || 0)),
+        ProductName: ProductName || "",
+        ProductNameScore: parseFloat(String(ProductNameScore || 0)),
+        ...restStepValues,
+      };
+
+      console.log(
+        "[ProcessFormModal] OwnershipScorings fullValues:",
+        fullValues,
+      );
     } else {
       fullValues = {
         No: noValue,
