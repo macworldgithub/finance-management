@@ -2818,6 +2818,9 @@ export function getColumns(
       ];
       break;
     case "15":
+      dynamicColumns = ownershipColumns;
+      break;
+    case "16":
       dynamicColumns = [
         {
           title: "Activity",

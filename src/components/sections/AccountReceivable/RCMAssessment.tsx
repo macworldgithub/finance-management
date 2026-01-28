@@ -81,7 +81,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "12": "Assessment of Effectiveness",
         "13": "Assessment of Efficiency",
         "14": "Process Severity",
-        "15": "OwnershipScorings",
+        "15": "Ownership",
+        "16": "OwnershipScorings",
       };
       return map[activeTab] || "Process";
     }, [activeTab]);
@@ -175,6 +176,25 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 scale: item.Scale ?? 0,
                 rating: item.Rating ?? "",
                 processSeverityLevels: item.Rating ?? "",
+              };
+            case "Ownership":
+              return {
+                ...base,
+                activity: item.Activity ?? item.activity,
+                process2: item.Process ?? item.process2 ?? "",
+                stage: item["Process Stage"] ?? item.stage,
+                functions: item.Functions ?? item.functions,
+                clientSegment:
+                  item["Client Segment and/or Functional Segment"] ??
+                  item.clientSegment,
+                operationalUnit:
+                  item["Operational Unit"] ?? item.operationalUnit,
+                division: item.Division ?? item.division,
+                entity: item.Entity ?? item.entity,
+                unitDepartment:
+                  item["Unit / Department"] ?? item.unitDepartment,
+                productClass: item["Product Class"] ?? item.productClass,
+                productName: item["Product Name"] ?? item.productName,
               };
             case "OwnershipScorings":
               return {
@@ -280,7 +300,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     }, [debouncedSearchText, activeTab, fetchData]);
 
     // ── Navigation ───────────────────────────────────────────────────────
-    const tabKeys = ["1", "11", "12", "13", "14", "15"];
+    const tabKeys = ["1", "11", "12", "13", "14", "15", "16"];
     const currentTabIndex = tabKeys.indexOf(activeTab);
     const hasPrev = currentTabIndex > 0;
     const hasNext = currentTabIndex < tabKeys.length - 1;
@@ -391,6 +411,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       { key: "13", label: "Assessment of Efficiency" },
       { key: "14", label: "Process Severity" },
       { key: "15", label: "Ownership" },
+      { key: "16", label: "Ownership Assessment" },
     ];
 
     const getSectionFromTabKey = (tabKey: string): string => {
@@ -400,7 +421,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "12": "Assessment of Effectiveness",
         "13": "Assessment of Efficiency",
         "14": "Process Severity",
-        "15": "OwnershipScorings",
+        "15": "Ownership",
+        "16": "OwnershipScorings",
       };
       return map[tabKey] || "Process";
     };
@@ -582,6 +604,26 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               // Date removed as per your requirement
               Scale: parseFloat(String(item.scale)) || 0,
               Rating: item.rating || "",
+            };
+            break;
+
+          case "Ownership":
+            endpoint = `Ownership/${item.id}`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Activity: item.activity || "",
+              Process: item.process2 || "",
+              "Process Stage": item.stage || "",
+              Functions: item.functions || "",
+              "Client Segment and/or Functional Segment":
+                item.clientSegment || "",
+              "Operational Unit": item.operationalUnit || "",
+              Division: item.division || "",
+              Entity: item.entity || "",
+              "Unit / Department": item.unitDepartment || "",
+              "Product Class": item.productClass || "",
+              "Product Name": item.productName || "",
             };
             break;
 
@@ -817,6 +859,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             "Assessment of Effectiveness": "assessment-effectivenesses",
             "Assessment of Efficiency": "assessment-efficiencies",
             "Process Severity": "process-severities",
+            Ownership: "ownerships",
             OwnershipScorings: "ownership-scorings",
           };
           setStartSectionKey(map[section] || "processes");
