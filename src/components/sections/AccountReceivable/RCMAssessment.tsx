@@ -632,7 +632,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             break;
 
           case "Ownership":
-            endpoint = `Ownership/${item.id}`;
+            endpoint = `Ownerships/${item.id}`;
             requestBody = {
               Id: item.id,
               No: parseFloat(String(item.no)) || 0,
