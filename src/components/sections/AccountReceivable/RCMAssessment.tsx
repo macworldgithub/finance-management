@@ -184,6 +184,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 activityScore: item.ActivityScore ?? 0,
                 process2: item.Process ?? "",
                 processScore: item.ProcessScore ?? 0,
+                activationProcess: item.ActivationProcess ?? "",
                 processStage: item.ProcessStage ?? "",
                 processStageScore: item.ProcessStageScore ?? 0,
                 totalScore: item.TotalScore ?? "",
@@ -593,6 +594,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               ActivityScore: parseFloat(String(item.activityScore)) || 0,
               Process: item.process2 || "",
               ProcessScore: parseFloat(String(item.processScore)) || 0,
+              ActivationProcess: item.activationProcess || "",
               ProcessStage: item.processStage || "",
               ProcessStageScore:
                 parseFloat(String(item.processStageScore)) || 0,

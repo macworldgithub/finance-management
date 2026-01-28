@@ -206,6 +206,7 @@ export interface OwnershipScorings extends BaseProcessData {
   Activity?: string;
   ActivityScore?: number;
   ProcessScore?: number;
+  ActivationProcess?: string;
   ProcessStage?: string;
   ProcessStageScore?: number;
   TotalScore?: string;
