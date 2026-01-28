@@ -300,7 +300,16 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     }, [debouncedSearchText, activeTab, fetchData]);
 
     // ── Navigation ───────────────────────────────────────────────────────
-    const tabKeys = ["1", "11", "12", "13", "14", "15", "16"];
+    const getTabKeys = () => {
+      // Ownership tabs
+      if (activeTab === "15" || activeTab === "16") {
+        return ["15", "16"];
+      }
+      // Process tabs (default)
+      return ["1", "11", "12", "13", "14"];
+    };
+
+    const tabKeys = getTabKeys();
     const currentTabIndex = tabKeys.indexOf(activeTab);
     const hasPrev = currentTabIndex > 0;
     const hasNext = currentTabIndex < tabKeys.length - 1;
@@ -308,16 +317,20 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     const goPrev = useCallback(() => {
       if (hasPrev) {
         setEditingKeys([]);
-        setActiveTab(tabKeys[currentTabIndex - 1]);
+        const currentKeys = getTabKeys();
+        const currentIndex = currentKeys.indexOf(activeTab);
+        setActiveTab(currentKeys[currentIndex - 1]);
       }
-    }, [currentTabIndex, hasPrev]);
+    }, [activeTab, hasPrev]);
 
     const goNext = useCallback(() => {
       if (hasNext) {
         setEditingKeys([]);
-        setActiveTab(tabKeys[currentTabIndex + 1]);
+        const currentKeys = getTabKeys();
+        const currentIndex = currentKeys.indexOf(activeTab);
+        setActiveTab(currentKeys[currentIndex + 1]);
       }
-    }, [currentTabIndex, hasNext]);
+    }, [activeTab, hasNext]);
 
     // ── Scroll Sync Helpers ──────────────────────────────────────────────
     const syncScroll = useCallback(
@@ -404,15 +417,26 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
     // ── Your existing handlers (export, save, delete, etc.) ──────────────
     // Keeping all your original logic here unchanged
 
-    const tabConfigs = [
-      { key: "1", label: "Processes" },
-      { key: "11", label: "Assessment of Adequacy" },
-      { key: "12", label: "Assessment of Effectiveness" },
-      { key: "13", label: "Assessment of Efficiency" },
-      { key: "14", label: "Process Severity" },
-      { key: "15", label: "Ownership" },
-      { key: "16", label: "Ownership Assessment" },
-    ];
+    // Conditional tab configurations based on active tab
+    const getTabConfigs = () => {
+      // Ownership tabs
+      if (activeTab === "15" || activeTab === "16") {
+        return [
+          { key: "15", label: "Ownership" },
+          { key: "16", label: "Ownership Assessment" },
+        ];
+      }
+      // Process tabs (default)
+      return [
+        { key: "1", label: "Processes" },
+        { key: "11", label: "Assessment of Adequacy" },
+        { key: "12", label: "Assessment of Effectiveness" },
+        { key: "13", label: "Assessment of Efficiency" },
+        { key: "14", label: "Process Severity" },
+      ];
+    };
+
+    const tabConfigs = getTabConfigs();
 
     const getSectionFromTabKey = (tabKey: string): string => {
       const map: Record<string, string> = {
