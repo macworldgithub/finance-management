@@ -3279,9 +3279,77 @@ export function getColumns(
         },
       ];
       break;
+    case "17":
+      // CE-COSO - Read-only display of Control Environment data without Actions
+      dynamicColumns = [
+        {
+          title: "Integrity & Ethical Values",
+          dataIndex: "integrityEthical",
+          key: "integrityEthical",
+          width: 200,
+          render: (value: string) => (
+            <div className="text-center">
+              {value === "P" ? "✓" : value === "O" ? "✗" : value}
+            </div>
+          ),
+        },
+        {
+          title: "Board Oversight",
+          dataIndex: "boardOversight",
+          key: "boardOversight",
+          width: 180,
+          render: (value: string) => (
+            <div className="text-center">
+              {value === "P" ? "✓" : value === "O" ? "✗" : value}
+            </div>
+          ),
+        },
+        {
+          title: "Organizational Structure",
+          dataIndex: "organizationalStructure",
+          key: "organizationalStructure",
+          width: 200,
+          render: (value: string) => (
+            <div className="text-center">
+              {value === "P" ? "✓" : value === "O" ? "✗" : value}
+            </div>
+          ),
+        },
+        {
+          title: "Commitment to Competence",
+          dataIndex: "commitmentToCompetence",
+          key: "commitmentToCompetence",
+          width: 220,
+          render: (value: string) => (
+            <div className="text-center">
+              {value === "P" ? "✓" : value === "O" ? "✗" : value}
+            </div>
+          ),
+        },
+        {
+          title: "Management Philosophy",
+          dataIndex: "managementPhilosophy",
+          key: "managementPhilosophy",
+          width: 200,
+          render: (value: string) => (
+            <div className="text-center">
+              {value === "P" ? "✓" : value === "O" ? "✗" : value}
+            </div>
+          ),
+        },
+      ];
+      break;
+    case "18":
+      // COSO Environment Assessment - Placeholder for now
+      dynamicColumns = additionalTabsColumns;
+      break;
     default:
       dynamicColumns = processColumns;
   }
   // Duplicate actionsColumn removed above. Only one definition remains.
+  // For CE-COSO tab, don't include actions column
+  if (activeTab === "17") {
+    return [...baseColumns, ...dynamicColumns];
+  }
   return [...baseColumns, ...dynamicColumns, actionsColumn];
 }

@@ -167,6 +167,22 @@ export default function RCMLanding({
             Ownership Assessment
           </button>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-6 text-center text-xs font-semibold">
+          <button
+            type="button"
+            className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
+            onClick={() => onNavigateToAssessment("17")}
+          >
+            CE-COSO
+          </button>
+          <button
+            type="button"
+            className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
+            onClick={() => onNavigateToAssessment("18")}
+          >
+            COSO Environment Assessment
+          </button>
+        </div>
 
         {/* Dashboard */}
         <div className="bg-[#2f5b1e] text-white text-center font-bold text-lg py-2 rounded-sm mb-4">

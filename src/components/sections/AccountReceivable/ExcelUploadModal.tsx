@@ -76,7 +76,7 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
       }
     } catch (error: any) {
       message.error(
-        error?.response?.data?.detail || "Failed to fetch sections"
+        error?.response?.data?.detail || "Failed to fetch sections",
       );
       setSections([]);
       setInstructions([]);
@@ -140,7 +140,7 @@ const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
       //       headers: { "Content-Type": "multipart/form-data" },
       //     }
       //   );
-  
+
       //   // Store the imported data
       //   console.log("[ExcelUploadModal] Multiple tables API Response:", {
       //     dataType: typeof data,

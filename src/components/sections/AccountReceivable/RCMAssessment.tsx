@@ -83,6 +83,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "14": "Process Severity",
         "15": "Ownership",
         "16": "OwnershipScorings",
+        "17": "CECOSO",
+        "18": "COSOEnvironmentScorings",
       };
       return map[activeTab] || "Process";
     }, [activeTab]);
@@ -228,6 +230,21 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 productName: item.ProductName ?? "",
                 productNameScore: item.ProductNameScore ?? 0,
               };
+            case "CECOSO":
+              return {
+                ...base,
+                integrityEthical:
+                  item["Integrity & Ethical Values"] ?? item.integrityEthical,
+                boardOversight: item["Board Oversight"] ?? item.boardOversight,
+                organizationalStructure:
+                  item["Organizational Structure"] ??
+                  item.organizationalStructure,
+                commitmentToCompetence:
+                  item["Commitment to Competence"] ??
+                  item.commitmentToCompetence,
+                managementPhilosophy:
+                  item["Management Philosophy"] ?? item.managementPhilosophy,
+              };
             default:
               return base;
           }
@@ -304,6 +321,10 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       // Ownership tabs
       if (activeTab === "15" || activeTab === "16") {
         return ["15", "16"];
+      }
+      // COSO tabs
+      if (activeTab === "17" || activeTab === "18") {
+        return ["17", "18"];
       }
       // Process tabs (default)
       return ["1", "11", "12", "13", "14"];
@@ -426,6 +447,13 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           { key: "16", label: "Ownership Assessment" },
         ];
       }
+      // COSO tabs
+      if (activeTab === "17" || activeTab === "18") {
+        return [
+          { key: "17", label: "CE-COSO" },
+          { key: "18", label: "COSO Environment Assessment" },
+        ];
+      }
       // Process tabs (default)
       return [
         { key: "1", label: "Processes" },
@@ -447,6 +475,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "14": "Process Severity",
         "15": "Ownership",
         "16": "OwnershipScorings",
+        "17": "CECOSO",
+        "18": "COSOEnvironmentScorings",
       };
       return map[tabKey] || "Process";
     };
@@ -689,6 +719,20 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 parseFloat(String(item.productClassScore)) || 0,
               ProductName: item.productName || "",
               ProductNameScore: parseFloat(String(item.productNameScore)) || 0,
+            };
+            break;
+
+          case "CECOSO":
+            endpoint = `CosoControlEnvironments/${item.id}`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              "Integrity & Ethical Values": item.integrityEthical || "",
+              "Board Oversight": item.boardOversight || "",
+              "Organizational Structure": item.organizationalStructure || "",
+              "Commitment to Competence": item.commitmentToCompetence || "",
+              "Management Philosophy": item.managementPhilosophy || "",
             };
             break;
 
