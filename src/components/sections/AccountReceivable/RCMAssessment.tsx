@@ -638,6 +638,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               No: parseFloat(String(item.no)) || 0,
               Activity: item.activity || "",
               Process: item.process2 || "",
+              "Main Process": item.process || "",
               "Process Stage": item.stage || "",
               Functions: item.functions || "",
               "Client Segment and/or Functional Segment":
