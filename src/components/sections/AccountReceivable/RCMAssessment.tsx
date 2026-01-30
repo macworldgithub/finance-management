@@ -299,7 +299,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       fetchData();
     }, [debouncedSearchText, activeTab, fetchData]);
 
-    // ── Navigation ───────────────────────────────────────────────────────
+    // ── Navigation ──────────────────────────────────────────────────
     const getTabKeys = () => {
       // Ownership tabs
       if (activeTab === "15" || activeTab === "16") {

@@ -172,12 +172,20 @@ export default function RCMLanding({
         <div className="bg-[#2f5b1e] text-white text-center font-bold text-lg py-2 rounded-sm mb-4">
           DASHBOARD
         </div>
-        <button
-          onClick={() => router.push("/reports")}
-          className="py-4 px-3 text-xs font-semibold rounded-sm bg-[#fff2cc] border border-[#ffd966] text-[#7f6000] text-center hover:bg-[#ffe599] transition-colors duration-200 cursor-pointer w-full"
-        >
-          PROCESS MANAGEMENT REPORTS
-        </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
+          <button
+            onClick={() => router.push("/reports")}
+            className="py-4 px-3 text-xs font-semibold rounded-sm bg-[#fff2cc] border border-[#ffd966] text-[#7f6000] text-center hover:bg-[#ffe599] transition-colors duration-200 cursor-pointer"
+          >
+            PROCESS MANAGEMENT REPORTS
+          </button>
+          <button
+            onClick={() => router.push("/ownership-reports")}
+            className="py-4 px-3 text-xs font-semibold rounded-sm bg-[#fff2cc] border border-[#ffd966] text-[#7f6000] text-center hover:bg-[#ffe599] transition-colors duration-200 cursor-pointer"
+          >
+            OWNERSHIP MANAGEMENT REPORTS
+          </button>
+        </div>
       </div>
     </div>
   );

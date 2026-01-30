@@ -3,34 +3,16 @@ import { useState } from "react";
 import { Tabs } from "antd";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Navbar from "@/components/layout/Navbar";
-import AdequacyReport from "./components/AdequacyReport";
-import EffectivenessReport from "./components/EffectivenessReport";
-import EfficiencyReport from "./components/EfficiencyReport";
-import SeverityReport from "./components/SeverityReport";
+import OwnershipScoringReport from "../reports/components/OwnershipScoringReport";
 
-export default function ReportsPage() {
+export default function OwnershipReportsPage() {
   const [activeTab, setActiveTab] = useState("1");
 
   const tabItems = [
     {
       key: "1",
-      label: "Assessment of Adequacy",
-      children: <AdequacyReport />,
-    },
-    {
-      key: "2",
-      label: "Assessment of Effectiveness",
-      children: <EffectivenessReport />,
-    },
-    {
-      key: "3",
-      label: "Assessment of Efficiency",
-      children: <EfficiencyReport />,
-    },
-    {
-      key: "4",
-      label: "Process Severity",
-      children: <SeverityReport />,
+      label: "Ownership Scoring",
+      children: <OwnershipScoringReport />,
     },
   ];
 
@@ -41,7 +23,7 @@ export default function ReportsPage() {
         <main className="max-w-[1600px] mx-auto w-full px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 flex-1 flex flex-col">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
-              Process Management Reports
+              Ownership Management Reports
             </h1>
             <div className="flex items-center gap-2">
               <button
