@@ -659,7 +659,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               No: parseFloat(String(item.no)) || 0,
               Activity: item.activity || "",
               ActivityScore: parseFloat(String(item.activityScore)) || 0,
-              Process: item.process2 || "",
+              Process: item.process || "",
               ProcessScore: parseFloat(String(item.processScore)) || 0,
               ActivationProcess: item.activationProcess || "",
               ProcessStage: item.processStage || "",
