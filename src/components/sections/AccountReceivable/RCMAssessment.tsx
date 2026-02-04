@@ -1049,6 +1049,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             "Process Severity": "process-severities",
             Ownership: "ownerships",
             OwnershipScorings: "ownership-scorings",
+            "COSO Environment Assessment": "control-environment-scorings",
           };
           setStartSectionKey(map[section] || "processes");
           setFormModalVisible(true);

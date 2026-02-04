@@ -35,6 +35,7 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
   // Reset form when modal is opened/closed
   useEffect(() => {
     if (visible) {
+      console.log("Modal opening, startSectionKey:", startSectionKey);
       form.resetFields();
       if (initialValues) {
         form.setFieldsValue(initialValues);
@@ -42,6 +43,7 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
       setCurrentStep(0);
       setCompletedSections(new Set());
       setSelectedSectionKey(startSectionKey ?? null);
+      console.log("Set selectedSectionKey to:", startSectionKey ?? null);
     }
   }, [visible, initialValues, form, startSectionKey]);
 
@@ -50,6 +52,10 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     { key: "processes", title: "Processes" },
     { key: "ownerships", title: "Ownership" },
     { key: "coso-control-environments", title: "COSO Control Environment" },
+    {
+      key: "control-environment-scorings",
+      title: "Control Environment scoring",
+    },
     {
       key: "risk-assessment-inherent-risks",
       title: "Risk Assessment (Inherent)",
@@ -190,6 +196,102 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
 
       console.log(
         "[ProcessFormModal] OwnershipScorings fullValues:",
+        fullValues,
+      );
+    } else if (sectionKey === "control-environment-scorings") {
+      // For Control Environment scoring, map form fields to API fields
+      const {
+        IntegrityEthicalValues,
+        IntegrityDesignScore,
+        IntegrityPerformanceScore,
+        IntegritySustainabilityScore,
+        IntegrityTotalScore,
+        IntegrityScale,
+        IntegrityRating,
+        BoardOversight,
+        BoardDesignScore,
+        BoardPerformanceScore,
+        BoardSustainabilityScore,
+        BoardTotalScore,
+        BoardScale,
+        BoardRating,
+        OrganizationalStructure,
+        OrgStructureDesignScore,
+        OrgStructurePerformanceScore,
+        OrgStructureSustainabilityScore,
+        OrgStructureTotalScore,
+        OrgStructureScale,
+        OrgStructureRating,
+        CommitmentToCompetence,
+        CompetenceDesignScore,
+        CompetencePerformanceScore,
+        CompetenceSustainabilityScore,
+        CompetenceTotalScore,
+        CompetenceScale,
+        CompetenceRating,
+        ManagementPhilosophy,
+        PhilosophyDesignScore,
+        PhilosophyPerformanceScore,
+        PhilosophySustainabilityScore,
+        PhilosophyTotalScore,
+        PhilosophyScale,
+        PhilosophyRating,
+        ...restStepValues
+      } = stepValues;
+
+      fullValues = {
+        No: parseFloat(String(noValue)) || 0,
+        Process: commonProcess,
+        IntegrityEthicalValues: IntegrityEthicalValues || "",
+        IntegrityDesignScore: parseFloat(String(IntegrityDesignScore)) || 0,
+        IntegrityPerformanceScore:
+          parseFloat(String(IntegrityPerformanceScore)) || 0,
+        IntegritySustainabilityScore:
+          parseFloat(String(IntegritySustainabilityScore)) || 0,
+        IntegrityTotalScore: String(IntegrityTotalScore || ""),
+        IntegrityScale: parseFloat(String(IntegrityScale)) || 0,
+        IntegrityRating: IntegrityRating || "",
+        BoardOversight: BoardOversight || "",
+        BoardDesignScore: parseFloat(String(BoardDesignScore)) || 0,
+        BoardPerformanceScore: parseFloat(String(BoardPerformanceScore)) || 0,
+        BoardSustainabilityScore:
+          parseFloat(String(BoardSustainabilityScore)) || 0,
+        BoardTotalScore: String(BoardTotalScore || ""),
+        BoardScale: parseFloat(String(BoardScale)) || 0,
+        BoardRating: BoardRating || "",
+        OrganizationalStructure: OrganizationalStructure || "",
+        OrgStructureDesignScore:
+          parseFloat(String(OrgStructureDesignScore)) || 0,
+        OrgStructurePerformanceScore:
+          parseFloat(String(OrgStructurePerformanceScore)) || 0,
+        OrgStructureSustainabilityScore:
+          parseFloat(String(OrgStructureSustainabilityScore)) || 0,
+        OrgStructureTotalScore: String(OrgStructureTotalScore || ""),
+        OrgStructureScale: parseFloat(String(OrgStructureScale)) || 0,
+        OrgStructureRating: OrgStructureRating || "",
+        CommitmentToCompetence: CommitmentToCompetence || "",
+        CompetenceDesignScore: parseFloat(String(CompetenceDesignScore)) || 0,
+        CompetencePerformanceScore:
+          parseFloat(String(CompetencePerformanceScore)) || 0,
+        CompetenceSustainabilityScore:
+          parseFloat(String(CompetenceSustainabilityScore)) || 0,
+        CompetenceTotalScore: String(CompetenceTotalScore || ""),
+        CompetenceScale: parseFloat(String(CompetenceScale)) || 0,
+        CompetenceRating: CompetenceRating || "",
+        ManagementPhilosophy: ManagementPhilosophy || "",
+        PhilosophyDesignScore: parseFloat(String(PhilosophyDesignScore)) || 0,
+        PhilosophyPerformanceScore:
+          parseFloat(String(PhilosophyPerformanceScore)) || 0,
+        PhilosophySustainabilityScore:
+          parseFloat(String(PhilosophySustainabilityScore)) || 0,
+        PhilosophyTotalScore: String(PhilosophyTotalScore || ""),
+        PhilosophyScale: parseFloat(String(PhilosophyScale)) || 0,
+        PhilosophyRating: PhilosophyRating || "",
+        ...restStepValues,
+      };
+
+      console.log(
+        "[ProcessFormModal] Control Environment scoring fullValues:",
         fullValues,
       );
     } else {
@@ -499,6 +601,242 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
                 {option.label}
               </Option>
             ))}
+          </Select>
+        </Form.Item>
+      </>
+    ),
+    // Control Environment scoring
+    "control-environment-scorings": (
+      <>
+        {/* Integrity & Ethical Values Section */}
+        <Form.Item
+          name="IntegrityEthicalValues"
+          label="Integrity & Ethical Values"
+        >
+          <Select placeholder="Select Yes or No">
+            <Option value="P">Yes</Option>
+            <Option value="O">No</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="IntegrityDesignScore" label="Integrity Design Score">
+          <Input type="number" placeholder="Enter design score" />
+        </Form.Item>
+        <Form.Item
+          name="IntegrityPerformanceScore"
+          label="Integrity Performance Score"
+        >
+          <Input type="number" placeholder="Enter performance score" />
+        </Form.Item>
+        <Form.Item
+          name="IntegritySustainabilityScore"
+          label="Integrity Sustainability Score"
+        >
+          <Input type="number" placeholder="Enter sustainability score" />
+        </Form.Item>
+        <Form.Item name="IntegrityTotalScore" label="Integrity Total Score">
+          <Input placeholder="Enter total score" />
+        </Form.Item>
+        <Form.Item name="IntegrityScale" label="Integrity Scale">
+          <Select placeholder="Select scale">
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="IntegrityRating" label="Integrity Rating">
+          <Select placeholder="Select rating">
+            <Option value="Strong">Strong</Option>
+            <Option value="Adequate">Adequate</Option>
+            <Option value="Needs Improvement">Needs Improvement</Option>
+            <Option value="Weak">Weak</Option>
+            <Option value="Ineffective">Ineffective</Option>
+          </Select>
+        </Form.Item>
+
+        {/* Board Oversight Section */}
+        <Form.Item name="BoardOversight" label="Board Oversight">
+          <Select placeholder="Select Yes or No">
+            <Option value="P">Yes</Option>
+            <Option value="O">No</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="BoardDesignScore" label="Board Design Score">
+          <Input type="number" placeholder="Enter design score" />
+        </Form.Item>
+        <Form.Item name="BoardPerformanceScore" label="Board Performance Score">
+          <Input type="number" placeholder="Enter performance score" />
+        </Form.Item>
+        <Form.Item
+          name="BoardSustainabilityScore"
+          label="Board Sustainability Score"
+        >
+          <Input type="number" placeholder="Enter sustainability score" />
+        </Form.Item>
+        <Form.Item name="BoardTotalScore" label="Board Total Score">
+          <Input placeholder="Enter total score" />
+        </Form.Item>
+        <Form.Item name="BoardScale" label="Board Scale">
+          <Select placeholder="Select scale">
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="BoardRating" label="Board Rating">
+          <Select placeholder="Select rating">
+            <Option value="Strong">Strong</Option>
+            <Option value="Adequate">Adequate</Option>
+            <Option value="Needs Improvement">Needs Improvement</Option>
+            <Option value="Weak">Weak</Option>
+            <Option value="Ineffective">Ineffective</Option>
+          </Select>
+        </Form.Item>
+
+        {/* Organizational Structure Section */}
+        <Form.Item
+          name="OrganizationalStructure"
+          label="Organizational Structure"
+        >
+          <Select placeholder="Select Yes or No">
+            <Option value="P">Yes</Option>
+            <Option value="O">No</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="OrgStructureDesignScore"
+          label="Org Structure Design Score"
+        >
+          <Input type="number" placeholder="Enter design score" />
+        </Form.Item>
+        <Form.Item
+          name="OrgStructurePerformanceScore"
+          label="Org Structure Performance Score"
+        >
+          <Input type="number" placeholder="Enter performance score" />
+        </Form.Item>
+        <Form.Item
+          name="OrgStructureSustainabilityScore"
+          label="Org Structure Sustainability Score"
+        >
+          <Input type="number" placeholder="Enter sustainability score" />
+        </Form.Item>
+        <Form.Item
+          name="OrgStructureTotalScore"
+          label="Org Structure Total Score"
+        >
+          <Input placeholder="Enter total score" />
+        </Form.Item>
+        <Form.Item name="OrgStructureScale" label="Org Structure Scale">
+          <Select placeholder="Select scale">
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="OrgStructureRating" label="Org Structure Rating">
+          <Select placeholder="Select rating">
+            <Option value="Strong">Strong</Option>
+            <Option value="Adequate">Adequate</Option>
+            <Option value="Needs Improvement">Needs Improvement</Option>
+            <Option value="Weak">Weak</Option>
+            <Option value="Ineffective">Ineffective</Option>
+          </Select>
+        </Form.Item>
+
+        {/* Commitment to Competence Section */}
+        <Form.Item
+          name="CommitmentToCompetence"
+          label="Commitment to Competence"
+        >
+          <Select placeholder="Select Yes or No">
+            <Option value="P">Yes</Option>
+            <Option value="O">No</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="CompetenceDesignScore" label="Competence Design Score">
+          <Input type="number" placeholder="Enter design score" />
+        </Form.Item>
+        <Form.Item
+          name="CompetencePerformanceScore"
+          label="Competence Performance Score"
+        >
+          <Input type="number" placeholder="Enter performance score" />
+        </Form.Item>
+        <Form.Item
+          name="CompetenceSustainabilityScore"
+          label="Competence Sustainability Score"
+        >
+          <Input type="number" placeholder="Enter sustainability score" />
+        </Form.Item>
+        <Form.Item name="CompetenceTotalScore" label="Competence Total Score">
+          <Input placeholder="Enter total score" />
+        </Form.Item>
+        <Form.Item name="CompetenceScale" label="Competence Scale">
+          <Select placeholder="Select scale">
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="CompetenceRating" label="Competence Rating">
+          <Select placeholder="Select rating">
+            <Option value="Strong">Strong</Option>
+            <Option value="Adequate">Adequate</Option>
+            <Option value="Needs Improvement">Needs Improvement</Option>
+            <Option value="Weak">Weak</Option>
+            <Option value="Ineffective">Ineffective</Option>
+          </Select>
+        </Form.Item>
+
+        {/* Management Philosophy Section */}
+        <Form.Item name="ManagementPhilosophy" label="Management Philosophy">
+          <Select placeholder="Select Yes or No">
+            <Option value="P">Yes</Option>
+            <Option value="O">No</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="PhilosophyDesignScore" label="Philosophy Design Score">
+          <Input type="number" placeholder="Enter design score" />
+        </Form.Item>
+        <Form.Item
+          name="PhilosophyPerformanceScore"
+          label="Philosophy Performance Score"
+        >
+          <Input type="number" placeholder="Enter performance score" />
+        </Form.Item>
+        <Form.Item
+          name="PhilosophySustainabilityScore"
+          label="Philosophy Sustainability Score"
+        >
+          <Input type="number" placeholder="Enter sustainability score" />
+        </Form.Item>
+        <Form.Item name="PhilosophyTotalScore" label="Philosophy Total Score">
+          <Input placeholder="Enter total score" />
+        </Form.Item>
+        <Form.Item name="PhilosophyScale" label="Philosophy Scale">
+          <Select placeholder="Select scale">
+            <Option value="5">5</Option>
+            <Option value="4">4</Option>
+            <Option value="3">3</Option>
+            <Option value="2">2</Option>
+            <Option value="1">1</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="PhilosophyRating" label="Philosophy Rating">
+          <Select placeholder="Select rating">
+            <Option value="Strong">Strong</Option>
+            <Option value="Adequate">Adequate</Option>
+            <Option value="Needs Improvement">Needs Improvement</Option>
+            <Option value="Weak">Weak</Option>
+            <Option value="Ineffective">Ineffective</Option>
           </Select>
         </Form.Item>
       </>
@@ -1366,6 +1704,24 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
       if (currentStep === 0) {
         await form.validateFields(["No", "Process"]);
         setCurrentStep(1);
+        // Set the selected section key when moving to step 1
+        console.log("Moving to step 1, startSectionKey:", startSectionKey);
+        if (startSectionKey) {
+          console.log("Setting selectedSectionKey to:", startSectionKey);
+          setSelectedSectionKey(startSectionKey);
+        } else {
+          // If no startSectionKey, select the first uncompleted section
+          const remaining = sectionOrder.find(
+            (s) => !completedSections.has(s.key),
+          );
+          if (remaining) {
+            console.log(
+              "No startSectionKey, setting to first remaining:",
+              remaining.key,
+            );
+            setSelectedSectionKey(remaining.key);
+          }
+        }
         return;
       }
 
@@ -1481,16 +1837,12 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
           <>
             <Form.Item label="Select Section">
               <Select
-                value={selectedSectionKey ?? undefined}
+                value={selectedSectionKey || undefined}
                 onChange={(value) => setSelectedSectionKey(value)}
                 placeholder="Choose section"
               >
                 {sectionOrder.map((section) => (
-                  <Option
-                    key={section.key}
-                    value={section.key}
-                    disabled={completedSections.has(section.key)}
-                  >
+                  <Option key={section.key} value={section.key}>
                     {section.title}
                   </Option>
                 ))}

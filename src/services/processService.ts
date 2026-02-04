@@ -269,6 +269,7 @@ export const processService = {
       "control-activities": "ControlActivities",
       "control-assessments": "ControlAssessments",
       "coso-control-environments": "CosoControlEnvironments",
+      "control-environment-scorings": "CosoControlEnvironmentScorings",
       "financial-statement-assertions": "FinancialStatementAssertions",
       "grc-exception-logs": "GrcExceptionLogs",
       "internal-audit-tests": "InternalAuditTests",
