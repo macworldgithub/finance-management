@@ -55,6 +55,13 @@ export const adequacyRatingOptions = [
   { label: "Inadequate", key: "Inadequate" },
   { label: "Critically Inadequate", key: "Critically Inadequate" },
 ];
+export const cosoRatingOptions = [
+  { label: "Strong", key: "Strong" },
+  { label: "Adequate", key: "Adequate" },
+  { label: "Needs Improvement", key: "Needs Improvement" },
+  { label: "Weak", key: "Weak" },
+  { label: "Ineffective", key: "Ineffective" },
+];
 export const effectivenessRatingOptions = [
   { label: "Highly Effective", key: "Highly Effective" },
   { label: "Effective", key: "Effective" },
@@ -3340,8 +3347,841 @@ export function getColumns(
       ];
       break;
     case "18":
-      // COSO Environment Assessment - Placeholder for now
-      dynamicColumns = additionalTabsColumns;
+      // COSO Environment Assessment - Display all scoring columns
+      dynamicColumns = [
+        // Integrity & Ethical Values Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Integrity & Ethical Values
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "integrityEthicalValues",
+              key: "integrityEthicalValues",
+              width: 80,
+              render: (checked: boolean | string, record: DataType) =>
+                renderEditableCheckbox(
+                  checked,
+                  record,
+                  "integrityEthicalValues",
+                  handlers?.onCheckboxChange,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Design",
+              dataIndex: "integrityDesignScore",
+              key: "integrityDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "integrityDesignScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Performance",
+              dataIndex: "integrityPerformanceScore",
+              key: "integrityPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "integrityPerformanceScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "integritySustainabilityScore",
+              key: "integritySustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "integritySustainabilityScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Total",
+              dataIndex: "integrityTotalScore",
+              key: "integrityTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "integrityTotalScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Scale",
+              dataIndex: "integrityScale",
+              key: "integrityScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "integrityScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "integrityRating",
+              key: "integrityRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "integrityRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Board Oversight Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Board Oversight
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "boardOversight",
+              key: "boardOversight",
+              width: 80,
+              render: (checked: boolean | string, record: DataType) =>
+                renderEditableCheckbox(
+                  checked,
+                  record,
+                  "boardOversight",
+                  handlers?.onCheckboxChange,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Design",
+              dataIndex: "boardDesignScore",
+              key: "boardDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "boardDesignScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Performance",
+              dataIndex: "boardPerformanceScore",
+              key: "boardPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "boardPerformanceScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "boardSustainabilityScore",
+              key: "boardSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "boardSustainabilityScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Total",
+              dataIndex: "boardTotalScore",
+              key: "boardTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "boardTotalScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Scale",
+              dataIndex: "boardScale",
+              key: "boardScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(key, record.key, "boardScale"),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "boardRating",
+              key: "boardRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(key, record.key, "boardRating"),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Organizational Structure Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Organizational Structure
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "organizationalStructure",
+              key: "organizationalStructure",
+              width: 80,
+              render: (checked: boolean | string, record: DataType) =>
+                renderEditableCheckbox(
+                  checked,
+                  record,
+                  "organizationalStructure",
+                  handlers?.onCheckboxChange,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Design",
+              dataIndex: "orgStructureDesignScore",
+              key: "orgStructureDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "orgStructureDesignScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Performance",
+              dataIndex: "orgStructurePerformanceScore",
+              key: "orgStructurePerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "orgStructurePerformanceScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "orgStructureSustainabilityScore",
+              key: "orgStructureSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "orgStructureSustainabilityScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Total",
+              dataIndex: "orgStructureTotalScore",
+              key: "orgStructureTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "orgStructureTotalScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Scale",
+              dataIndex: "orgStructureScale",
+              key: "orgStructureScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "orgStructureScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "orgStructureRating",
+              key: "orgStructureRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "orgStructureRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Commitment to Competence Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Commitment to Competence
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "commitmentToCompetence",
+              key: "commitmentToCompetence",
+              width: 80,
+              render: (checked: boolean | string, record: DataType) =>
+                renderEditableCheckbox(
+                  checked,
+                  record,
+                  "commitmentToCompetence",
+                  handlers?.onCheckboxChange,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Design",
+              dataIndex: "competenceDesignScore",
+              key: "competenceDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "competenceDesignScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Performance",
+              dataIndex: "competencePerformanceScore",
+              key: "competencePerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "competencePerformanceScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "competenceSustainabilityScore",
+              key: "competenceSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "competenceSustainabilityScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Total",
+              dataIndex: "competenceTotalScore",
+              key: "competenceTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "competenceTotalScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Scale",
+              dataIndex: "competenceScale",
+              key: "competenceScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "competenceScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "competenceRating",
+              key: "competenceRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "competenceRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Management Philosophy Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Management Philosophy
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "managementPhilosophy",
+              key: "managementPhilosophy",
+              width: 80,
+              render: (checked: boolean | string, record: DataType) =>
+                renderEditableCheckbox(
+                  checked,
+                  record,
+                  "managementPhilosophy",
+                  handlers?.onCheckboxChange,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Design",
+              dataIndex: "philosophyDesignScore",
+              key: "philosophyDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "philosophyDesignScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Performance",
+              dataIndex: "philosophyPerformanceScore",
+              key: "philosophyPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "philosophyPerformanceScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "philosophySustainabilityScore",
+              key: "philosophySustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "philosophySustainabilityScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Total",
+              dataIndex: "philosophyTotalScore",
+              key: "philosophyTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  return (
+                    <EditableInput
+                      initialValue={text}
+                      onSave={(newValue) =>
+                        handlers?.onTextChange?.(
+                          record.key,
+                          "philosophyTotalScore",
+                          newValue,
+                        )
+                      }
+                    />
+                  );
+                }
+                return text;
+              },
+            },
+            {
+              title: "Scale",
+              dataIndex: "philosophyScale",
+              key: "philosophyScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "philosophyScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "philosophyRating",
+              key: "philosophyRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "philosophyRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+      ];
       break;
     default:
       dynamicColumns = processColumns;

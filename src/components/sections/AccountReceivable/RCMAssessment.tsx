@@ -245,6 +245,53 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 managementPhilosophy:
                   item["Management Philosophy"] ?? item.managementPhilosophy,
               };
+            case "COSOEnvironmentScorings":
+              return {
+                ...base,
+                date: item.Date ?? item.date ?? "",
+                integrityEthicalValues: item.IntegrityEthicalValues ?? "",
+                integrityDesignScore: item.IntegrityDesignScore ?? 0,
+                integrityPerformanceScore: item.IntegrityPerformanceScore ?? 0,
+                integritySustainabilityScore:
+                  item.IntegritySustainabilityScore ?? 0,
+                integrityTotalScore: item.IntegrityTotalScore ?? "",
+                integrityScale: item.IntegrityScale ?? 0,
+                integrityRating: item.IntegrityRating ?? "",
+                boardOversight: item.BoardOversight ?? "",
+                boardDesignScore: item.BoardDesignScore ?? 0,
+                boardPerformanceScore: item.BoardPerformanceScore ?? 0,
+                boardSustainabilityScore: item.BoardSustainabilityScore ?? 0,
+                boardTotalScore: item.BoardTotalScore ?? "",
+                boardScale: item.BoardScale ?? 0,
+                boardRating: item.BoardRating ?? "",
+                organizationalStructure: item.OrganizationalStructure ?? "",
+                orgStructureDesignScore: item.OrgStructureDesignScore ?? 0,
+                orgStructurePerformanceScore:
+                  item.OrgStructurePerformanceScore ?? 0,
+                orgStructureSustainabilityScore:
+                  item.OrgStructureSustainabilityScore ?? 0,
+                orgStructureTotalScore: item.OrgStructureTotalScore ?? "",
+                orgStructureScale: item.OrgStructureScale ?? 0,
+                orgStructureRating: item.OrgStructureRating ?? "",
+                commitmentToCompetence: item.CommitmentToCompetence ?? "",
+                competenceDesignScore: item.CompetenceDesignScore ?? 0,
+                competencePerformanceScore:
+                  item.CompetencePerformanceScore ?? 0,
+                competenceSustainabilityScore:
+                  item.CompetenceSustainabilityScore ?? 0,
+                competenceTotalScore: item.CompetenceTotalScore ?? "",
+                competenceScale: item.CompetenceScale ?? 0,
+                competenceRating: item.CompetenceRating ?? "",
+                managementPhilosophy: item.ManagementPhilosophy ?? "",
+                philosophyDesignScore: item.PhilosophyDesignScore ?? 0,
+                philosophyPerformanceScore:
+                  item.PhilosophyPerformanceScore ?? 0,
+                philosophySustainabilityScore:
+                  item.PhilosophySustainabilityScore ?? 0,
+                philosophyTotalScore: item.PhilosophyTotalScore ?? "",
+                philosophyScale: item.PhilosophyScale ?? 0,
+                philosophyRating: item.PhilosophyRating ?? "",
+              };
             default:
               return base;
           }
@@ -522,6 +569,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             ...prev,
             [section]: (prev[section] || []).filter((r) => r.key !== key),
           }));
+          // Refresh data to get latest from server after deletion
+          await fetchData();
         } catch (error) {
           console.error("Error deleting item:", error);
         }
@@ -736,6 +785,66 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             };
             break;
 
+          case "COSOEnvironmentScorings":
+            endpoint = `CosoControlEnvironmentScorings`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              Date: item.date || "",
+              IntegrityEthicalValues: item.integrityEthicalValues || "",
+              IntegrityDesignScore:
+                parseFloat(String(item.integrityDesignScore)) || 0,
+              IntegrityPerformanceScore:
+                parseFloat(String(item.integrityPerformanceScore)) || 0,
+              IntegritySustainabilityScore:
+                parseFloat(String(item.integritySustainabilityScore)) || 0,
+              IntegrityTotalScore: String(item.integrityTotalScore || ""),
+              IntegrityScale: parseFloat(String(item.integrityScale)) || 0,
+              IntegrityRating: item.integrityRating || "",
+              BoardOversight: item.boardOversight || "",
+              BoardDesignScore: parseFloat(String(item.boardDesignScore)) || 0,
+              BoardPerformanceScore:
+                parseFloat(String(item.boardPerformanceScore)) || 0,
+              BoardSustainabilityScore:
+                parseFloat(String(item.boardSustainabilityScore)) || 0,
+              BoardTotalScore: String(item.boardTotalScore || ""),
+              BoardScale: parseFloat(String(item.boardScale)) || 0,
+              BoardRating: item.boardRating || "",
+              OrganizationalStructure: item.organizationalStructure || "",
+              OrgStructureDesignScore:
+                parseFloat(String(item.orgStructureDesignScore)) || 0,
+              OrgStructurePerformanceScore:
+                parseFloat(String(item.orgStructurePerformanceScore)) || 0,
+              OrgStructureSustainabilityScore:
+                parseFloat(String(item.orgStructureSustainabilityScore)) || 0,
+              OrgStructureTotalScore: String(item.orgStructureTotalScore || ""),
+              OrgStructureScale:
+                parseFloat(String(item.orgStructureScale)) || 0,
+              OrgStructureRating: item.orgStructureRating || "",
+              CommitmentToCompetence: item.commitmentToCompetence || "",
+              CompetenceDesignScore:
+                parseFloat(String(item.competenceDesignScore)) || 0,
+              CompetencePerformanceScore:
+                parseFloat(String(item.competencePerformanceScore)) || 0,
+              CompetenceSustainabilityScore:
+                parseFloat(String(item.competenceSustainabilityScore)) || 0,
+              CompetenceTotalScore: String(item.competenceTotalScore || ""),
+              CompetenceScale: parseFloat(String(item.competenceScale)) || 0,
+              CompetenceRating: item.competenceRating || "",
+              ManagementPhilosophy: item.managementPhilosophy || "",
+              PhilosophyDesignScore:
+                parseFloat(String(item.philosophyDesignScore)) || 0,
+              PhilosophyPerformanceScore:
+                parseFloat(String(item.philosophyPerformanceScore)) || 0,
+              PhilosophySustainabilityScore:
+                parseFloat(String(item.philosophySustainabilityScore)) || 0,
+              PhilosophyTotalScore: String(item.philosophyTotalScore || ""),
+              PhilosophyScale: parseFloat(String(item.philosophyScale)) || 0,
+              PhilosophyRating: item.philosophyRating || "",
+            };
+            break;
+
           default:
             console.error("Unknown section:", section);
             return;
@@ -771,7 +880,17 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             }
           } else {
             // For assessment tabs, use PUT with correct endpoint
-            response = await apiClientDotNet.put(`/${endpoint}`, convertedBody);
+            if (section === "COSOEnvironmentScorings") {
+              response = await apiClientDotNet.put(
+                `/${endpoint}/${item.id}`,
+                convertedBody,
+              );
+            } else {
+              response = await apiClientDotNet.put(
+                `/${endpoint}`,
+                convertedBody,
+              );
+            }
           }
 
           console.log("API response:", response);

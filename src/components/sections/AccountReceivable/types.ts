@@ -91,6 +91,40 @@ export interface DataType {
   productClassScore?: number;
   productName?: string;
   productNameScore?: number;
+  // COSOEnvironmentScorings fields
+  integrityEthicalValues?: boolean | string;
+  integrityDesignScore?: number;
+  integrityPerformanceScore?: number;
+  integritySustainabilityScore?: number;
+  integrityTotalScore?: string;
+  integrityScale?: number;
+  integrityRating?: string;
+  boardDesignScore?: number;
+  boardPerformanceScore?: number;
+  boardSustainabilityScore?: number;
+  boardTotalScore?: string;
+  boardScale?: number;
+  boardRating?: string;
+  organizationalStructure?: boolean | string;
+  orgStructureDesignScore?: number;
+  orgStructurePerformanceScore?: number;
+  orgStructureSustainabilityScore?: number;
+  orgStructureTotalScore?: string;
+  orgStructureScale?: number;
+  orgStructureRating?: string;
+  commitmentToCompetence?: boolean | string;
+  competenceDesignScore?: number;
+  competencePerformanceScore?: number;
+  competenceSustainabilityScore?: number;
+  competenceTotalScore?: string;
+  competenceScale?: number;
+  competenceRating?: string;
+  philosophyDesignScore?: number;
+  philosophyPerformanceScore?: number;
+  philosophySustainabilityScore?: number;
+  philosophyTotalScore?: string;
+  philosophyScale?: number;
+  philosophyRating?: string;
   [key: string]: any; // flexible for dynamic columns
 }
 // Add this to your types.ts file
