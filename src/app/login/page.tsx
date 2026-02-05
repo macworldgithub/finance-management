@@ -21,11 +21,26 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
 
+  // antd message instance for reliable toasts
+  const [messageApi, contextHolder] = message.useMessage();
+
+  // Simple email format check
+  const isEmail = (value: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
-      message.error("Please enter both email and password");
+      messageApi.error("Please enter both email and password");
+      console.debug("messageApi.error called: missing credentials");
+      return;
+    }
+
+    // If it looks like an email but doesn't match basic format, show a validation error
+    if (email.includes("@") && !isEmail(email)) {
+      messageApi.error("Please enter a valid email address");
+      console.debug("messageApi.error called: invalid email format");
       return;
     }
 
@@ -41,13 +56,36 @@ export default function LoginPage() {
 
       // Use the login function from AuthContext
       login(response.data);
-      message.success(`Welcome back, ${response.data.fullName}!`);
+      messageApi.success(`Welcome back, ${response.data.fullName}!`);
+      console.debug("messageApi.success called: login success");
       router.push("/");
     } catch (error: any) {
-      message.error(
-        error.response?.data?.message ||
-          "Login failed. Please check your credentials."
-      );
+      // Log the error to help debug why the toast might not show in some cases
+      console.error("Login error:", error);
+
+      const status = error?.response?.status;
+      const data = error?.response?.data;
+
+      let apiMsg: string | undefined;
+
+      if (typeof data === "string") {
+        apiMsg = data;
+      } else if (data && typeof data === "object") {
+        apiMsg = data.message || data.detail || data.error || undefined;
+      }
+
+      // If the user provided an email and server responded with unauthorized, show precise API message
+      if (email.includes("@") && status === 401) {
+        messageApi.error(apiMsg || "Invalid credentials. Please try again.");
+        console.debug("messageApi.error called: 401", apiMsg);
+      } else if (apiMsg) {
+        // Show any API-provided message
+        messageApi.error(apiMsg);
+        console.debug("messageApi.error called: apiMsg", apiMsg);
+      } else {
+        messageApi.error("Login failed. Please check your credentials.");
+        console.debug("messageApi.error called: default");
+      }
     } finally {
       setLoading(false);
     }
@@ -56,6 +94,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
+        {contextHolder}
         {/* Header */}
         <div className="text-center">
           <div className="mx-auto h-12 w-12 bg-indigo-600 rounded-lg flex items-center justify-center">
