@@ -23,6 +23,8 @@ export const SECTION_TO_BASE_ENDPOINT: Record<string, string> = {
   OwnershipScorings: "OwnershipScorings",
   CECOSO: "CosoControlEnvironments",
   COSOEnvironmentScorings: "CosoControlEnvironmentScorings",
+  CEINTOSAIIFACI: "IntosaiIfacControlEnvironments",
+  CEINTOSAIIFACIAssessment: "CeIntosaiIfacControlEnvironmentScorings",
 };
 
 export const normalizeSectionName = (section: string): string => {

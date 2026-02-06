@@ -4183,12 +4183,741 @@ export function getColumns(
         },
       ];
       break;
+    case "19":
+      // CE-INTOSAI, IFACI - Same as INTOSAI but without Actions column
+      // Values may come as boolean (true/false) or as "P"/"O" flags, so handle both.
+      dynamicColumns = [
+        {
+          title: "Integrity and Ethical Values",
+          dataIndex: "integrityEthical",
+          key: "integrityEthical",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Commitment to Competence",
+          dataIndex: "commitmentCompetence",
+          key: "commitmentCompetence",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Management's Philosophy and Operating Style",
+          dataIndex: "managementPhilosophy",
+          key: "managementPhilosophy",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Organizational Structure",
+          dataIndex: "orgStructure",
+          key: "orgStructure",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Assignment of Authority and Responsibility",
+          dataIndex: "assignmentAuthority",
+          key: "assignmentAuthority",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Human Resource Policies and Practices",
+          dataIndex: "hrPolicies",
+          key: "hrPolicies",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Board of Directors' or Audit Committee's Participation",
+          dataIndex: "boardAudit",
+          key: "boardAudit",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Management Control Methods",
+          dataIndex: "managementControl",
+          key: "managementControl",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "External Influences",
+          dataIndex: "externalInfluences",
+          key: "externalInfluences",
+          width: 180,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Management's Commitment to Internal Control",
+          dataIndex: "commitmentInternal",
+          key: "commitmentInternal",
+          width: 220,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Communication and Enforcement of Integrity and Ethical Values",
+          dataIndex: "enforcementIntegrity",
+          key: "enforcementIntegrity",
+          width: 200,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Employee Awareness and Understanding",
+          dataIndex: "employeeAwareness",
+          key: "employeeAwareness",
+          width: 180,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Accountability and Performance Measurement",
+          dataIndex: "accountability",
+          key: "accountability",
+          width: 220,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+        {
+          title: "Commitment to Transparency and Openness",
+          dataIndex: "commitmentTransparency",
+          key: "commitmentTransparency",
+          width: 220,
+          render: (value: any) => (
+            <div className="text-center">
+              {value === true || value === "P"
+                ? "✓"
+                : value === false || value === "O"
+                ? "✗"
+                : ""}
+            </div>
+          ),
+        },
+      ];
+      break;
+    case "20":
+      // CE-INTOSAI, IFACI Assessment - Similar to COSO Environment Assessment but with INTOSAI fields
+      dynamicColumns = [
+        // Integrity & Ethical Values Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Integrity and Ethical Values
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "integrityEthicalValues",
+              key: "integrityEthicalValues",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "integrityDesignScore",
+              key: "integrityDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "integrityDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "integrityPerformanceScore",
+              key: "integrityPerformanceScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "integrityPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "integritySustainabilityScore",
+              key: "integritySustainabilityScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "integritySustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "integrityTotalScore",
+              key: "integrityTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "integrityTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "integrityScale",
+              key: "integrityScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "integrityScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "integrityRating",
+              key: "integrityRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "integrityRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Commitment to Competence Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Commitment to Competence
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "commitmentCompetenceValues",
+              key: "commitmentCompetenceValues",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "commitmentDesignScore",
+              key: "commitmentDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commitmentDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "commitmentPerformanceScore",
+              key: "commitmentPerformanceScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commitmentPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "commitmentSustainabilityScore",
+              key: "commitmentSustainabilityScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commitmentSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "commitmentTotalScore",
+              key: "commitmentTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commitmentTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "commitmentScale",
+              key: "commitmentScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "commitmentScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "commitmentRating",
+              key: "commitmentRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "commitmentRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Management Philosophy Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Management's Philosophy and Operating Style
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "managementPhilosophyValues",
+              key: "managementPhilosophyValues",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "philosophyDesignScore",
+              key: "philosophyDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "philosophyDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "philosophyPerformanceScore",
+              key: "philosophyPerformanceScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "philosophyPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "philosophySustainabilityScore",
+              key: "philosophySustainabilityScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "philosophySustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "philosophyTotalScore",
+              key: "philosophyTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "philosophyTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "philosophyScale",
+              key: "philosophyScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "philosophyScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "philosophyRating",
+              key: "philosophyRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "philosophyRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Organizational Structure Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Organizational Structure
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "orgStructureValues",
+              key: "orgStructureValues",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "orgStructureDesignScore",
+              key: "orgStructureDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "orgStructureDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "orgStructurePerformanceScore",
+              key: "orgStructurePerformanceScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "orgStructurePerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "orgStructureSustainabilityScore",
+              key: "orgStructureSustainabilityScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "orgStructureSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "orgStructureTotalScore",
+              key: "orgStructureTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "orgStructureTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "orgStructureScale",
+              key: "orgStructureScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "orgStructureScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "orgStructureRating",
+              key: "orgStructureRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "orgStructureRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+      ];
+      break;
     default:
       dynamicColumns = processColumns;
   }
   // Duplicate actionsColumn removed above. Only one definition remains.
-  // For CE-COSO tab, don't include actions column
-  if (activeTab === "17") {
+  // For CE-COSO and CE-INTOSAI, IFACI tabs, don't include actions column
+  if (activeTab === "17" || activeTab === "19") {
     return [...baseColumns, ...dynamicColumns];
   }
   return [...baseColumns, ...dynamicColumns, actionsColumn];

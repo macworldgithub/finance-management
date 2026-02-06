@@ -85,6 +85,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "16": "OwnershipScorings",
         "17": "CECOSO",
         "18": "COSOEnvironmentScorings",
+        "19": "CEINTOSAIIFACI",
+        "20": "CEINTOSAIIFACIAssessment",
       };
       return map[activeTab] || "Process";
     }, [activeTab]);
@@ -123,6 +125,9 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               item.process ??
               "",
           };
+
+        // Helper: map P/O flags for checkboxes (P = true, everything else = false)
+        const toCheckboxBool = (v: any) => v === "P";
 
           switch (section) {
             case "Process":
@@ -292,6 +297,100 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 philosophyScale: item.PhilosophyScale ?? 0,
                 philosophyRating: item.PhilosophyRating ?? "",
               };
+            case "CEINTOSAIIFACI":
+              return {
+                ...base,
+                integrityEthical: toCheckboxBool(
+                  item["Integrity and Ethical Values"] ?? item.integrityEthical
+                ),
+                commitmentCompetence: toCheckboxBool(
+                  item["Commitment to Competence"] ?? item.commitmentCompetence
+                ),
+                managementPhilosophy: toCheckboxBool(
+                  item["Management's Philosophy and Operating Style"] ??
+                    item.managementPhilosophy
+                ),
+                orgStructure: toCheckboxBool(
+                  item["Organizational Structure"] ?? item.orgStructure
+                ),
+                assignmentAuthority: toCheckboxBool(
+                  item["Assignment of Authority and Responsibility"] ??
+                    item.assignmentAuthority
+                ),
+                hrPolicies: toCheckboxBool(
+                  item["Human Resource Policies and Practices"] ?? item.hrPolicies
+                ),
+                boardAudit: toCheckboxBool(
+                  item[
+                    "Board of Directors' or Audit Committee's Participation"
+                  ] ?? item.boardAudit
+                ),
+                managementControl: toCheckboxBool(
+                  item["Management Control Methods"] ?? item.managementControl
+                ),
+                externalInfluences: toCheckboxBool(
+                  item["External Influences"] ?? item.externalInfluences
+                ),
+                commitmentInternal: toCheckboxBool(
+                  item["Management's Commitment to Internal Control"] ??
+                    item.commitmentInternal
+                ),
+                enforcementIntegrity: toCheckboxBool(
+                  item[
+                    "Communication and Enforcement of Integrity and Ethical Values"
+                  ] ?? item.enforcementIntegrity
+                ),
+                employeeAwareness: toCheckboxBool(
+                  item["Employee Awareness and Understanding"] ??
+                    item.employeeAwareness
+                ),
+                accountability: toCheckboxBool(
+                  item["Accountability and Performance Measurement"] ??
+                    item.accountability
+                ),
+                commitmentTransparency: toCheckboxBool(
+                  item["Commitment to Transparency and Openness"] ??
+                    item.commitmentTransparency
+                ),
+              };
+            case "CEINTOSAIIFACIAssessment":
+              return {
+                ...base,
+                date: item.Date ?? item.date ?? "",
+                integrityEthicalValues: item.IntegrityEthicalValues ?? "",
+                integrityDesignScore: item.IntegrityDesignScore ?? 0,
+                integrityPerformanceScore: item.IntegrityPerformanceScore ?? 0,
+                integritySustainabilityScore:
+                  item.IntegritySustainabilityScore ?? 0,
+                integrityTotalScore: item.IntegrityTotalScore ?? "",
+                integrityScale: item.IntegrityScale ?? 0,
+                integrityRating: item.IntegrityRating ?? "",
+                commitmentCompetenceValues: item.CommitmentCompetenceValues ?? "",
+                commitmentDesignScore: item.CommitmentDesignScore ?? 0,
+                commitmentPerformanceScore: item.CommitmentPerformanceScore ?? 0,
+                commitmentSustainabilityScore:
+                  item.CommitmentSustainabilityScore ?? 0,
+                commitmentTotalScore: item.CommitmentTotalScore ?? "",
+                commitmentScale: item.CommitmentScale ?? 0,
+                commitmentRating: item.CommitmentRating ?? "",
+                managementPhilosophyValues: item.ManagementPhilosophyValues ?? "",
+                philosophyDesignScore: item.PhilosophyDesignScore ?? 0,
+                philosophyPerformanceScore: item.PhilosophyPerformanceScore ?? 0,
+                philosophySustainabilityScore:
+                  item.PhilosophySustainabilityScore ?? 0,
+                philosophyTotalScore: item.PhilosophyTotalScore ?? "",
+                philosophyScale: item.PhilosophyScale ?? 0,
+                philosophyRating: item.PhilosophyRating ?? "",
+                orgStructureValues: item.OrgStructureValues ?? "",
+                orgStructureDesignScore: item.OrgStructureDesignScore ?? 0,
+                orgStructurePerformanceScore:
+                  item.OrgStructurePerformanceScore ?? 0,
+                orgStructureSustainabilityScore:
+                  item.OrgStructureSustainabilityScore ?? 0,
+                orgStructureTotalScore: item.OrgStructureTotalScore ?? "",
+                orgStructureScale: item.OrgStructureScale ?? 0,
+                orgStructureRating: item.OrgStructureRating ?? "",
+              };
             default:
               return base;
           }
@@ -372,6 +471,10 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       // COSO tabs
       if (activeTab === "17" || activeTab === "18") {
         return ["17", "18"];
+      }
+      // CE-INTOSAI, IFACI tabs
+      if (activeTab === "19" || activeTab === "20") {
+        return ["19", "20"];
       }
       // Process tabs (default)
       return ["1", "11", "12", "13", "14"];
@@ -501,6 +604,13 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
           { key: "18", label: "COSO Environment Assessment" },
         ];
       }
+      // CE-INTOSAI, IFACI tabs
+      if (activeTab === "19" || activeTab === "20") {
+        return [
+          { key: "19", label: "CE-INTOSAI, IFACI" },
+          { key: "20", label: "CE-INTOSAI, IFACI Assessment" },
+        ];
+      }
       // Process tabs (default)
       return [
         { key: "1", label: "Processes" },
@@ -524,6 +634,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "16": "OwnershipScorings",
         "17": "CECOSO",
         "18": "COSOEnvironmentScorings",
+        "19": "CEINTOSAIIFACI",
+        "20": "CEINTOSAIIFACIAssessment",
       };
       return map[tabKey] || "Process";
     };
@@ -845,6 +957,67 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             };
             break;
 
+          case "CEINTOSAIIFACI":
+            endpoint = `IntosaiIfacControlEnvironments/${item.id}`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              "Integrity and Ethical Values": item.integrityEthical ? "P" : "O",
+              "Commitment to Competence": item.commitmentCompetence ? "P" : "O",
+              "Management's Philosophy and Operating Style": item.managementPhilosophy ? "P" : "O",
+              "Organizational Structure": item.orgStructure ? "P" : "O",
+              "Assignment of Authority and Responsibility": item.assignmentAuthority ? "P" : "O",
+              "Human Resource Policies and Practices": item.hrPolicies ? "P" : "O",
+              "Board of Directors' or Audit Committee's Participation": item.boardAudit ? "P" : "O",
+              "Management Control Methods": item.managementControl ? "P" : "O",
+              "External Influences": item.externalInfluences ? "P" : "O",
+              "Management's Commitment to Internal Control": item.commitmentInternal ? "P" : "O",
+              "Communication and Enforcement of Integrity and Ethical Values": item.enforcementIntegrity ? "P" : "O",
+              "Employee Awareness and Understanding": item.employeeAwareness ? "P" : "O",
+              "Accountability and Performance Measurement": item.accountability ? "P" : "O",
+              "Commitment to Transparency and Openness": item.commitmentTransparency ? "P" : "O",
+            };
+            break;
+
+          case "CEINTOSAIIFACIAssessment":
+            endpoint = `CeIntosaiIfacControlEnvironmentScorings`;
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              Date: item.date || "",
+              IntegrityEthicalValues: item.integrityEthicalValues || "",
+              IntegrityDesignScore: parseFloat(String(item.integrityDesignScore)) || 0,
+              IntegrityPerformanceScore: parseFloat(String(item.integrityPerformanceScore)) || 0,
+              IntegritySustainabilityScore: parseFloat(String(item.integritySustainabilityScore)) || 0,
+              IntegrityTotalScore: String(item.integrityTotalScore || ""),
+              IntegrityScale: parseFloat(String(item.integrityScale)) || 0,
+              IntegrityRating: item.integrityRating || "",
+              CommitmentCompetenceValues: item.commitmentCompetenceValues || "",
+              CommitmentDesignScore: parseFloat(String(item.commitmentDesignScore)) || 0,
+              CommitmentPerformanceScore: parseFloat(String(item.commitmentPerformanceScore)) || 0,
+              CommitmentSustainabilityScore: parseFloat(String(item.commitmentSustainabilityScore)) || 0,
+              CommitmentTotalScore: String(item.commitmentTotalScore || ""),
+              CommitmentScale: parseFloat(String(item.commitmentScale)) || 0,
+              CommitmentRating: item.commitmentRating || "",
+              ManagementPhilosophyValues: item.managementPhilosophyValues || "",
+              PhilosophyDesignScore: parseFloat(String(item.philosophyDesignScore)) || 0,
+              PhilosophyPerformanceScore: parseFloat(String(item.philosophyPerformanceScore)) || 0,
+              PhilosophySustainabilityScore: parseFloat(String(item.philosophySustainabilityScore)) || 0,
+              PhilosophyTotalScore: String(item.philosophyTotalScore || ""),
+              PhilosophyScale: parseFloat(String(item.philosophyScale)) || 0,
+              PhilosophyRating: item.philosophyRating || "",
+              OrgStructureValues: item.orgStructureValues || "",
+              OrgStructureDesignScore: parseFloat(String(item.orgStructureDesignScore)) || 0,
+              OrgStructurePerformanceScore: parseFloat(String(item.orgStructurePerformanceScore)) || 0,
+              OrgStructureSustainabilityScore: parseFloat(String(item.orgStructureSustainabilityScore)) || 0,
+              OrgStructureTotalScore: String(item.orgStructureTotalScore || ""),
+              OrgStructureScale: parseFloat(String(item.orgStructureScale)) || 0,
+              OrgStructureRating: item.orgStructureRating || "",
+            };
+            break;
+
           default:
             console.error("Unknown section:", section);
             return;
@@ -880,7 +1053,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             }
           } else {
             // For assessment tabs, use PUT with correct endpoint
-            if (section === "COSOEnvironmentScorings") {
+            if (section === "COSOEnvironmentScorings" || section === "CEINTOSAIIFACIAssessment") {
               response = await apiClientDotNet.put(
                 `/${endpoint}/${item.id}`,
                 convertedBody,
@@ -1050,6 +1223,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             Ownership: "ownerships",
             OwnershipScorings: "ownership-scorings",
             "COSO Environment Assessment": "control-environment-scorings",
+            "CEINTOSAIIFACI": "intosai-ifac-control-environments",
+            "CEINTOSAIIFACIAssessment": "ce-intosai-ifac-control-environment-scorings",
           };
           setStartSectionKey(map[section] || "processes");
           setFormModalVisible(true);
