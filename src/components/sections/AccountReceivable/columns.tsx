@@ -4184,126 +4184,125 @@ export function getColumns(
       ];
       break;
     case "19":
-      // CE-INTOSAI, IFACI - Same as INTOSAI but without Actions column
-      // Values may come as boolean (true/false) or as "P"/"O" flags, so handle both.
+      // CE-INTOSAI, IFACI - Display all INTOSAI/IFAC fields
       dynamicColumns = [
         {
           title: "Integrity and Ethical Values",
-          dataIndex: "integrityEthical",
-          key: "integrityEthical",
-          width: 200,
+          dataIndex: "integrityAndEthicalValues",
+          key: "integrityAndEthicalValues",
+          width: 180,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Commitment to Competence",
-          dataIndex: "commitmentCompetence",
-          key: "commitmentCompetence",
-          width: 200,
+          dataIndex: "commitmentToCompetence",
+          key: "commitmentToCompetence",
+          width: 180,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Management's Philosophy and Operating Style",
-          dataIndex: "managementPhilosophy",
-          key: "managementPhilosophy",
-          width: 200,
+          dataIndex: "managementsPhilosophyAndOperatingStyle",
+          key: "managementsPhilosophyAndOperatingStyle",
+          width: 220,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Organizational Structure",
-          dataIndex: "orgStructure",
-          key: "orgStructure",
-          width: 200,
+          dataIndex: "organizationalStructure",
+          key: "organizationalStructure",
+          width: 160,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Assignment of Authority and Responsibility",
-          dataIndex: "assignmentAuthority",
-          key: "assignmentAuthority",
-          width: 200,
+          dataIndex: "assignmentOfAuthorityAndResponsibility",
+          key: "assignmentOfAuthorityAndResponsibility",
+          width: 220,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Human Resource Policies and Practices",
-          dataIndex: "hrPolicies",
-          key: "hrPolicies",
-          width: 200,
+          dataIndex: "humanResourcePoliciesAndPractices",
+          key: "humanResourcePoliciesAndPractices",
+          width: 220,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Board of Directors' or Audit Committee's Participation",
-          dataIndex: "boardAudit",
-          key: "boardAudit",
-          width: 200,
+          dataIndex: "boardOfDirectorsOrAuditCommitteeParticipation",
+          key: "boardOfDirectorsOrAuditCommitteeParticipation",
+          width: 260,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Management Control Methods",
-          dataIndex: "managementControl",
-          key: "managementControl",
-          width: 200,
+          dataIndex: "managementControlMethods",
+          key: "managementControlMethods",
+          width: 180,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
@@ -4311,89 +4310,90 @@ export function getColumns(
           title: "External Influences",
           dataIndex: "externalInfluences",
           key: "externalInfluences",
-          width: 180,
+          width: 140,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Management's Commitment to Internal Control",
-          dataIndex: "commitmentInternal",
-          key: "commitmentInternal",
+          dataIndex: "managementsCommitmentToInternalControl",
+          key: "managementsCommitmentToInternalControl",
           width: 220,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
-          title: "Communication and Enforcement of Integrity and Ethical Values",
-          dataIndex: "enforcementIntegrity",
-          key: "enforcementIntegrity",
-          width: 200,
+          title:
+            "Communication and Enforcement of Integrity and Ethical Values",
+          dataIndex: "communicationAndEnforcementOfIntegrityAndEthicalValues",
+          key: "communicationAndEnforcementOfIntegrityAndEthicalValues",
+          width: 280,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Employee Awareness and Understanding",
-          dataIndex: "employeeAwareness",
-          key: "employeeAwareness",
-          width: 180,
+          dataIndex: "employeeAwarenessAndUnderstanding",
+          key: "employeeAwarenessAndUnderstanding",
+          width: 220,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Accountability and Performance Measurement",
-          dataIndex: "accountability",
-          key: "accountability",
-          width: 220,
+          dataIndex: "accountabilityAndPerformanceMeasurement",
+          key: "accountabilityAndPerformanceMeasurement",
+          width: 240,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
         {
           title: "Commitment to Transparency and Openness",
-          dataIndex: "commitmentTransparency",
-          key: "commitmentTransparency",
+          dataIndex: "commitmentToTransparencyAndOpenness",
+          key: "commitmentToTransparencyAndOpenness",
           width: 220,
           render: (value: any) => (
             <div className="text-center">
               {value === true || value === "P"
                 ? "✓"
                 : value === false || value === "O"
-                ? "✗"
-                : ""}
+                  ? "✗"
+                  : ""}
             </div>
           ),
         },
