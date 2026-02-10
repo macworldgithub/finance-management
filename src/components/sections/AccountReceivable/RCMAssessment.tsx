@@ -519,8 +519,133 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             case "INTOSAIIFACIAssessment":
               return {
                 ...base,
-
-                // Add assessment fields when you get the API endpoint
+                integrityEthicalValues: item.IntegrityEthicalValues ?? "",
+                integrityDesignScore: item.IntegrityDesignScore ?? 0,
+                integrityPerformanceScore: item.IntegrityPerformanceScore ?? 0,
+                integritySustainabilityScore:
+                  item.IntegritySustainabilityScore ?? 0,
+                integrityTotalScore: item.IntegrityTotalScore ?? "",
+                integrityScale: item.IntegrityScale ?? 0,
+                integrityRating: item.IntegrityRating ?? "",
+                commitmentToCompetence: item.CommitmentToCompetence ?? "",
+                competenceDesignScore: item.CompetenceDesignScore ?? 0,
+                competencePerformanceScore:
+                  item.CompetencePerformanceScore ?? 0,
+                competenceSustainabilityScore:
+                  item.CompetenceSustainabilityScore ?? 0,
+                competenceTotalScore: item.CompetenceTotalScore ?? "",
+                competenceScale: item.CompetenceScale ?? 0,
+                competenceRating: item.CompetenceRating ?? "",
+                managementPhilosophy: item.ManagementPhilosophy ?? "",
+                philosophyDesignScore: item.PhilosophyDesignScore ?? 0,
+                philosophyPerformanceScore:
+                  item.PhilosophyPerformanceScore ?? 0,
+                philosophySustainabilityScore:
+                  item.PhilosophySustainabilityScore ?? 0,
+                philosophyTotalScore: item.PhilosophyTotalScore ?? "",
+                philosophyScale: item.PhilosophyScale ?? 0,
+                philosophyRating: item.PhilosophyRating ?? "",
+                organizationalStructure: item.OrganizationalStructure ?? "",
+                orgStructureDesignScore: item.OrgStructureDesignScore ?? 0,
+                orgStructurePerformanceScore:
+                  item.OrgStructurePerformanceScore ?? 0,
+                orgStructureSustainabilityScore:
+                  item.OrgStructureSustainabilityScore ?? 0,
+                orgStructureTotalScore: item.OrgStructureTotalScore ?? "",
+                orgStructureScale: item.OrgStructureScale ?? 0,
+                orgStructureRating: item.OrgStructureRating ?? "",
+                assignmentOfAuthorityAndResponsibility:
+                  item.AssignmentOfAuthorityAndResponsibility ?? "",
+                authorityDesignScore: item.AuthorityDesignScore ?? 0,
+                authorityPerformanceScore: item.AuthorityPerformanceScore ?? 0,
+                authoritySustainabilityScore:
+                  item.AuthoritySustainabilityScore ?? 0,
+                authorityTotalScore: item.AuthorityTotalScore ?? "",
+                authorityScale: item.AuthorityScale ?? 0,
+                authorityRating: item.AuthorityRating ?? "",
+                humanResourcePoliciesAndPractices:
+                  item.HumanResourcePoliciesAndPractices ?? "",
+                hrDesignScore: item.HrDesignScore ?? 0,
+                hrPerformanceScore: item.HrPerformanceScore ?? 0,
+                hrSustainabilityScore: item.HrSustainabilityScore ?? 0,
+                hrTotalScore: item.HrTotalScore ?? "",
+                hrScale: item.HrScale ?? 0,
+                hrRating: item.HrRating ?? "",
+                boardOfDirectorsOrAuditCommitteeParticipation:
+                  item.BoardOrAuditCommitteeParticipation ?? "",
+                boardDesignScore: item.BoardDesignScore ?? 0,
+                boardPerformanceScore: item.BoardPerformanceScore ?? 0,
+                boardSustainabilityScore: item.BoardSustainabilityScore ?? 0,
+                boardTotalScore: item.BoardTotalScore ?? "",
+                boardScale: item.BoardScale ?? 0,
+                boardRating: item.BoardRating ?? "",
+                managementControlMethods: item.ManagementControlMethods ?? "",
+                controlMethodsDesignScore: item.ControlMethodsDesignScore ?? 0,
+                controlMethodsPerformanceScore:
+                  item.ControlMethodsPerformanceScore ?? 0,
+                controlMethodsSustainabilityScore:
+                  item.ControlMethodsSustainabilityScore ?? 0,
+                controlMethodsTotalScore: item.ControlMethodsTotalScore ?? "",
+                controlMethodsScale: item.ControlMethodsScale ?? 0,
+                controlMethodsRating: item.ControlMethodsRating ?? "",
+                externalInfluences: item.ExternalInfluences ?? "",
+                externalDesignScore: item.ExternalDesignScore ?? 0,
+                externalPerformanceScore: item.ExternalPerformanceScore ?? 0,
+                externalSustainabilityScore:
+                  item.ExternalSustainabilityScore ?? 0,
+                externalTotalScore: item.ExternalTotalScore ?? "",
+                externalScale: item.ExternalScale ?? 0,
+                externalRating: item.ExternalRating ?? "",
+                managementsCommitmentToInternalControl:
+                  item.ManagementCommitmentToInternalControl ?? "",
+                commitmentIcDesignScore: item.CommitmentIcDesignScore ?? 0,
+                commitmentIcPerformanceScore:
+                  item.CommitmentIcPerformanceScore ?? 0,
+                commitmentIcSustainabilityScore:
+                  item.CommitmentIcSustainabilityScore ?? 0,
+                commitmentIcTotalScore: item.CommitmentIcTotalScore ?? "",
+                commitmentIcScale: item.CommitmentIcScale ?? 0,
+                commitmentIcRating: item.CommitmentIcRating ?? "",
+                communicationAndEnforcementOfIntegrityAndEthicalValues:
+                  item.CommunicationAndEnforcementOfIntegrityAndEthicalValues ??
+                  "",
+                commEthicalDesignScore: item.CommEthicalDesignScore ?? 0,
+                commEthicalPerformanceScore:
+                  item.CommEthicalPerformanceScore ?? 0,
+                commEthicalSustainabilityScore:
+                  item.CommEthicalSustainabilityScore ?? 0,
+                commEthicalTotalScore: item.CommEthicalTotalScore ?? "",
+                commEthicalScale: item.CommEthicalScale ?? 0,
+                commEthicalRating: item.CommEthicalRating ?? "",
+                employeeAwarenessAndUnderstanding:
+                  item.EmployeeAwarenessAndUnderstanding ?? "",
+                awarenessDesignScore: item.AwarenessDesignScore ?? 0,
+                awarenessPerformanceScore: item.AwarenessPerformanceScore ?? 0,
+                awarenessSustainabilityScore:
+                  item.AwarenessSustainabilityScore ?? 0,
+                awarenessTotalScore: item.AwarenessTotalScore ?? "",
+                awarenessScale: item.AwarenessScale ?? 0,
+                awarenessRating: item.AwarenessRating ?? "",
+                accountabilityAndPerformanceMeasurement:
+                  item.AccountabilityAndPerformanceMeasurement ?? "",
+                accountabilityDesignScore: item.AccountabilityDesignScore ?? 0,
+                accountabilityPerformanceScore:
+                  item.AccountabilityPerformanceScore ?? 0,
+                accountabilitySustainabilityScore:
+                  item.AccountabilitySustainabilityScore ?? 0,
+                accountabilityTotalScore: item.AccountabilityTotalScore ?? "",
+                accountabilityScale: item.AccountabilityScale ?? 0,
+                accountabilityRating: item.AccountabilityRating ?? "",
+                commitmentToTransparencyAndOpenness:
+                  item.CommitmentToTransparencyAndOpenness ?? "",
+                transparencyDesignScore: item.TransparencyDesignScore ?? 0,
+                transparencyPerformanceScore:
+                  item.TransparencyPerformanceScore ?? 0,
+                transparencySustainabilityScore:
+                  item.TransparencySustainabilityScore ?? 0,
+                transparencyTotalScore: item.TransparencyTotalScore ?? "",
+                transparencyScale: item.TransparencyScale ?? 0,
+                transparencyRating: item.TransparencyRating ?? "",
               };
 
             default:
@@ -625,6 +750,12 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
       if (activeTab === "17" || activeTab === "18") {
         return ["17", "18"];
+      }
+
+      // INTOSAI/IFAC tabs
+
+      if (activeTab === "19" || activeTab === "20") {
+        return ["19", "20"];
       }
 
       // Process tabs (default)

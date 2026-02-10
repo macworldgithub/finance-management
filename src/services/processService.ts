@@ -274,6 +274,8 @@ export const processService = {
       "grc-exception-logs": "GrcExceptionLogs",
       "internal-audit-tests": "InternalAuditTests",
       "intosai-ifac-control-environments": "IntosaiIfacControlEnvironments",
+      "intosai-ifac-control-environment-scorings":
+        "IntosaiIfacControlEnvironmentScorings",
       "other-control-environments": "OtherControlEnvironments",
       ownerships: "Ownerships",
       "ownership-scorings": "OwnershipScorings",
