@@ -4410,14 +4410,47 @@ export function getColumns(
             </div>
           ),
           children: [
+            // {
+            //   title: "Status",
+            //   dataIndex: "integrityEthicalValues",
+            //   key: "integrityEthicalValues",
+            //   width: 80,
+            //   render: (text: string) => (
+            //     <div className="text-center">{text || "-"}</div>
+            //   ),
+            // },
             {
               title: "Status",
               dataIndex: "integrityEthicalValues",
               key: "integrityEthicalValues",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              align: "center",
+              render: (value: any) => {
+                // Show green checkmark only for "P" / true / "Yes"
+                const isPositive =
+                  value === "P" ||
+                  value === true ||
+                  String(value ?? "")
+                    .trim()
+                    .toUpperCase() === "YES";
+
+                if (isPositive) {
+                  return (
+                    <span
+                      style={{
+                        fontSize: 20,
+                        color: "#52c41a", // green
+                        fontWeight: "bold",
+                      }}
+                    >
+                      ✓
+                    </span>
+                  );
+                }
+
+                // For "O", "No", false, empty, or anything else → show nothing
+                return null;
+              },
             },
             {
               title: "Design",
@@ -4537,14 +4570,27 @@ export function getColumns(
             </div>
           ),
           children: [
+            // {
+            //   title: "Status",
+            //   dataIndex: "commitmentToCompetence",
+            //   key: "commitmentToCompetence",
+            //   width: 80,
+            //   render: (text: string) => (
+            //     <div className="text-center">{text || "-"}</div>
+            //   ),
+            // },
             {
               title: "Status",
               dataIndex: "commitmentToCompetence",
               key: "commitmentToCompetence",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              align: "center",
+              render: (v: any) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -4664,14 +4710,27 @@ export function getColumns(
             </div>
           ),
           children: [
+            // {
+            //   title: "Status",
+            //   dataIndex: "managementPhilosophy",
+            //   key: "managementPhilosophy",
+            //   width: 80,
+            //   render: (text: string) => (
+            //     <div className="text-center">{text || "-"}</div>
+            //   ),
+            // },
             {
               title: "Status",
               dataIndex: "managementPhilosophy",
               key: "managementPhilosophy",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              align: "center",
+              render: (v: any) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -4796,9 +4855,13 @@ export function getColumns(
               dataIndex: "organizationalStructure",
               key: "organizationalStructure",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              align: "center",
+              render: (v: any) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -4918,14 +4981,27 @@ export function getColumns(
             </div>
           ),
           children: [
+            // {
+            //   title: "Status",
+            //   dataIndex: "assignmentOfAuthorityAndResponsibility",
+            //   key: "assignmentOfAuthorityAndResponsibility",
+            //   width: 80,
+            //   render: (text: string) => (
+            //     <div className="text-center">{text || "-"}</div>
+            //   ),
+            // },
             {
               title: "Status",
               dataIndex: "assignmentOfAuthorityAndResponsibility",
               key: "assignmentOfAuthorityAndResponsibility",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              align: "center",
+              render: (v: any) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -5045,14 +5121,27 @@ export function getColumns(
             </div>
           ),
           children: [
+            // {
+            //   title: "Status",
+            //   dataIndex: "humanResourcePoliciesAndPractices",
+            //   key: "humanResourcePoliciesAndPractices",
+            //   width: 80,
+            //   render: (text: string) => (
+            //     <div className="text-center">{text || "-"}</div>
+            //   ),
+            // },
             {
               title: "Status",
               dataIndex: "humanResourcePoliciesAndPractices",
               key: "humanResourcePoliciesAndPractices",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              align: "center",
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -5169,9 +5258,12 @@ export function getColumns(
               dataIndex: "boardOfDirectorsOrAuditCommitteeParticipation",
               key: "boardOfDirectorsOrAuditCommitteeParticipation",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -5288,9 +5380,12 @@ export function getColumns(
               dataIndex: "managementControlMethods",
               key: "managementControlMethods",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -5415,9 +5510,12 @@ export function getColumns(
               dataIndex: "externalInfluences",
               key: "externalInfluences",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -5542,9 +5640,12 @@ export function getColumns(
               dataIndex: "managementsCommitmentToInternalControl",
               key: "managementsCommitmentToInternalControl",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -5670,9 +5771,12 @@ export function getColumns(
                 "communicationAndEnforcementOfIntegrityAndEthicalValues",
               key: "communicationAndEnforcementOfIntegrityAndEthicalValues",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -5797,9 +5901,12 @@ export function getColumns(
               dataIndex: "employeeAwarenessAndUnderstanding",
               key: "employeeAwarenessAndUnderstanding",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -5924,9 +6031,12 @@ export function getColumns(
               dataIndex: "accountabilityAndPerformanceMeasurement",
               key: "accountabilityAndPerformanceMeasurement",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
@@ -6051,9 +6161,12 @@ export function getColumns(
               dataIndex: "commitmentToTransparencyAndOpenness",
               key: "commitmentToTransparencyAndOpenness",
               width: 80,
-              render: (text: string) => (
-                <div className="text-center">{text || "-"}</div>
-              ),
+              render: (v) =>
+                v === "P" ||
+                v === true ||
+                String(v ?? "").toUpperCase() === "YES" ? (
+                  <span style={{ fontSize: 20, color: "#52c41a" }}>✓</span>
+                ) : null,
             },
             {
               title: "Design",
