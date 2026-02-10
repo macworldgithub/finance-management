@@ -4400,7 +4400,7 @@ export function getColumns(
       ];
       break;
     case "20":
-      // CE-INTOSAI, IFACI Assessment - Similar to COSO Environment Assessment but with INTOSAI fields
+      // CE-INTOSAI, IFACI Assessment - Complete with all sections
       dynamicColumns = [
         // Integrity & Ethical Values Section
         {
@@ -4437,7 +4437,7 @@ export function getColumns(
               title: "Performance",
               dataIndex: "integrityPerformanceScore",
               key: "integrityPerformanceScore",
-              width: 80,
+              width: 100,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
@@ -4451,7 +4451,7 @@ export function getColumns(
               title: "Sustainability",
               dataIndex: "integritySustainabilityScore",
               key: "integritySustainabilityScore",
-              width: 80,
+              width: 120,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
@@ -4539,8 +4539,8 @@ export function getColumns(
           children: [
             {
               title: "Status",
-              dataIndex: "commitmentCompetenceValues",
-              key: "commitmentCompetenceValues",
+              dataIndex: "commitmentToCompetence",
+              key: "commitmentToCompetence",
               width: 80,
               render: (text: string) => (
                 <div className="text-center">{text || "-"}</div>
@@ -4548,64 +4548,64 @@ export function getColumns(
             },
             {
               title: "Design",
-              dataIndex: "commitmentDesignScore",
-              key: "commitmentDesignScore",
+              dataIndex: "competenceDesignScore",
+              key: "competenceDesignScore",
               width: 80,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
                   record.key,
-                  "commitmentDesignScore",
+                  "competenceDesignScore",
                   handlers,
                   editingKeys,
                 ),
             },
             {
               title: "Performance",
-              dataIndex: "commitmentPerformanceScore",
-              key: "commitmentPerformanceScore",
-              width: 80,
+              dataIndex: "competencePerformanceScore",
+              key: "competencePerformanceScore",
+              width: 100,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
                   record.key,
-                  "commitmentPerformanceScore",
+                  "competencePerformanceScore",
                   handlers,
                   editingKeys,
                 ),
             },
             {
               title: "Sustainability",
-              dataIndex: "commitmentSustainabilityScore",
-              key: "commitmentSustainabilityScore",
-              width: 80,
+              dataIndex: "competenceSustainabilityScore",
+              key: "competenceSustainabilityScore",
+              width: 120,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
                   record.key,
-                  "commitmentSustainabilityScore",
+                  "competenceSustainabilityScore",
                   handlers,
                   editingKeys,
                 ),
             },
             {
               title: "Total",
-              dataIndex: "commitmentTotalScore",
-              key: "commitmentTotalScore",
+              dataIndex: "competenceTotalScore",
+              key: "competenceTotalScore",
               width: 80,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
                   record.key,
-                  "commitmentTotalScore",
+                  "competenceTotalScore",
                   handlers,
                   editingKeys,
                 ),
             },
             {
               title: "Scale",
-              dataIndex: "commitmentScale",
-              key: "commitmentScale",
+              dataIndex: "competenceScale",
+              key: "competenceScale",
               width: 60,
               render: (text: any, record: DataType) => {
                 if (editingKeys.includes(record.key)) {
@@ -4613,7 +4613,7 @@ export function getColumns(
                     handlers?.onSelectGeneric?.(
                       key,
                       record.key,
-                      "commitmentScale",
+                      "competenceScale",
                     ),
                   );
                   return (
@@ -4630,8 +4630,8 @@ export function getColumns(
             },
             {
               title: "Rating",
-              dataIndex: "commitmentRating",
-              key: "commitmentRating",
+              dataIndex: "competenceRating",
+              key: "competenceRating",
               width: 120,
               render: (text: any, record: DataType) => {
                 if (editingKeys.includes(record.key)) {
@@ -4639,7 +4639,7 @@ export function getColumns(
                     handlers?.onSelectGeneric?.(
                       key,
                       record.key,
-                      "commitmentRating",
+                      "competenceRating",
                     ),
                   );
                   return (
@@ -4666,8 +4666,8 @@ export function getColumns(
           children: [
             {
               title: "Status",
-              dataIndex: "managementPhilosophyValues",
-              key: "managementPhilosophyValues",
+              dataIndex: "managementPhilosophy",
+              key: "managementPhilosophy",
               width: 80,
               render: (text: string) => (
                 <div className="text-center">{text || "-"}</div>
@@ -4691,7 +4691,7 @@ export function getColumns(
               title: "Performance",
               dataIndex: "philosophyPerformanceScore",
               key: "philosophyPerformanceScore",
-              width: 80,
+              width: 100,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
@@ -4705,7 +4705,7 @@ export function getColumns(
               title: "Sustainability",
               dataIndex: "philosophySustainabilityScore",
               key: "philosophySustainabilityScore",
-              width: 80,
+              width: 120,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
@@ -4793,8 +4793,8 @@ export function getColumns(
           children: [
             {
               title: "Status",
-              dataIndex: "orgStructureValues",
-              key: "orgStructureValues",
+              dataIndex: "organizationalStructure",
+              key: "organizationalStructure",
               width: 80,
               render: (text: string) => (
                 <div className="text-center">{text || "-"}</div>
@@ -4818,7 +4818,7 @@ export function getColumns(
               title: "Performance",
               dataIndex: "orgStructurePerformanceScore",
               key: "orgStructurePerformanceScore",
-              width: 80,
+              width: 100,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
@@ -4832,7 +4832,7 @@ export function getColumns(
               title: "Sustainability",
               dataIndex: "orgStructureSustainabilityScore",
               key: "orgStructureSustainabilityScore",
-              width: 80,
+              width: 120,
               render: (text: string, record: DataType) =>
                 renderEditableInput(
                   text,
@@ -4894,6 +4894,1261 @@ export function getColumns(
                       key,
                       record.key,
                       "orgStructureRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Assignment of Authority and Responsibility Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Assignment of Authority and Responsibility
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "assignmentOfAuthorityAndResponsibility",
+              key: "assignmentOfAuthorityAndResponsibility",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "authorityDesignScore",
+              key: "authorityDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "authorityDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "authorityPerformanceScore",
+              key: "authorityPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "authorityPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "authoritySustainabilityScore",
+              key: "authoritySustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "authoritySustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "authorityTotalScore",
+              key: "authorityTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "authorityTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "authorityScale",
+              key: "authorityScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "authorityScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "authorityRating",
+              key: "authorityRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "authorityRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Human Resource Policies and Practices Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Human Resource Policies and Practices
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "humanResourcePoliciesAndPractices",
+              key: "humanResourcePoliciesAndPractices",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "hrDesignScore",
+              key: "hrDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "hrDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "hrPerformanceScore",
+              key: "hrPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "hrPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "hrSustainabilityScore",
+              key: "hrSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "hrSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "hrTotalScore",
+              key: "hrTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "hrTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "hrScale",
+              key: "hrScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(key, record.key, "hrScale"),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "hrRating",
+              key: "hrRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(key, record.key, "hrRating"),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Board or Audit Committee Participation Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Board of Directors' or Audit Committee's Participation
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "boardOfDirectorsOrAuditCommitteeParticipation",
+              key: "boardOfDirectorsOrAuditCommitteeParticipation",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "boardDesignScore",
+              key: "boardDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "boardDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "boardPerformanceScore",
+              key: "boardPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "boardPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "boardSustainabilityScore",
+              key: "boardSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "boardSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "boardTotalScore",
+              key: "boardTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "boardTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "boardScale",
+              key: "boardScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(key, record.key, "boardScale"),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "boardRating",
+              key: "boardRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(key, record.key, "boardRating"),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Management Control Methods Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Management Control Methods
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "managementControlMethods",
+              key: "managementControlMethods",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "controlMethodsDesignScore",
+              key: "controlMethodsDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "controlMethodsDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "controlMethodsPerformanceScore",
+              key: "controlMethodsPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "controlMethodsPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "controlMethodsSustainabilityScore",
+              key: "controlMethodsSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "controlMethodsSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "controlMethodsTotalScore",
+              key: "controlMethodsTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "controlMethodsTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "controlMethodsScale",
+              key: "controlMethodsScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "controlMethodsScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "controlMethodsRating",
+              key: "controlMethodsRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "controlMethodsRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // External Influences Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              External Influences
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "externalInfluences",
+              key: "externalInfluences",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "externalDesignScore",
+              key: "externalDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "externalDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "externalPerformanceScore",
+              key: "externalPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "externalPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "externalSustainabilityScore",
+              key: "externalSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "externalSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "externalTotalScore",
+              key: "externalTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "externalTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "externalScale",
+              key: "externalScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "externalScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "externalRating",
+              key: "externalRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "externalRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Management Commitment to Internal Control Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Management's Commitment to Internal Control
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "managementsCommitmentToInternalControl",
+              key: "managementsCommitmentToInternalControl",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "commitmentIcDesignScore",
+              key: "commitmentIcDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commitmentIcDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "commitmentIcPerformanceScore",
+              key: "commitmentIcPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commitmentIcPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "commitmentIcSustainabilityScore",
+              key: "commitmentIcSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commitmentIcSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "commitmentIcTotalScore",
+              key: "commitmentIcTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commitmentIcTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "commitmentIcScale",
+              key: "commitmentIcScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "commitmentIcScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "commitmentIcRating",
+              key: "commitmentIcRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "commitmentIcRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Communication and Enforcement of Integrity and Ethical Values Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Communication and Enforcement of Integrity and Ethical Values
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex:
+                "communicationAndEnforcementOfIntegrityAndEthicalValues",
+              key: "communicationAndEnforcementOfIntegrityAndEthicalValues",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "commEthicalDesignScore",
+              key: "commEthicalDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commEthicalDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "commEthicalPerformanceScore",
+              key: "commEthicalPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commEthicalPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "commEthicalSustainabilityScore",
+              key: "commEthicalSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commEthicalSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "commEthicalTotalScore",
+              key: "commEthicalTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "commEthicalTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "commEthicalScale",
+              key: "commEthicalScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "commEthicalScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "commEthicalRating",
+              key: "commEthicalRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "commEthicalRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Employee Awareness and Understanding Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Employee Awareness and Understanding
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "employeeAwarenessAndUnderstanding",
+              key: "employeeAwarenessAndUnderstanding",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "awarenessDesignScore",
+              key: "awarenessDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "awarenessDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "awarenessPerformanceScore",
+              key: "awarenessPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "awarenessPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "awarenessSustainabilityScore",
+              key: "awarenessSustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "awarenessSustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "awarenessTotalScore",
+              key: "awarenessTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "awarenessTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "awarenessScale",
+              key: "awarenessScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "awarenessScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "awarenessRating",
+              key: "awarenessRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "awarenessRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Accountability and Performance Measurement Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Accountability and Performance Measurement
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "accountabilityAndPerformanceMeasurement",
+              key: "accountabilityAndPerformanceMeasurement",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "accountabilityDesignScore",
+              key: "accountabilityDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "accountabilityDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "accountabilityPerformanceScore",
+              key: "accountabilityPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "accountabilityPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "accountabilitySustainabilityScore",
+              key: "accountabilitySustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "accountabilitySustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "accountabilityTotalScore",
+              key: "accountabilityTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "accountabilityTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "accountabilityScale",
+              key: "accountabilityScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "accountabilityScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "accountabilityRating",
+              key: "accountabilityRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "accountabilityRating",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+          ],
+        },
+        // Commitment to Transparency and Openness Section
+        {
+          title: (
+            <div style={{ textAlign: "center", fontWeight: "bold" }}>
+              Commitment to Transparency and Openness
+            </div>
+          ),
+          children: [
+            {
+              title: "Status",
+              dataIndex: "commitmentToTransparencyAndOpenness",
+              key: "commitmentToTransparencyAndOpenness",
+              width: 80,
+              render: (text: string) => (
+                <div className="text-center">{text || "-"}</div>
+              ),
+            },
+            {
+              title: "Design",
+              dataIndex: "transparencyDesignScore",
+              key: "transparencyDesignScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "transparencyDesignScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Performance",
+              dataIndex: "transparencyPerformanceScore",
+              key: "transparencyPerformanceScore",
+              width: 100,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "transparencyPerformanceScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Sustainability",
+              dataIndex: "transparencySustainabilityScore",
+              key: "transparencySustainabilityScore",
+              width: 120,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "transparencySustainabilityScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Total",
+              dataIndex: "transparencyTotalScore",
+              key: "transparencyTotalScore",
+              width: 80,
+              render: (text: string, record: DataType) =>
+                renderEditableInput(
+                  text,
+                  record.key,
+                  "transparencyTotalScore",
+                  handlers,
+                  editingKeys,
+                ),
+            },
+            {
+              title: "Scale",
+              dataIndex: "transparencyScale",
+              key: "transparencyScale",
+              width: 60,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(scale5Options, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "transparencyScale",
+                    ),
+                  );
+                  return (
+                    <Dropdown overlay={menu} trigger={["click"]}>
+                      <div className="flex items-center cursor-pointer">
+                        {text || "Select"}
+                        <DownOutlined className="ml-1 text-gray-500 text-xs" />
+                      </div>
+                    </Dropdown>
+                  );
+                }
+                return text || "-";
+              },
+            },
+            {
+              title: "Rating",
+              dataIndex: "transparencyRating",
+              key: "transparencyRating",
+              width: 120,
+              render: (text: any, record: DataType) => {
+                if (editingKeys.includes(record.key)) {
+                  const menu = buildMenu(cosoRatingOptions, (key) =>
+                    handlers?.onSelectGeneric?.(
+                      key,
+                      record.key,
+                      "transparencyRating",
                     ),
                   );
                   return (
