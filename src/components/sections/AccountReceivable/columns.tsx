@@ -201,6 +201,86 @@ const EditableInput = ({
   );
 };
 
+const ValidatedEditableInput = ({
+  initialValue,
+  onSave,
+  fieldType,
+  ...props
+}: {
+  initialValue: string;
+  onSave: (v: string) => void;
+  fieldType: "design" | "performance" | "sustainability" | "total";
+  [key: string]: any;
+}) => {
+  const [value, setValue] = useState(initialValue);
+  const [error, setError] = useState("");
+  useEffect(() => setValue(initialValue), [initialValue]);
+
+  const validateValue = (val: string): boolean => {
+    const numValue = parseFloat(val);
+
+    if (val === "" || isNaN(numValue)) {
+      setError("Required");
+      return false;
+    }
+
+    switch (fieldType) {
+      case "design":
+      case "performance":
+        if (numValue < 0 || numValue > 10) {
+          setError("Must be 0-10");
+          return false;
+        }
+        break;
+      case "sustainability":
+        if (numValue < 0 || numValue > 5) {
+          setError("Must be 0-5");
+          return false;
+        }
+        break;
+      case "total":
+        if (numValue < 0 || numValue > 25) {
+          setError("Must be 0-25");
+          return false;
+        }
+        break;
+    }
+
+    setError("");
+    return true;
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    validateValue(newValue);
+  };
+
+  const handleBlur = () => {
+    if (validateValue(value) && value !== initialValue) {
+      onSave(value);
+    }
+  };
+
+  return (
+    <div>
+      <Input
+        value={value}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        autoFocus
+        style={{ borderColor: error ? "#ff4d4f" : undefined }}
+        {...props}
+      />
+      {error && (
+        <div style={{ color: "#ff4d4f", fontSize: "12px", marginTop: "2px" }}>
+          {error}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const EditableTextArea = ({
   initialValue,
   onSave,
@@ -294,8 +374,20 @@ const renderEditableInput = (
     ) => void;
   },
   editingKeys: string[] = [],
+  validationType?: "design" | "performance" | "sustainability" | "total",
 ) => {
   if (editingKeys.includes(recordKey)) {
+    if (validationType) {
+      return (
+        <ValidatedEditableInput
+          initialValue={value}
+          fieldType={validationType}
+          onSave={(newValue) =>
+            handlers?.onTextChange?.(recordKey, field, newValue)
+          }
+        />
+      );
+    }
     return (
       <EditableInput
         initialValue={value}
@@ -4464,6 +4556,7 @@ export function getColumns(
                   "integrityDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -4478,6 +4571,7 @@ export function getColumns(
                   "integrityPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -4492,6 +4586,7 @@ export function getColumns(
                   "integritySustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -4506,6 +4601,7 @@ export function getColumns(
                   "integrityTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -4604,6 +4700,7 @@ export function getColumns(
                   "competenceDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -4618,6 +4715,7 @@ export function getColumns(
                   "competencePerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -4632,6 +4730,7 @@ export function getColumns(
                   "competenceSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -4646,6 +4745,7 @@ export function getColumns(
                   "competenceTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -4744,6 +4844,7 @@ export function getColumns(
                   "philosophyDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -4758,6 +4859,7 @@ export function getColumns(
                   "philosophyPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -4772,6 +4874,7 @@ export function getColumns(
                   "philosophySustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -4786,6 +4889,7 @@ export function getColumns(
                   "philosophyTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -4875,6 +4979,7 @@ export function getColumns(
                   "orgStructureDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -4889,6 +4994,7 @@ export function getColumns(
                   "orgStructurePerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -4903,6 +5009,7 @@ export function getColumns(
                   "orgStructureSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -4917,6 +5024,7 @@ export function getColumns(
                   "orgStructureTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -5015,6 +5123,7 @@ export function getColumns(
                   "authorityDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -5029,6 +5138,7 @@ export function getColumns(
                   "authorityPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -5043,6 +5153,7 @@ export function getColumns(
                   "authoritySustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -5057,6 +5168,7 @@ export function getColumns(
                   "authorityTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -5155,6 +5267,7 @@ export function getColumns(
                   "hrDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -5169,6 +5282,7 @@ export function getColumns(
                   "hrPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -5183,6 +5297,7 @@ export function getColumns(
                   "hrSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -5197,6 +5312,7 @@ export function getColumns(
                   "hrTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -5277,6 +5393,7 @@ export function getColumns(
                   "boardDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -5291,6 +5408,7 @@ export function getColumns(
                   "boardPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -5305,6 +5423,7 @@ export function getColumns(
                   "boardSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -5319,6 +5438,7 @@ export function getColumns(
                   "boardTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -5399,6 +5519,7 @@ export function getColumns(
                   "controlMethodsDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -5413,6 +5534,7 @@ export function getColumns(
                   "controlMethodsPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -5427,6 +5549,7 @@ export function getColumns(
                   "controlMethodsSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -5441,6 +5564,7 @@ export function getColumns(
                   "controlMethodsTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -5529,6 +5653,7 @@ export function getColumns(
                   "externalDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -5543,6 +5668,7 @@ export function getColumns(
                   "externalPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -5557,6 +5683,7 @@ export function getColumns(
                   "externalSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -5571,6 +5698,7 @@ export function getColumns(
                   "externalTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -5659,6 +5787,7 @@ export function getColumns(
                   "commitmentIcDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -5673,6 +5802,7 @@ export function getColumns(
                   "commitmentIcPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -5687,6 +5817,7 @@ export function getColumns(
                   "commitmentIcSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -5701,6 +5832,7 @@ export function getColumns(
                   "commitmentIcTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -5790,6 +5922,7 @@ export function getColumns(
                   "commEthicalDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -5804,6 +5937,7 @@ export function getColumns(
                   "commEthicalPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -5818,6 +5952,7 @@ export function getColumns(
                   "commEthicalSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -5832,6 +5967,7 @@ export function getColumns(
                   "commEthicalTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -5920,6 +6056,7 @@ export function getColumns(
                   "awarenessDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -5934,6 +6071,7 @@ export function getColumns(
                   "awarenessPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -5948,6 +6086,7 @@ export function getColumns(
                   "awarenessSustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -5962,6 +6101,7 @@ export function getColumns(
                   "awarenessTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -6050,6 +6190,7 @@ export function getColumns(
                   "accountabilityDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -6064,6 +6205,7 @@ export function getColumns(
                   "accountabilityPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -6078,6 +6220,7 @@ export function getColumns(
                   "accountabilitySustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -6092,6 +6235,7 @@ export function getColumns(
                   "accountabilityTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {
@@ -6180,6 +6324,7 @@ export function getColumns(
                   "transparencyDesignScore",
                   handlers,
                   editingKeys,
+                  "design",
                 ),
             },
             {
@@ -6194,6 +6339,7 @@ export function getColumns(
                   "transparencyPerformanceScore",
                   handlers,
                   editingKeys,
+                  "performance",
                 ),
             },
             {
@@ -6208,6 +6354,7 @@ export function getColumns(
                   "transparencySustainabilityScore",
                   handlers,
                   editingKeys,
+                  "sustainability",
                 ),
             },
             {
@@ -6222,6 +6369,7 @@ export function getColumns(
                   "transparencyTotalScore",
                   handlers,
                   editingKeys,
+                  "total",
                 ),
             },
             {

@@ -1543,9 +1543,166 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
               Process: item.process || "",
 
-              Date: item.date || "",
+              // Don't send Date field if empty to avoid validation error
+              ...(item.date && item.date.trim() !== ""
+                ? { Date: item.date }
+                : {}),
 
-              // Add assessment fields when you get the API endpoint
+              // Add required updated field with current timestamp
+              updated: new Date().toISOString(),
+
+              // Integrity and Ethical Values
+              IntegrityEthicalValues: item.integrityEthicalValues || "",
+              IntegrityDesignScore: item.integrityDesignScore || 0,
+              IntegrityPerformanceScore: item.integrityPerformanceScore || 0,
+              IntegritySustainabilityScore:
+                item.integritySustainabilityScore || 0,
+              IntegrityTotalScore: item.integrityTotalScore || "",
+              IntegrityScale: item.integrityScale || 0,
+              IntegrityRating: item.integrityRating || "",
+
+              // Commitment to Competence
+              CommitmentToCompetence: item.commitmentToCompetence || "",
+              CompetenceDesignScore: item.competenceDesignScore || 0,
+              CompetencePerformanceScore: item.competencePerformanceScore || 0,
+              CompetenceSustainabilityScore:
+                item.competenceSustainabilityScore || 0,
+              CompetenceTotalScore: item.competenceTotalScore || "",
+              CompetenceScale: item.competenceScale || 0,
+              CompetenceRating: item.competenceRating || "",
+
+              // Management Philosophy
+              ManagementPhilosophy: item.managementPhilosophy || "",
+              PhilosophyDesignScore: item.philosophyDesignScore || 0,
+              PhilosophyPerformanceScore: item.philosophyPerformanceScore || 0,
+              PhilosophySustainabilityScore:
+                item.philosophySustainabilityScore || 0,
+              PhilosophyTotalScore: item.philosophyTotalScore || "",
+              PhilosophyScale: item.philosophyScale || 0,
+              PhilosophyRating: item.philosophyRating || "",
+
+              // Organizational Structure
+              OrganizationalStructure: item.organizationalStructure || "",
+              OrgStructureDesignScore: item.orgStructureDesignScore || 0,
+              OrgStructurePerformanceScore:
+                item.orgStructurePerformanceScore || 0,
+              OrgStructureSustainabilityScore:
+                item.orgStructureSustainabilityScore || 0,
+              OrgStructureTotalScore: item.orgStructureTotalScore || "",
+              OrgStructureScale: item.orgStructureScale || 0,
+              OrgStructureRating: item.orgStructureRating || "",
+
+              // Assignment of Authority and Responsibility
+              AssignmentOfAuthorityAndResponsibility:
+                item.assignmentOfAuthorityAndResponsibility || "",
+              AuthorityDesignScore: item.authorityDesignScore || 0,
+              AuthorityPerformanceScore: item.authorityPerformanceScore || 0,
+              AuthoritySustainabilityScore:
+                item.authoritySustainabilityScore || 0,
+              AuthorityTotalScore: item.authorityTotalScore || "",
+              AuthorityScale: item.authorityScale || 0,
+              AuthorityRating: item.authorityRating || "",
+
+              // Human Resource Policies and Practices
+              HumanResourcePoliciesAndPractices:
+                item.humanResourcePoliciesAndPractices || "",
+              HrDesignScore: item.hrDesignScore || 0,
+              HrPerformanceScore: item.hrPerformanceScore || 0,
+              HrSustainabilityScore: item.hrSustainabilityScore || 0,
+              HrTotalScore: item.hrTotalScore || "",
+              HrScale: item.hrScale || 0,
+              HrRating: item.hrRating || "",
+
+              // Board or Audit Committee Participation
+              BoardOrAuditCommitteeParticipation:
+                item.boardOfDirectorsOrAuditCommitteeParticipation || "",
+              BoardDesignScore: item.boardDesignScore || 0,
+              BoardPerformanceScore: item.boardPerformanceScore || 0,
+              BoardSustainabilityScore: item.boardSustainabilityScore || 0,
+              BoardTotalScore: item.boardTotalScore || "",
+              BoardScale: item.boardScale || 0,
+              BoardRating: item.boardRating || "",
+
+              // Management Control Methods
+              ManagementControlMethods: item.managementControlMethods || "",
+              ControlMethodsDesignScore: item.controlMethodsDesignScore || 0,
+              ControlMethodsPerformanceScore:
+                item.controlMethodsPerformanceScore || 0,
+              ControlMethodsSustainabilityScore:
+                item.controlMethodsSustainabilityScore || 0,
+              ControlMethodsTotalScore: item.controlMethodsTotalScore || "",
+              ControlMethodsScale: item.controlMethodsScale || 0,
+              ControlMethodsRating: item.controlMethodsRating || "",
+
+              // External Influences
+              ExternalInfluences: item.externalInfluences || "",
+              ExternalDesignScore: item.externalDesignScore || 0,
+              ExternalPerformanceScore: item.externalPerformanceScore || 0,
+              ExternalSustainabilityScore:
+                item.externalSustainabilityScore || 0,
+              ExternalTotalScore: item.externalTotalScore || "",
+              ExternalScale: item.externalScale || 0,
+              ExternalRating: item.externalRating || "",
+
+              // Management's Commitment to Internal Control
+              ManagementCommitmentToInternalControl:
+                item.managementsCommitmentToInternalControl || "",
+              CommitmentIcDesignScore: item.commitmentIcDesignScore || 0,
+              CommitmentIcPerformanceScore:
+                item.commitmentIcPerformanceScore || 0,
+              CommitmentIcSustainabilityScore:
+                item.commitmentIcSustainabilityScore || 0,
+              CommitmentIcTotalScore: item.commitmentIcTotalScore || "",
+              CommitmentIcScale: item.commitmentIcScale || 0,
+              CommitmentIcRating: item.commitmentIcRating || "",
+
+              // Communication and Enforcement of Integrity and Ethical Values
+              CommunicationAndEnforcementOfIntegrityAndEthicalValues:
+                item.communicationAndEnforcementOfIntegrityAndEthicalValues ||
+                "",
+              CommEthicalDesignScore: item.commEthicalDesignScore || 0,
+              CommEthicalPerformanceScore:
+                item.commEthicalPerformanceScore || 0,
+              CommEthicalSustainabilityScore:
+                item.commEthicalSustainabilityScore || 0,
+              CommEthicalTotalScore: item.commEthicalTotalScore || "",
+              CommEthicalScale: item.commEthicalScale || 0,
+              CommEthicalRating: item.commEthicalRating || "",
+
+              // Employee Awareness and Understanding
+              EmployeeAwarenessAndUnderstanding:
+                item.employeeAwarenessAndUnderstanding || "",
+              AwarenessDesignScore: item.awarenessDesignScore || 0,
+              AwarenessPerformanceScore: item.awarenessPerformanceScore || 0,
+              AwarenessSustainabilityScore:
+                item.awarenessSustainabilityScore || 0,
+              AwarenessTotalScore: item.awarenessTotalScore || "",
+              AwarenessScale: item.awarenessScale || 0,
+              AwarenessRating: item.awarenessRating || "",
+
+              // Accountability and Performance Measurement
+              AccountabilityAndPerformanceMeasurement:
+                item.accountabilityAndPerformanceMeasurement || "",
+              AccountabilityDesignScore: item.accountabilityDesignScore || 0,
+              AccountabilityPerformanceScore:
+                item.accountabilityPerformanceScore || 0,
+              AccountabilitySustainabilityScore:
+                item.accountabilitySustainabilityScore || 0,
+              AccountabilityTotalScore: item.accountabilityTotalScore || "",
+              AccountabilityScale: item.accountabilityScale || 0,
+              AccountabilityRating: item.accountabilityRating || "",
+
+              // Commitment to Transparency and Openness
+              CommitmentToTransparencyAndOpenness:
+                item.commitmentToTransparencyAndOpenness || "",
+              TransparencyDesignScore: item.transparencyDesignScore || 0,
+              TransparencyPerformanceScore:
+                item.transparencyPerformanceScore || 0,
+              TransparencySustainabilityScore:
+                item.transparencySustainabilityScore || 0,
+              TransparencyTotalScore: item.transparencyTotalScore || "",
+              TransparencyScale: item.transparencyScale || 0,
+              TransparencyRating: item.transparencyRating || "",
             };
 
             break;
