@@ -936,6 +936,14 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         ];
       }
 
+      // CE-Other tabs
+      if (activeTab === "21" || activeTab === "22") {
+        return [
+          { key: "21", label: "CE-Other" },
+          { key: "22", label: "CE-Other Assessment" },
+        ];
+      }
+
       // Process tabs (default)
       return [
         { key: "1", label: "Processes" },
@@ -1703,6 +1711,49 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               TransparencyTotalScore: item.transparencyTotalScore || "",
               TransparencyScale: item.transparencyScale || 0,
               TransparencyRating: item.transparencyRating || "",
+            };
+
+            break;
+
+          case "CEOTHER":
+            endpoint = `OtherControlEnvironments/${item.id}`;
+
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              OtherControlEnvironment: item.otherControlEnvironment || "",
+              OtherDesignScore: item.otherDesignScore || 0,
+              OtherPerformanceScore: item.otherPerformanceScore || 0,
+              OtherSustainabilityScore: item.otherSustainabilityScore || 0,
+              OtherTotalScore: item.otherTotalScore || "",
+              OtherScale: item.otherScale || 0,
+              OtherRating: item.otherRating || "",
+            };
+
+            break;
+
+          case "CEOTHERASSESSMENT":
+            endpoint = `OtherControlEnvironmentScorings/${item.id}`;
+
+            requestBody = {
+              Id: item.id,
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              // Don't send Date field if empty to avoid validation error
+              ...(item.date && item.date.trim() !== ""
+                ? { Date: item.date }
+                : {}),
+              // Add required updated field with current timestamp
+              updated: new Date().toISOString(),
+              OtherAssessmentDesignScore: item.otherAssessmentDesignScore || 0,
+              OtherAssessmentPerformanceScore:
+                item.otherAssessmentPerformanceScore || 0,
+              OtherAssessmentSustainabilityScore:
+                item.otherAssessmentSustainabilityScore || 0,
+              OtherAssessmentTotalScore: item.otherAssessmentTotalScore || "",
+              OtherAssessmentScale: item.otherAssessmentScale || 0,
+              OtherAssessmentRating: item.otherAssessmentRating || "",
             };
 
             break;

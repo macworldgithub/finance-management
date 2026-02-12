@@ -11,6 +11,10 @@ import { Menu, Dropdown, Checkbox, Button, Input, Popconfirm } from "antd";
 import { DownOutlined, PlusOutlined } from "@ant-design/icons";
 import { DataType } from "./types";
 import { Select } from "antd";
+import {
+  getCEOtherColumns,
+  getCEOtherAssessmentColumns,
+} from "./ceOtherColumns";
 const { TextArea } = Input;
 export const stageOptions = [
   { label: "Processing", key: "Processing" },
@@ -6428,13 +6432,27 @@ export function getColumns(
         },
       ];
       break;
+    case "21":
+      // CE-Other - Import from optimized file
+      return getCEOtherColumns(handlers, editingKeys);
+    case "22":
+      // CE-Other Assessment - Import from optimized file
+      return getCEOtherAssessmentColumns(handlers, editingKeys);
     default:
       dynamicColumns = processColumns;
   }
   // Duplicate actionsColumn removed above. Only one definition remains.
-  // For CE-COSO and CE-INTOSAI, IFACI tabs, don't include actions column
-  if (activeTab === "17" || activeTab === "19") {
+  // For CE-COSO, CE-INTOSAI, IFACI, and CE-Other tabs, don't include actions column
+  if (
+    activeTab === "17" ||
+    activeTab === "19" ||
+    activeTab === "21" ||
+    activeTab === "22"
+  ) {
     return [...baseColumns, ...dynamicColumns];
   }
   return [...baseColumns, ...dynamicColumns, actionsColumn];
 }
+
+// Export reusable components
+export { EditableInput, ValidatedEditableInput };
