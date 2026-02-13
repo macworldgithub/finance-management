@@ -132,6 +132,8 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "19": "CEINTOSAIIFACI",
 
         "20": "INTOSAIIFACIAssessment",
+        "21": "CE-Other",
+        "22": "CE-Other Assessment",
       };
 
       return map[activeTab] || "Process";
@@ -149,7 +151,9 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
       const section = getCurrentSection();
 
-      const endpoint = SECTION_TO_BASE_ENDPOINT[section];
+      // Allow explicit override for CE-Other (tab 21) which maps to OtherControlEnvironments
+      let endpoint = SECTION_TO_BASE_ENDPOINT[section];
+      if (activeTab === "21") endpoint = "OtherControlEnvironments";
 
       try {
         const response = await apiClientDotNet.get(`/${endpoint}`, {
@@ -181,6 +185,44 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               item.process ??
               "",
           };
+
+          // Special mapping for CE-Other (tab 21) -> OtherControlEnvironments API response
+          if (activeTab === "21" || section === "CE-Other") {
+            return {
+              ...base,
+              date: item.Date ?? item.date ?? "",
+              responsibilityMatrix:
+                item["Responsibility Delegation Matrix"] ??
+                item.responsibilityMatrix ??
+                "",
+              segregationDuties:
+                item["Segregation of duties"] ?? item.segregationDuties ?? "",
+              reportingLines:
+                item["Reporting Lines"] ?? item.reportingLines ?? "",
+              mission: item["Mission"] ?? item.mission ?? "",
+              visionValues:
+                item["Vision and Values"] ?? item.visionValues ?? "",
+              goalsObjectives:
+                item["Goals and Objectives"] ?? item.goalsObjectives ?? "",
+              structuresSystems:
+                item["Structures & Systems"] ?? item.structuresSystems ?? "",
+              policiesProcedures:
+                item["Policies and Procedures"] ??
+                item.policiesProcedures ??
+                "",
+              processes: item["Processes"] ?? item.processes ?? "",
+              integrityEthical:
+                item["Integrity and Ethical Values"] ??
+                item.integrityEthical ??
+                "",
+              oversightStructure:
+                item["Oversight structure"] ?? item.oversightStructure ?? "",
+              standards: item["Standards"] ?? item.standards ?? "",
+              methodologies: item["Methodologies"] ?? item.methodologies ?? "",
+              rulesRegulations:
+                item["Rules and Regulations"] ?? item.rulesRegulations ?? "",
+            } as DataType;
+          }
 
           switch (section) {
             case "Process":
@@ -731,7 +773,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       } finally {
         setLoading(false);
       }
-    }, [debouncedSearchText, getCurrentSection]);
+    }, [debouncedSearchText, getCurrentSection, activeTab]);
 
     useEffect(() => {
       fetchData();

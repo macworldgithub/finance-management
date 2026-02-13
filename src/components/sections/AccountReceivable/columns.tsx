@@ -2490,6 +2490,9 @@ export function getColumns(
       else if (activeSubTab === "grc") dynamicColumns = grcExceptionLogColumns;
       else dynamicColumns = internalAuditTestColumns; // default to audit
       break;
+    case "21":
+      dynamicColumns = otherEnvColumns;
+      break;
     case "11":
       dynamicColumns = [
         {
