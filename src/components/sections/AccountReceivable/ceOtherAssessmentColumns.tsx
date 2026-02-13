@@ -104,26 +104,6 @@ export const getCEOtherAssessmentColumns = (
   handlers?: any,
   editingKeys: string[] = [],
 ): ColumnsType<DataType> => {
-  // Base columns that appear in all rows
-  const baseColumns: ColumnsType<DataType> = [
-    {
-      title: "No.",
-      dataIndex: "no",
-      key: "no",
-      width: 70,
-      fixed: "left",
-      render: (text: any) => text,
-    },
-    {
-      title: "Process",
-      dataIndex: "process",
-      key: "process",
-      width: 300,
-      fixed: "left",
-      render: (text: string) => text,
-    },
-  ];
-
   // Dynamic scoring groups for OtherControlEnvironmentScorings API - 13 groups total
   const scoringGroups = [
     {
@@ -455,5 +435,5 @@ export const getCEOtherAssessmentColumns = (
     }),
   }));
 
-  return [...baseColumns, ...dynamicColumns] as ColumnsType<DataType>;
+  return dynamicColumns as ColumnsType<DataType>;
 };

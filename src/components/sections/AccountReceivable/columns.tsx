@@ -2494,6 +2494,9 @@ export function getColumns(
     case "21":
       dynamicColumns = otherEnvColumns;
       break;
+    case "22":
+      dynamicColumns = getCEOtherAssessmentColumns(handlers, editingKeys);
+      break;
     case "11":
       dynamicColumns = [
         {
@@ -6439,20 +6442,12 @@ export function getColumns(
     case "21":
       // CE-Other - Import from optimized file
       return getCEOtherColumns(handlers, editingKeys);
-    case "22":
-      // CE-Other Assessment - Import from new optimized file
-      return getCEOtherAssessmentColumns(handlers, editingKeys);
     default:
       dynamicColumns = processColumns;
   }
   // Duplicate actionsColumn removed above. Only one definition remains.
-  // For CE-COSO, CE-INTOSAI, IFACI, and CE-Other tabs, don't include actions column
-  if (
-    activeTab === "17" ||
-    activeTab === "19" ||
-    activeTab === "21" ||
-    activeTab === "22"
-  ) {
+  // For CE-COSO, CE-INTOSAI, and IFACI tabs, don't include actions column
+  if (activeTab === "17" || activeTab === "19" || activeTab === "21") {
     return [...baseColumns, ...dynamicColumns];
   }
   return [...baseColumns, ...dynamicColumns, actionsColumn];

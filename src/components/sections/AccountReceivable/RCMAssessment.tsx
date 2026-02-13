@@ -1899,25 +1899,32 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
             break;
 
-          case "CEOTHER":
+          case "CE-Other":
             endpoint = `OtherControlEnvironments/${item.id}`;
 
             requestBody = {
               Id: item.id,
               No: parseFloat(String(item.no)) || 0,
               Process: item.process || "",
-              OtherControlEnvironment: item.otherControlEnvironment || "",
-              OtherDesignScore: item.otherDesignScore || 0,
-              OtherPerformanceScore: item.otherPerformanceScore || 0,
-              OtherSustainabilityScore: item.otherSustainabilityScore || 0,
-              OtherTotalScore: item.otherTotalScore || "",
-              OtherScale: item.otherScale || 0,
-              OtherRating: item.otherRating || "",
+              ResponsibilityDelegationMatrix: item.responsibilityMatrix || "",
+              SegregationOfDuties: item.segregationDuties || "",
+              ReportingLines: item.reportingLines || "",
+              Mission: item.mission || "",
+              VisionAndValues: item.visionValues || "",
+              GoalsAndObjectives: item.goalsObjectives || "",
+              StructuresAndSystems: item.structuresSystems || "",
+              PoliciesAndProcedures: item.policiesProcedures || "",
+              Processes: item.processes || "",
+              IntegrityEthicalValues: item.integrityEthical || "",
+              OversightStructure: item.oversightStructure || "",
+              Standards: item.standards || "",
+              Methodologies: item.methodologies || "",
+              RulesAndRegulations: item.rulesRegulations || "",
             };
 
             break;
 
-          case "CEOTHERASSESSMENT":
+          case "CE-Other Assessment":
             endpoint = `OtherControlEnvironmentScorings/${item.id}`;
 
             requestBody = {
@@ -1930,14 +1937,193 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
                 : {}),
               // Add required updated field with current timestamp
               updated: new Date().toISOString(),
-              OtherAssessmentDesignScore: item.otherAssessmentDesignScore || 0,
-              OtherAssessmentPerformanceScore:
-                item.otherAssessmentPerformanceScore || 0,
-              OtherAssessmentSustainabilityScore:
-                item.otherAssessmentSustainabilityScore || 0,
-              OtherAssessmentTotalScore: item.otherAssessmentTotalScore || "",
-              OtherAssessmentScale: item.otherAssessmentScale || 0,
-              OtherAssessmentRating: item.otherAssessmentRating || "",
+
+              // Responsibility Delegation Matrix
+              ResponsibilityDelegationMatrix: item.responsibilityMatrix || "",
+              RdmDesignScore: parseFloat(String(item.rdmDesignScore)) || 0,
+              RdmPerformanceScore:
+                parseFloat(String(item.rdmPerformanceScore)) || 0,
+              RdmSustainabilityScore:
+                parseFloat(String(item.rdmSustainabilityScore)) || 0,
+              RdmTotalScore: String(item.rdmTotalScore || ""),
+              RdmScale: parseFloat(String(item.rdmScale)) || 0,
+              RdmRating: item.rdmRating || "",
+
+              // Segregation of Duties
+              SegregationOfDuties: item.segregationDuties || "",
+              SodDesignScore: parseFloat(String(item.sodDesignScore)) || 0,
+              SodPerformanceScore:
+                parseFloat(String(item.sodPerformanceScore)) || 0,
+              SodSustainabilityScore:
+                parseFloat(String(item.sodSustainabilityScore)) || 0,
+              SodTotalScore: String(item.sodTotalScore || ""),
+              SodScale: parseFloat(String(item.sodScale)) || 0,
+              SodRating: item.sodRating || "",
+
+              // Reporting Lines
+              ReportingLines: item.reportingLines || "",
+              ReportingLinesDesignScore:
+                parseFloat(String(item.reportingLinesDesignScore)) || 0,
+              ReportingLinesPerformanceScore:
+                parseFloat(String(item.reportingLinesPerformanceScore)) || 0,
+              ReportingLinesSustainabilityScore:
+                parseFloat(String(item.reportingLinesSustainabilityScore)) || 0,
+              ReportingLinesTotalScore: String(
+                item.reportingLinesTotalScore || "",
+              ),
+              ReportingLinesScale:
+                parseFloat(String(item.reportingLinesScale)) || 0,
+              ReportingLinesRating: item.reportingLinesRating || "",
+
+              // Mission
+              Mission: item.mission || "",
+              MissionDesignScore:
+                parseFloat(String(item.missionDesignScore)) || 0,
+              MissionPerformanceScore:
+                parseFloat(String(item.missionPerformanceScore)) || 0,
+              MissionSustainabilityScore:
+                parseFloat(String(item.missionSustainabilityScore)) || 0,
+              MissionTotalScore: String(item.missionTotalScore || ""),
+              MissionScale: parseFloat(String(item.missionScale)) || 0,
+              MissionRating: item.missionRating || "",
+
+              // Vision and Values
+              VisionAndValues: item.visionValues || "",
+              VisionValuesDesignScore:
+                parseFloat(String(item.visionValuesDesignScore)) || 0,
+              VisionValuesPerformanceScore:
+                parseFloat(String(item.visionValuesPerformanceScore)) || 0,
+              VisionValuesSustainabilityScore:
+                parseFloat(String(item.visionValuesSustainabilityScore)) || 0,
+              VisionValuesTotalScore: String(item.visionValuesTotalScore || ""),
+              VisionValuesScale:
+                parseFloat(String(item.visionValuesScale)) || 0,
+              VisionValuesRating: item.visionValuesRating || "",
+
+              // Goals and Objectives
+              GoalsAndObjectives: item.goalsObjectives || "",
+              GoalsObjectivesDesignScore:
+                parseFloat(String(item.goalsObjectivesDesignScore)) || 0,
+              GoalsObjectivesPerformanceScore:
+                parseFloat(String(item.goalsObjectivesPerformanceScore)) || 0,
+              GoalsObjectivesSustainabilityScore:
+                parseFloat(String(item.goalsObjectivesSustainabilityScore)) ||
+                0,
+              GoalsObjectivesTotalScore: String(
+                item.goalsObjectivesTotalScore || "",
+              ),
+              GoalsObjectivesScale:
+                parseFloat(String(item.goalsObjectivesScale)) || 0,
+              GoalsObjectivesRating: item.goalsObjectivesRating || "",
+
+              // Structures and Systems
+              StructuresAndSystems: item.structuresSystems || "",
+              StructuresSystemsDesignScore:
+                parseFloat(String(item.structuresSystemsDesignScore)) || 0,
+              StructuresSystemsPerformanceScore:
+                parseFloat(String(item.structuresSystemsPerformanceScore)) || 0,
+              StructuresSystemsSustainabilityScore:
+                parseFloat(String(item.structuresSystemsSustainabilityScore)) ||
+                0,
+              StructuresSystemsTotalScore: String(
+                item.structuresSystemsTotalScore || "",
+              ),
+              StructuresSystemsScale:
+                parseFloat(String(item.structuresSystemsScale)) || 0,
+              StructuresSystemsRating: item.structuresSystemsRating || "",
+
+              // Policies and Procedures
+              PoliciesAndProcedures: item.policiesProcedures || "",
+              PoliciesProceduresDesignScore:
+                parseFloat(String(item.policiesProceduresDesignScore)) || 0,
+              PoliciesProceduresPerformanceScore:
+                parseFloat(String(item.policiesProceduresPerformanceScore)) ||
+                0,
+              PoliciesProceduresSustainabilityScore:
+                parseFloat(
+                  String(item.policiesProceduresSustainabilityScore),
+                ) || 0,
+              PoliciesProceduresTotalScore: String(
+                item.policiesProceduresTotalScore || "",
+              ),
+              PoliciesProceduresScale:
+                parseFloat(String(item.policiesProceduresScale)) || 0,
+              PoliciesProceduresRating: item.policiesProceduresRating || "",
+
+              // Processes
+              Processes: item.processes || "",
+              ProcessesDesignScore:
+                parseFloat(String(item.processesDesignScore)) || 0,
+              ProcessesPerformanceScore:
+                parseFloat(String(item.processesPerformanceScore)) || 0,
+              ProcessesSustainabilityScore:
+                parseFloat(String(item.processesSustainabilityScore)) || 0,
+              ProcessesTotalScore: String(item.processesTotalScore || ""),
+              ProcessesScale: parseFloat(String(item.processesScale)) || 0,
+              ProcessesRating: item.processesRating || "",
+
+              // Integrity Ethical Values
+              IntegrityEthicalValues: item.integrityEthical || "",
+              IntegrityDesignScore:
+                parseFloat(String(item.integrityDesignScore)) || 0,
+              IntegrityPerformanceScore:
+                parseFloat(String(item.integrityPerformanceScore)) || 0,
+              IntegritySustainabilityScore:
+                parseFloat(String(item.integritySustainabilityScore)) || 0,
+              IntegrityTotalScore: String(item.integrityTotalScore || ""),
+              IntegrityScale: parseFloat(String(item.integrityScale)) || 0,
+              IntegrityRating: item.integrityRating || "",
+
+              // Oversight Structure
+              OversightStructure: item.oversightStructure || "",
+              OversightDesignScore:
+                parseFloat(String(item.oversightDesignScore)) || 0,
+              OversightPerformanceScore:
+                parseFloat(String(item.oversightPerformanceScore)) || 0,
+              OversightSustainabilityScore:
+                parseFloat(String(item.oversightSustainabilityScore)) || 0,
+              OversightTotalScore: String(item.oversightTotalScore || ""),
+              OversightScale: parseFloat(String(item.oversightScale)) || 0,
+              OversightRating: item.oversightRating || "",
+
+              // Standards
+              Standards: item.standards || "",
+              StandardsDesignScore:
+                parseFloat(String(item.standardsDesignScore)) || 0,
+              StandardsPerformanceScore:
+                parseFloat(String(item.standardsPerformanceScore)) || 0,
+              StandardsSustainabilityScore:
+                parseFloat(String(item.standardsSustainabilityScore)) || 0,
+              StandardsTotalScore: String(item.standardsTotalScore || ""),
+              StandardsScale: parseFloat(String(item.standardsScale)) || 0,
+              StandardsRating: item.standardsRating || "",
+
+              // Methodologies
+              Methodologies: item.methodologies || "",
+              MethodologiesDesignScore:
+                parseFloat(String(item.methodologiesDesignScore)) || 0,
+              MethodologiesPerformanceScore:
+                parseFloat(String(item.methodologiesPerformanceScore)) || 0,
+              MethodologiesSustainabilityScore:
+                parseFloat(String(item.methodologiesSustainabilityScore)) || 0,
+              MethodologiesTotalScore: String(
+                item.methodologiesTotalScore || "",
+              ),
+              MethodologiesScale:
+                parseFloat(String(item.methodologiesScale)) || 0,
+              MethodologiesRating: item.methodologiesRating || "",
+
+              // Rules and Regulations
+              RulesAndRegulations: item.rulesRegulations || "",
+              RulesRegsDesignScore:
+                parseFloat(String(item.rulesRegsDesignScore)) || 0,
+              RulesRegsPerformanceScore:
+                parseFloat(String(item.rulesRegsPerformanceScore)) || 0,
+              RulesRegsSustainabilityScore:
+                parseFloat(String(item.rulesRegsSustainabilityScore)) || 0,
+              RulesRegsTotalScore: String(item.rulesRegsTotalScore || ""),
+              RulesRegsScale: parseFloat(String(item.rulesRegsScale)) || 0,
+              RulesRegsRating: item.rulesRegsRating || "",
             };
 
             break;
