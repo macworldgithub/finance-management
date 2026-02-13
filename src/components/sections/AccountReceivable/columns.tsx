@@ -13,8 +13,9 @@ import { DataType } from "./types";
 import { Select } from "antd";
 import {
   getCEOtherColumns,
-  getCEOtherAssessmentColumns,
+  getCEOtherAssessmentColumns as getCEOtherAssessmentColumnsOld,
 } from "./ceOtherColumns";
+import { getCEOtherAssessmentColumns } from "./ceOtherAssessmentColumns";
 const { TextArea } = Input;
 export const stageOptions = [
   { label: "Processing", key: "Processing" },
@@ -6439,7 +6440,7 @@ export function getColumns(
       // CE-Other - Import from optimized file
       return getCEOtherColumns(handlers, editingKeys);
     case "22":
-      // CE-Other Assessment - Import from optimized file
+      // CE-Other Assessment - Import from new optimized file
       return getCEOtherAssessmentColumns(handlers, editingKeys);
     default:
       dynamicColumns = processColumns;

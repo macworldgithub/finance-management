@@ -151,9 +151,10 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
       const section = getCurrentSection();
 
-      // Allow explicit override for CE-Other (tab 21) which maps to OtherControlEnvironments
+      // Allow explicit overrides for CE-Other tabs
       let endpoint = SECTION_TO_BASE_ENDPOINT[section];
       if (activeTab === "21") endpoint = "OtherControlEnvironments";
+      if (activeTab === "22") endpoint = "OtherControlEnvironmentScorings";
 
       try {
         const response = await apiClientDotNet.get(`/${endpoint}`, {
@@ -221,6 +222,147 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
               methodologies: item["Methodologies"] ?? item.methodologies ?? "",
               rulesRegulations:
                 item["Rules and Regulations"] ?? item.rulesRegulations ?? "",
+            } as DataType;
+          }
+
+          // Special mapping for CE-Other Assessment (tab 22) -> OtherControlEnvironmentScorings API response
+          if (activeTab === "22" || section === "CE-Other Assessment") {
+            return {
+              ...base,
+              date: item.Date ?? item.date ?? "",
+              // Responsibility Delegation Matrix (RDM)
+              responsibilityMatrix: item.ResponsibilityDelegationMatrix ?? "",
+              rdmDesignScore: item.RdmDesignScore ?? 0,
+              rdmPerformanceScore: item.RdmPerformanceScore ?? 0,
+              rdmSustainabilityScore: item.RdmSustainabilityScore ?? 0,
+              rdmTotalScore: item.RdmTotalScore ?? "",
+              rdmScale: item.RdmScale ?? 0,
+              rdmRating: item.RdmRating ?? "",
+              // Segregation of Duties (SOD)
+              segregationOfDuties: item.SegregationOfDuties ?? "",
+              sodDesignScore: item.SodDesignScore ?? 0,
+              sodPerformanceScore: item.SodPerformanceScore ?? 0,
+              sodSustainabilityScore: item.SodSustainabilityScore ?? 0,
+              sodTotalScore: item.SodTotalScore ?? "",
+              sodScale: item.SodScale ?? 0,
+              sodRating: item.SodRating ?? "",
+              // Reporting Lines
+              reportingLines: item.ReportingLines ?? "",
+              reportingLinesDesignScore: item.ReportingLinesDesignScore ?? 0,
+              reportingLinesPerformanceScore:
+                item.ReportingLinesPerformanceScore ?? 0,
+              reportingLinesSustainabilityScore:
+                item.ReportingLinesSustainabilityScore ?? 0,
+              reportingLinesTotalScore: item.ReportingLinesTotalScore ?? "",
+              reportingLinesScale: item.ReportingLinesScale ?? 0,
+              reportingLinesRating: item.ReportingLinesRating ?? "",
+              // Mission
+              mission: item.Mission ?? "",
+              missionDesignScore: item.MissionDesignScore ?? 0,
+              missionPerformanceScore: item.MissionPerformanceScore ?? 0,
+              missionSustainabilityScore: item.MissionSustainabilityScore ?? 0,
+              missionTotalScore: item.MissionTotalScore ?? "",
+              missionScale: item.MissionScale ?? 0,
+              missionRating: item.MissionRating ?? "",
+              // Vision and Values
+              visionAndValues: item.VisionAndValues ?? "",
+              visionValuesDesignScore: item.VisionValuesDesignScore ?? 0,
+              visionValuesPerformanceScore:
+                item.VisionValuesPerformanceScore ?? 0,
+              visionValuesSustainabilityScore:
+                item.VisionValuesSustainabilityScore ?? 0,
+              visionValuesTotalScore: item.VisionValuesTotalScore ?? "",
+              visionValuesScale: item.VisionValuesScale ?? 0,
+              visionValuesRating: item.VisionValuesRating ?? "",
+              // Goals and Objectives
+              goalsAndObjectives: item.GoalsAndObjectives ?? "",
+              goalsObjectivesDesignScore: item.GoalsObjectivesDesignScore ?? 0,
+              goalsObjectivesPerformanceScore:
+                item.GoalsObjectivesPerformanceScore ?? 0,
+              goalsObjectivesSustainabilityScore:
+                item.GoalsObjectivesSustainabilityScore ?? 0,
+              goalsObjectivesTotalScore: item.GoalsObjectivesTotalScore ?? "",
+              goalsObjectivesScale: item.GoalsObjectivesScale ?? 0,
+              goalsObjectivesRating: item.GoalsObjectivesRating ?? "",
+              // Structures and Systems
+              structuresAndSystems: item.StructuresAndSystems ?? "",
+              structuresSystemsDesignScore:
+                item.StructuresSystemsDesignScore ?? 0,
+              structuresSystemsPerformanceScore:
+                item.StructuresSystemsPerformanceScore ?? 0,
+              structuresSystemsSustainabilityScore:
+                item.StructuresSystemsSustainabilityScore ?? 0,
+              structuresSystemsTotalScore:
+                item.StructuresSystemsTotalScore ?? "",
+              structuresSystemsScale: item.StructuresSystemsScale ?? 0,
+              structuresSystemsRating: item.StructuresSystemsRating ?? "",
+              // Policies and Procedures
+              policiesAndProcedures: item.PoliciesAndProcedures ?? "",
+              policiesProceduresDesignScore:
+                item.PoliciesProceduresDesignScore ?? 0,
+              policiesProceduresPerformanceScore:
+                item.PoliciesProceduresPerformanceScore ?? 0,
+              policiesProceduresSustainabilityScore:
+                item.PoliciesProceduresSustainabilityScore ?? 0,
+              policiesProceduresTotalScore:
+                item.PoliciesProceduresTotalScore ?? "",
+              policiesProceduresScale: item.PoliciesProceduresScale ?? 0,
+              policiesProceduresRating: item.PoliciesProceduresRating ?? "",
+              // Processes
+              processes: item.Processes ?? "",
+              processesDesignScore: item.ProcessesDesignScore ?? 0,
+              processesPerformanceScore: item.ProcessesPerformanceScore ?? 0,
+              processesSustainabilityScore:
+                item.ProcessesSustainabilityScore ?? 0,
+              processesTotalScore: item.ProcessesTotalScore ?? "",
+              processesScale: item.ProcessesScale ?? 0,
+              processesRating: item.ProcessesRating ?? "",
+              // Integrity and Ethical Values
+              integrityEthicalValues: item.IntegrityEthicalValues ?? "",
+              integrityDesignScore: item.IntegrityDesignScore ?? 0,
+              integrityPerformanceScore: item.IntegrityPerformanceScore ?? 0,
+              integritySustainabilityScore:
+                item.IntegritySustainabilityScore ?? 0,
+              integrityTotalScore: item.IntegrityTotalScore ?? "",
+              integrityScale: item.IntegrityScale ?? 0,
+              integrityRating: item.IntegrityRating ?? "",
+              // Oversight Structure
+              oversightStructure: item.OversightStructure ?? "",
+              oversightDesignScore: item.OversightDesignScore ?? 0,
+              oversightPerformanceScore: item.OversightPerformanceScore ?? 0,
+              oversightSustainabilityScore:
+                item.OversightSustainabilityScore ?? 0,
+              oversightTotalScore: item.OversightTotalScore ?? "",
+              oversightScale: item.OversightScale ?? 0,
+              oversightRating: item.OversightRating ?? "",
+              // Standards
+              standards: item.Standards ?? "",
+              standardsDesignScore: item.StandardsDesignScore ?? 0,
+              standardsPerformanceScore: item.StandardsPerformanceScore ?? 0,
+              standardsSustainabilityScore:
+                item.StandardsSustainabilityScore ?? 0,
+              standardsTotalScore: item.StandardsTotalScore ?? "",
+              standardsScale: item.StandardsScale ?? 0,
+              standardsRating: item.StandardsRating ?? "",
+              // Methodologies
+              methodologies: item.Methodologies ?? "",
+              methodologiesDesignScore: item.MethodologiesDesignScore ?? 0,
+              methodologiesPerformanceScore:
+                item.MethodologiesPerformanceScore ?? 0,
+              methodologiesSustainabilityScore:
+                item.MethodologiesSustainabilityScore ?? 0,
+              methodologiesTotalScore: item.MethodologiesTotalScore ?? "",
+              methodologiesScale: item.MethodologiesScale ?? 0,
+              methodologiesRating: item.MethodologiesRating ?? "",
+              // Rules and Regulations
+              rulesAndRegulations: item.RulesAndRegulations ?? "",
+              rulesRegsDesignScore: item.RulesRegsDesignScore ?? 0,
+              rulesRegsPerformanceScore: item.RulesRegsPerformanceScore ?? 0,
+              rulesRegsSustainabilityScore:
+                item.RulesRegsSustainabilityScore ?? 0,
+              rulesRegsTotalScore: item.RulesRegsTotalScore ?? "",
+              rulesRegsScale: item.RulesRegsScale ?? 0,
+              rulesRegsRating: item.RulesRegsRating ?? "",
             } as DataType;
           }
 
