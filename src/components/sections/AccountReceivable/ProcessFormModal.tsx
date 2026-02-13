@@ -84,6 +84,7 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
       title: "INTOSAI/IFAC Control Environment",
     },
     { key: "other-control-environments", title: "Other Control Environment" },
+    { key: "other-control-environment-scorings", title: "CE-Other Assessment" },
   ];
 
   useEffect(() => {
@@ -196,6 +197,251 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
 
       console.log(
         "[ProcessFormModal] OwnershipScorings fullValues:",
+        fullValues,
+      );
+    } else if (sectionKey === "other-control-environment-scorings") {
+      // For Other Control Environment Scorings, map form fields to API fields
+      const {
+        ResponsibilityDelegationMatrix,
+        RdmDesignScore,
+        RdmPerformanceScore,
+        RdmSustainabilityScore,
+        RdmTotalScore,
+        RdmScale,
+        RdmRating,
+        SegregationOfDuties,
+        SodDesignScore,
+        SodPerformanceScore,
+        SodSustainabilityScore,
+        SodTotalScore,
+        SodScale,
+        SodRating,
+        ReportingLines,
+        ReportingLinesDesignScore,
+        ReportingLinesPerformanceScore,
+        ReportingLinesSustainabilityScore,
+        ReportingLinesTotalScore,
+        ReportingLinesScale,
+        ReportingLinesRating,
+        Mission,
+        MissionDesignScore,
+        MissionPerformanceScore,
+        MissionSustainabilityScore,
+        MissionTotalScore,
+        MissionScale,
+        MissionRating,
+        VisionAndValues,
+        VisionValuesDesignScore,
+        VisionValuesPerformanceScore,
+        VisionValuesSustainabilityScore,
+        VisionValuesTotalScore,
+        VisionValuesScale,
+        VisionValuesRating,
+        GoalsAndObjectives,
+        GoalsObjectivesDesignScore,
+        GoalsObjectivesPerformanceScore,
+        GoalsObjectivesSustainabilityScore,
+        GoalsObjectivesTotalScore,
+        GoalsObjectivesScale,
+        GoalsObjectivesRating,
+        StructuresAndSystems,
+        StructuresSystemsDesignScore,
+        StructuresSystemsPerformanceScore,
+        StructuresSystemsSustainabilityScore,
+        StructuresSystemsTotalScore,
+        StructuresSystemsScale,
+        StructuresSystemsRating,
+        PoliciesAndProcedures,
+        PoliciesProceduresDesignScore,
+        PoliciesProceduresPerformanceScore,
+        PoliciesProceduresSustainabilityScore,
+        PoliciesProceduresTotalScore,
+        PoliciesProceduresScale,
+        PoliciesProceduresRating,
+        Processes,
+        ProcessesDesignScore,
+        ProcessesPerformanceScore,
+        ProcessesSustainabilityScore,
+        ProcessesTotalScore,
+        ProcessesScale,
+        ProcessesRating,
+        IntegrityEthicalValues,
+        IntegrityDesignScore,
+        IntegrityPerformanceScore,
+        IntegritySustainabilityScore,
+        IntegrityTotalScore,
+        IntegrityScale,
+        IntegrityRating,
+        OversightStructure,
+        OversightDesignScore,
+        OversightPerformanceScore,
+        OversightSustainabilityScore,
+        OversightTotalScore,
+        OversightScale,
+        OversightRating,
+        Standards,
+        StandardsDesignScore,
+        StandardsPerformanceScore,
+        StandardsSustainabilityScore,
+        StandardsTotalScore,
+        StandardsScale,
+        StandardsRating,
+        Methodologies,
+        MethodologiesDesignScore,
+        MethodologiesPerformanceScore,
+        MethodologiesSustainabilityScore,
+        MethodologiesTotalScore,
+        MethodologiesScale,
+        MethodologiesRating,
+        RulesAndRegulations,
+        RulesRegsDesignScore,
+        RulesRegsPerformanceScore,
+        RulesRegsSustainabilityScore,
+        RulesRegsTotalScore,
+        RulesRegsScale,
+        RulesRegsRating,
+        ...restStepValues
+      } = stepValues;
+
+      fullValues = {
+        No: parseFloat(String(noValue)) || 0,
+        Process: commonProcess,
+        ResponsibilityDelegationMatrix: ResponsibilityDelegationMatrix || "",
+        RdmDesignScore: parseFloat(String(RdmDesignScore)) || 0,
+        RdmPerformanceScore: parseFloat(String(RdmPerformanceScore)) || 0,
+        RdmSustainabilityScore: parseFloat(String(RdmSustainabilityScore)) || 0,
+        RdmTotalScore: String(RdmTotalScore || ""),
+        RdmScale: parseFloat(String(RdmScale)) || 0,
+        RdmRating: RdmRating || "",
+        SegregationOfDuties: SegregationOfDuties || "",
+        SodDesignScore: parseFloat(String(SodDesignScore)) || 0,
+        SodPerformanceScore: parseFloat(String(SodPerformanceScore)) || 0,
+        SodSustainabilityScore: parseFloat(String(SodSustainabilityScore)) || 0,
+        SodTotalScore: String(SodTotalScore || ""),
+        SodScale: parseFloat(String(SodScale)) || 0,
+        SodRating: SodRating || "",
+        ReportingLines: ReportingLines || "",
+        ReportingLinesDesignScore:
+          parseFloat(String(ReportingLinesDesignScore)) || 0,
+        ReportingLinesPerformanceScore:
+          parseFloat(String(ReportingLinesPerformanceScore)) || 0,
+        ReportingLinesSustainabilityScore:
+          parseFloat(String(ReportingLinesSustainabilityScore)) || 0,
+        ReportingLinesTotalScore: String(ReportingLinesTotalScore || ""),
+        ReportingLinesScale: parseFloat(String(ReportingLinesScale)) || 0,
+        ReportingLinesRating: ReportingLinesRating || "",
+        Mission: Mission || "",
+        MissionDesignScore: parseFloat(String(MissionDesignScore)) || 0,
+        MissionPerformanceScore:
+          parseFloat(String(MissionPerformanceScore)) || 0,
+        MissionSustainabilityScore:
+          parseFloat(String(MissionSustainabilityScore)) || 0,
+        MissionTotalScore: String(MissionTotalScore || ""),
+        MissionScale: parseFloat(String(MissionScale)) || 0,
+        MissionRating: MissionRating || "",
+        VisionAndValues: VisionAndValues || "",
+        VisionValuesDesignScore:
+          parseFloat(String(VisionValuesDesignScore)) || 0,
+        VisionValuesPerformanceScore:
+          parseFloat(String(VisionValuesPerformanceScore)) || 0,
+        VisionValuesSustainabilityScore:
+          parseFloat(String(VisionValuesSustainabilityScore)) || 0,
+        VisionValuesTotalScore: String(VisionValuesTotalScore || ""),
+        VisionValuesScale: parseFloat(String(VisionValuesScale)) || 0,
+        VisionValuesRating: VisionValuesRating || "",
+        GoalsAndObjectives: GoalsAndObjectives || "",
+        GoalsObjectivesDesignScore:
+          parseFloat(String(GoalsObjectivesDesignScore)) || 0,
+        GoalsObjectivesPerformanceScore:
+          parseFloat(String(GoalsObjectivesPerformanceScore)) || 0,
+        GoalsObjectivesSustainabilityScore:
+          parseFloat(String(GoalsObjectivesSustainabilityScore)) || 0,
+        GoalsObjectivesTotalScore: String(GoalsObjectivesTotalScore || ""),
+        GoalsObjectivesScale: parseFloat(String(GoalsObjectivesScale)) || 0,
+        GoalsObjectivesRating: GoalsObjectivesRating || "",
+        StructuresAndSystems: StructuresAndSystems || "",
+        StructuresSystemsDesignScore:
+          parseFloat(String(StructuresSystemsDesignScore)) || 0,
+        StructuresSystemsPerformanceScore:
+          parseFloat(String(StructuresSystemsPerformanceScore)) || 0,
+        StructuresSystemsSustainabilityScore:
+          parseFloat(String(StructuresSystemsSustainabilityScore)) || 0,
+        StructuresSystemsTotalScore: String(StructuresSystemsTotalScore || ""),
+        StructuresSystemsScale: parseFloat(String(StructuresSystemsScale)) || 0,
+        StructuresSystemsRating: StructuresSystemsRating || "",
+        PoliciesAndProcedures: PoliciesAndProcedures || "",
+        PoliciesProceduresDesignScore:
+          parseFloat(String(PoliciesProceduresDesignScore)) || 0,
+        PoliciesProceduresPerformanceScore:
+          parseFloat(String(PoliciesProceduresPerformanceScore)) || 0,
+        PoliciesProceduresSustainabilityScore:
+          parseFloat(String(PoliciesProceduresSustainabilityScore)) || 0,
+        PoliciesProceduresTotalScore: String(
+          PoliciesProceduresTotalScore || "",
+        ),
+        PoliciesProceduresScale:
+          parseFloat(String(PoliciesProceduresScale)) || 0,
+        PoliciesProceduresRating: PoliciesProceduresRating || "",
+        Processes: Processes || "",
+        ProcessesDesignScore: parseFloat(String(ProcessesDesignScore)) || 0,
+        ProcessesPerformanceScore:
+          parseFloat(String(ProcessesPerformanceScore)) || 0,
+        ProcessesSustainabilityScore:
+          parseFloat(String(ProcessesSustainabilityScore)) || 0,
+        ProcessesTotalScore: String(ProcessesTotalScore || ""),
+        ProcessesScale: parseFloat(String(ProcessesScale)) || 0,
+        ProcessesRating: ProcessesRating || "",
+        IntegrityEthicalValues: IntegrityEthicalValues || "",
+        IntegrityDesignScore: parseFloat(String(IntegrityDesignScore)) || 0,
+        IntegrityPerformanceScore:
+          parseFloat(String(IntegrityPerformanceScore)) || 0,
+        IntegritySustainabilityScore:
+          parseFloat(String(IntegritySustainabilityScore)) || 0,
+        IntegrityTotalScore: String(IntegrityTotalScore || ""),
+        IntegrityScale: parseFloat(String(IntegrityScale)) || 0,
+        IntegrityRating: IntegrityRating || "",
+        OversightStructure: OversightStructure || "",
+        OversightDesignScore: parseFloat(String(OversightDesignScore)) || 0,
+        OversightPerformanceScore:
+          parseFloat(String(OversightPerformanceScore)) || 0,
+        OversightSustainabilityScore:
+          parseFloat(String(OversightSustainabilityScore)) || 0,
+        OversightTotalScore: String(OversightTotalScore || ""),
+        OversightScale: parseFloat(String(OversightScale)) || 0,
+        OversightRating: OversightRating || "",
+        Standards: Standards || "",
+        StandardsDesignScore: parseFloat(String(StandardsDesignScore)) || 0,
+        StandardsPerformanceScore:
+          parseFloat(String(StandardsPerformanceScore)) || 0,
+        StandardsSustainabilityScore:
+          parseFloat(String(StandardsSustainabilityScore)) || 0,
+        StandardsTotalScore: String(StandardsTotalScore || ""),
+        StandardsScale: parseFloat(String(StandardsScale)) || 0,
+        StandardsRating: StandardsRating || "",
+        Methodologies: Methodologies || "",
+        MethodologiesDesignScore:
+          parseFloat(String(MethodologiesDesignScore)) || 0,
+        MethodologiesPerformanceScore:
+          parseFloat(String(MethodologiesPerformanceScore)) || 0,
+        MethodologiesSustainabilityScore:
+          parseFloat(String(MethodologiesSustainabilityScore)) || 0,
+        MethodologiesTotalScore: String(MethodologiesTotalScore || ""),
+        MethodologiesScale: parseFloat(String(MethodologiesScale)) || 0,
+        MethodologiesRating: MethodologiesRating || "",
+        RulesAndRegulations: RulesAndRegulations || "",
+        RulesRegsDesignScore: parseFloat(String(RulesRegsDesignScore)) || 0,
+        RulesRegsPerformanceScore:
+          parseFloat(String(RulesRegsPerformanceScore)) || 0,
+        RulesRegsSustainabilityScore:
+          parseFloat(String(RulesRegsSustainabilityScore)) || 0,
+        RulesRegsTotalScore: String(RulesRegsTotalScore || ""),
+        RulesRegsScale: parseFloat(String(RulesRegsScale)) || 0,
+        RulesRegsRating: RulesRegsRating || "",
+        ...restStepValues,
+      };
+
+      console.log(
+        "[ProcessFormModal] Other Control Environment Scorings fullValues:",
         fullValues,
       );
     } else if (sectionKey === "control-environment-scorings") {
@@ -1153,6 +1399,722 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
             ))}
           </Select>
         </Form.Item>
+      </>
+    ),
+    // /OtherControlEnvironmentScorings (CE-Other Assessment - Tab 22)
+    "other-control-environment-scorings": (
+      <>
+        {/* Responsibility Delegation Matrix */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Responsibility Delegation Matrix</h4>
+          <Form.Item name="ResponsibilityDelegationMatrix" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="RdmDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="RdmPerformanceScore" label="Performance Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="RdmSustainabilityScore" label="Sustainability Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="RdmTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="RdmScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="RdmRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Segregation of Duties */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Segregation of Duties</h4>
+          <Form.Item name="SegregationOfDuties" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="SodDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="SodPerformanceScore" label="Performance Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="SodSustainabilityScore" label="Sustainability Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="SodTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="SodScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="SodRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Reporting Lines */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Reporting Lines</h4>
+          <Form.Item name="ReportingLines" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="ReportingLinesDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="ReportingLinesPerformanceScore"
+            label="Performance Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="ReportingLinesSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="ReportingLinesTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="ReportingLinesScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="ReportingLinesRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Mission */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Mission</h4>
+          <Form.Item name="Mission" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="MissionDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="MissionPerformanceScore" label="Performance Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="MissionSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="MissionTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="MissionScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="MissionRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Vision and Values */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Vision and Values</h4>
+          <Form.Item name="VisionAndValues" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="VisionValuesDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="VisionValuesPerformanceScore"
+            label="Performance Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="VisionValuesSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="VisionValuesTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="VisionValuesScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="VisionValuesRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Goals and Objectives */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Goals and Objectives</h4>
+          <Form.Item name="GoalsAndObjectives" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="GoalsObjectivesDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="GoalsObjectivesPerformanceScore"
+            label="Performance Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="GoalsObjectivesSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="GoalsObjectivesTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="GoalsObjectivesScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="GoalsObjectivesRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Structures and Systems */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Structures and Systems</h4>
+          <Form.Item name="StructuresAndSystems" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="StructuresSystemsDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="StructuresSystemsPerformanceScore"
+            label="Performance Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="StructuresSystemsSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="StructuresSystemsTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="StructuresSystemsScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="StructuresSystemsRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Policies and Procedures */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Policies and Procedures</h4>
+          <Form.Item name="PoliciesAndProcedures" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="PoliciesProceduresDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="PoliciesProceduresPerformanceScore"
+            label="Performance Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="PoliciesProceduresSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="PoliciesProceduresTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="PoliciesProceduresScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="PoliciesProceduresRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Processes */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Processes</h4>
+          <Form.Item name="Processes" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="ProcessesDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="ProcessesPerformanceScore" label="Performance Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="ProcessesSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="ProcessesTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="ProcessesScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="ProcessesRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Integrity Ethical Values */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Integrity Ethical Values</h4>
+          <Form.Item name="IntegrityEthicalValues" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="IntegrityDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="IntegrityPerformanceScore" label="Performance Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="IntegritySustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="IntegrityTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="IntegrityScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="IntegrityRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Oversight Structure */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Oversight Structure</h4>
+          <Form.Item name="OversightStructure" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="OversightDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="OversightPerformanceScore" label="Performance Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="OversightSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="OversightTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="OversightScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="OversightRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Standards */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Standards</h4>
+          <Form.Item name="Standards" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="StandardsDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="StandardsPerformanceScore" label="Performance Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="StandardsSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="StandardsTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="StandardsScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="StandardsRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Methodologies */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Methodologies</h4>
+          <Form.Item name="Methodologies" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="MethodologiesDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="MethodologiesPerformanceScore"
+            label="Performance Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="MethodologiesSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="MethodologiesTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="MethodologiesScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="MethodologiesRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        {/* Rules and Regulations */}
+        <div
+          style={{
+            marginBottom: "20px",
+            borderBottom: "1px solid #eee",
+            paddingBottom: "10px",
+          }}
+        >
+          <h4>Rules and Regulations</h4>
+          <Form.Item name="RulesAndRegulations" label="Status">
+            <Select placeholder="Select Yes or No">
+              <Option value="P">Yes</Option>
+              <Option value="O">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="RulesRegsDesignScore" label="Design Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="RulesRegsPerformanceScore" label="Performance Score">
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="RulesRegsSustainabilityScore"
+            label="Sustainability Score"
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="RulesRegsTotalScore" label="Total Score">
+            <Input />
+          </Form.Item>
+          <Form.Item name="RulesRegsScale" label="Scale">
+            <Select placeholder="Select scale">
+              <Option value="5">5</Option>
+              <Option value="4">4</Option>
+              <Option value="3">3</Option>
+              <Option value="2">2</Option>
+              <Option value="1">1</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="RulesRegsRating" label="Rating">
+            <Select placeholder="Select rating">
+              <Option value="Strong">Strong</Option>
+              <Option value="Adequate">Adequate</Option>
+              <Option value="Needs Improvement">Needs Improvement</Option>
+              <Option value="Weak">Weak</Option>
+              <Option value="Ineffective">Ineffective</Option>
+            </Select>
+          </Form.Item>
+        </div>
       </>
     ),
     // /OtherControlEnvironments
