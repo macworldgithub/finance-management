@@ -234,6 +234,12 @@ export default function RCMLanding({
             OWNERSHIP MANAGEMENT REPORTS
           </button>
         </div>
+        <button
+          onClick={() => router.push("/risk-assessment-management-report")}
+          className="w-full py-4 px-3 text-xs font-semibold rounded-sm bg-[#fff2cc] border border-[#ffd966] text-[#7f6000] text-center hover:bg-[#ffe599] transition-colors duration-200 cursor-pointer"
+        >
+          RISK ASSESSMENT MANAGEMENT REPORT
+        </button>
       </div>
     </div>
   );
