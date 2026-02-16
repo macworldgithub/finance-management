@@ -2205,6 +2205,30 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
             break;
 
+          case "RiskAssessmentInherentRiskAssessment":
+            endpoint = `RiskAssessmentInherentRiskScorings/${item.id}`;
+
+            requestBody = {
+              Id: item.id,
+              Date: new Date().toISOString(),
+              No: parseFloat(String(item.no)) || 0,
+              Process: item.process || "",
+              RiskId: item.riskId || "",
+              RiskType: item.riskType || "",
+              RiskDescription: item.riskDescription || "",
+              SeverityImpact: item.severityImpact || "",
+              ProbabilityLikelihood: item.probabilityLikelihood || "",
+              Classification: item.classification || "",
+              RiskIdSeverityImpact:
+                parseFloat(String(item.riskIdSeverityImpact)) || 0,
+              RiskIdProbabilityLikelihood:
+                parseFloat(String(item.riskIdProbabilityLikelihood)) || 0,
+              RiskIdClassification:
+                parseFloat(String(item.riskIdClassification)) || 0,
+            };
+
+            break;
+
           default:
             console.error("Unknown section:", section);
 
