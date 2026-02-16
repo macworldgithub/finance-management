@@ -588,7 +588,7 @@ export function getColumns(
         renderEditableInput(text, record.key, "no", handlers, editingKeys),
     },
     {
-      title: "Process", 
+      title: "Process",
       dataIndex: "process",
       key: "process",
       width: 300,

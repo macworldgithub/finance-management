@@ -81,6 +81,8 @@ export const getRiskAssessmentInherentRiskAssessmentColumns = (
       dataIndex: "riskId",
       key: "riskId",
       width: 120,
+      render: (text: string, record: any) =>
+        renderEditableInput(text, record.key, "riskId", handlers, editingKeys),
     },
     {
       title: "Risk Type",
@@ -263,18 +265,42 @@ export const getRiskAssessmentInherentRiskAssessmentColumns = (
       dataIndex: "riskIdSeverityImpact",
       key: "riskIdSeverityImpact",
       width: 150,
+      render: (text: any, record: any) =>
+        renderEditableInput(
+          text,
+          record.key,
+          "riskIdSeverityImpact",
+          handlers,
+          editingKeys,
+        ),
     },
     {
       title: "Risk ID Probability Likelihood",
       dataIndex: "riskIdProbabilityLikelihood",
       key: "riskIdProbabilityLikelihood",
       width: 180,
+      render: (text: any, record: any) =>
+        renderEditableInput(
+          text,
+          record.key,
+          "riskIdProbabilityLikelihood",
+          handlers,
+          editingKeys,
+        ),
     },
     {
       title: "Risk ID Classification",
       dataIndex: "riskIdClassification",
       key: "riskIdClassification",
       width: 150,
+      render: (text: any, record: any) =>
+        renderEditableInput(
+          text,
+          record.key,
+          "riskIdClassification",
+          handlers,
+          editingKeys,
+        ),
     },
   ];
 
