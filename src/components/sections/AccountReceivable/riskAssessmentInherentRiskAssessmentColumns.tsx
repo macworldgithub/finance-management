@@ -119,10 +119,11 @@ export const getRiskAssessmentInherentRiskAssessmentColumns = (
       width: 150,
       render: (text: any, record: any) => {
         const severityOptions = [
-          { label: "Critical", key: "Critical" },
-          { label: "High", key: "High" },
-          { label: "Medium", key: "Medium" },
-          { label: "Low", key: "Low" },
+          { label: "Catastrophic", key: "Catastrophic" },
+          { label: "Major", key: "Major" },
+          { label: "Moderate", key: "Moderate" },
+          { label: "Minor", key: "Minor" },
+          { label: "Insignificant", key: "Insignificant" },
         ];
         const menu = buildMenu(severityOptions, (key) =>
           handlers?.onSelectGeneric?.(key, record.key, "severityImpact"),
@@ -308,31 +309,106 @@ export const getRiskAssessmentInherentRiskAssessmentColumns = (
 };
 
 // Helper function to get colors based on severity
-const getColorForSeverity = (severity: string) => {
-  const colorMap: {
-    [key: string]: { bgColor: string; textColor: string; borderColor: string };
-  } = {
-    Critical: {
-      bgColor: "#fee2e2",
-      textColor: "#991b1b",
-      borderColor: "#dc2626",
-    },
-    High: {
-      bgColor: "#fef2f2",
-      textColor: "#991b1b",
-      borderColor: "#fca5a5",
-    },
-    Medium: {
-      bgColor: "#fef3c7",
-      textColor: "#92400e",
-      borderColor: "#fbbf24",
-    },
-    Low: {
-      bgColor: "#f0f9ff",
-      textColor: "#1e40af",
-      borderColor: "#bae6fd",
-    },
-  };
-
-  return colorMap[severity] || colorMap.Medium;
+const getColorForSeverity = (
+  value: string,
+): { bgColor: string; textColor: string; borderColor: string } => {
+  switch (value) {
+    case "Catastrophic":
+      return {
+        bgColor: "#FE0000",
+        textColor: "#FFFFFF",
+        borderColor: "#CC0000",
+      };
+    case "Major":
+      return {
+        bgColor: "#FFC000",
+        textColor: "#000000",
+        borderColor: "#CCAA00",
+      };
+    case "Moderate":
+      return {
+        bgColor: "#FFFD04",
+        textColor: "#000000",
+        borderColor: "#99CC00",
+      };
+    case "Minor":
+      return {
+        bgColor: "#8FD154",
+        textColor: "#000000",
+        borderColor: "#00AA00",
+      };
+    case "Insignificant":
+      return {
+        bgColor: "#00AF50",
+        textColor: "#000000",
+        borderColor: "#00AA44",
+      };
+    case "Critical":
+      return {
+        bgColor: "#FE0000",
+        textColor: "#FFFFFF",
+        borderColor: "#CC0000",
+      };
+    case "High":
+      return {
+        bgColor: "#FFC000",
+        textColor: "#000000",
+        borderColor: "#CCAA00",
+      };
+    case "Moderate":
+      return {
+        bgColor: "#FFFD04",
+        textColor: "#000000",
+        borderColor: "#99CC00",
+      };
+    case "Low":
+      return {
+        bgColor: "#8FD154",
+        textColor: "#000000",
+        borderColor: "#00AA00",
+      };
+    case "Lowest":
+      return {
+        bgColor: "#00AF50",
+        textColor: "#000000",
+        borderColor: "#00AA44",
+      };
+    // Probability/Likelihood colors
+    case "Certain":
+      return {
+        bgColor: "#FE0000",
+        textColor: "#FFFFFF",
+        borderColor: "#CC0000",
+      };
+    case "Likely":
+      return {
+        bgColor: "#FFC000",
+        textColor: "#000000",
+        borderColor: "#CCAA00",
+      };
+    case "Possible":
+      return {
+        bgColor: "#FFFD04",
+        textColor: "#000000",
+        borderColor: "#99CC00",
+      };
+    case "Unlikely":
+      return {
+        bgColor: "#8FD154",
+        textColor: "#000000",
+        borderColor: "#00AA00",
+      };
+    case "Rare":
+      return {
+        bgColor: "#00AF50",
+        textColor: "#000000",
+        borderColor: "#00AA44",
+      };
+    default:
+      return {
+        bgColor: "#F5F5F5",
+        textColor: "#000000",
+        borderColor: "#D9D9D9",
+      };
+  }
 };
