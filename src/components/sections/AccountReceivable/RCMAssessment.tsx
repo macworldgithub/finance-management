@@ -132,8 +132,14 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         "19": "CEINTOSAIIFACI",
 
         "20": "INTOSAIIFACIAssessment",
-        "21": "CE-Other",
-        "22": "CE-Other Assessment",
+
+        "21": "CEOther",
+
+        "22": "CEOtherAssessment",
+
+        "23": "RiskAssessmentInherentRisk",
+
+        "24": "RiskAssessmentInherentRiskAssessment",
       };
 
       return map[activeTab] || "Process";
@@ -151,10 +157,11 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
 
       const section = getCurrentSection();
 
-      // Allow explicit overrides for CE-Other tabs
+      // Allow explicit overrides for CE-Other tabs and Risk Assessment tabs
       let endpoint = SECTION_TO_BASE_ENDPOINT[section];
       if (activeTab === "21") endpoint = "OtherControlEnvironments";
       if (activeTab === "22") endpoint = "OtherControlEnvironmentScorings";
+      if (activeTab === "23") endpoint = "RiskAssessmentInherentRisks";
 
       try {
         const response = await apiClientDotNet.get(`/${endpoint}`, {
@@ -225,7 +232,24 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             } as DataType;
           }
 
-          // Special mapping for CE-Other Assessment (tab 22) -> OtherControlEnvironmentScorings API response
+          // Special mapping for Risk Assessment-Inherent Risk (tab 23) -> RiskAssessmentInherentRisks API response
+          if (activeTab === "23" || section === "RiskAssessmentInherentRisk") {
+            return {
+              ...base,
+              riskType: item["Risk Type"] ?? item.riskType,
+              riskDescription: item["Risk Description"] ?? item.riskDescription,
+              severityImpact:
+                item["Severity/ Impact"] ??
+                item.severityImpact ??
+                item["Severity/Impact"],
+              probabilityLikelihood:
+                item["Probability/ Likelihood"] ??
+                item.probabilityLikelihood ??
+                item["Probability/Likelihood"],
+              classification: item.Classification ?? item.classification,
+              inherentRisk: item["Inherent Risk"] ?? item.inherentRisk,
+            } as DataType;
+          }
           if (activeTab === "22" || section === "CE-Other Assessment") {
             return {
               ...base,
@@ -1125,6 +1149,14 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
         return [
           { key: "21", label: "CE-Other" },
           { key: "22", label: "CE-Other Assessment" },
+        ];
+      }
+
+      // Risk Assessment tabs
+      if (activeTab === "23" || activeTab === "24") {
+        return [
+          { key: "23", label: "Risk Assessment-Inherent Risk" },
+          { key: "24", label: "Risk Assessment-Inherent Risk Assessment" },
         ];
       }
 

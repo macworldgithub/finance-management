@@ -2497,6 +2497,56 @@ export function getColumns(
     case "22":
       dynamicColumns = getCEOtherAssessmentColumns(handlers, editingKeys);
       break;
+    case "23":
+      dynamicColumns = riskAssessmentInherentColumns;
+      break;
+    case "24":
+      // Risk Assessment-Inherent Risk Assessment - Placeholder for now
+      dynamicColumns = [
+        {
+          title: "No",
+          dataIndex: "no",
+          key: "no",
+          width: 80,
+        },
+        {
+          title: "Process",
+          dataIndex: "process",
+          key: "process",
+          width: 300,
+        },
+        {
+          title: "Risk Type",
+          dataIndex: "riskType",
+          key: "riskType",
+          width: 150,
+        },
+        {
+          title: "Risk Description",
+          dataIndex: "riskDescription",
+          key: "riskDescription",
+          width: 250,
+        },
+        {
+          title: "Risk Response",
+          dataIndex: "riskResponse",
+          key: "riskResponse",
+          width: 200,
+        },
+        {
+          title: "Risk Response Description",
+          dataIndex: "riskResponseDescription",
+          key: "riskResponseDescription",
+          width: 250,
+        },
+        {
+          title: "Risk Response Type",
+          dataIndex: "riskResponseType",
+          key: "riskResponseType",
+          width: 180,
+        },
+      ];
+      break;
     case "11":
       dynamicColumns = [
         {
@@ -6447,7 +6497,12 @@ export function getColumns(
   }
   // Duplicate actionsColumn removed above. Only one definition remains.
   // For CE-COSO, CE-INTOSAI, and IFACI tabs, don't include actions column
-  if (activeTab === "17" || activeTab === "19" || activeTab === "21") {
+  if (
+    activeTab === "17" ||
+    activeTab === "19" ||
+    activeTab === "21" ||
+    activeTab === "23"
+  ) {
     return [...baseColumns, ...dynamicColumns];
   }
   return [...baseColumns, ...dynamicColumns, actionsColumn];

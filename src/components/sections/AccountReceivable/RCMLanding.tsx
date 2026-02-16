@@ -219,14 +219,14 @@ export default function RCMLanding({
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={() => onNavigateToAssessment("21")}
+            onClick={() => onNavigateToAssessment("23")}
           >
             Risk Assessment-Inherent Risk
           </button>
           <button
             type="button"
             className="py-2 bg-[#e2efda] border border-[#c5e0b4] text-[#215623] hover:bg-[#c5e0b4] transition"
-            onClick={() => onNavigateToAssessment("22")}
+            onClick={() => onNavigateToAssessment("24")}
           >
             Risk Assessment-Inherent Risk Assessment
           </button>
