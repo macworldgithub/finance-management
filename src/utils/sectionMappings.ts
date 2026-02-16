@@ -28,7 +28,7 @@ export const SECTION_TO_BASE_ENDPOINT: Record<string, string> = {
   "CE-Other": "OtherControlEnvironments",
   "CE-Other Assessment": "OtherControlEnvironmentScorings",
   RiskAssessmentInherentRisk: "RiskAssessmentInherentRisks",
-  RiskAssessmentInherentRiskAssessment: "RiskAssessmentInherentRiskAssessments",
+  RiskAssessmentInherentRiskAssessment: "RiskAssessmentInherentRiskScorings",
 };
 
 export const normalizeSectionName = (section: string): string => {
