@@ -282,6 +282,8 @@ export const processService = {
       "risk-assessment-inherent-risks": "RiskAssessmentInherentRisks",
       "risk-assessment-residual-risks": "RiskAssessmentResidualRisks",
       "risk-responses": "RiskResponses",
+      "risk-assessment-inherent-risk-assessment":
+        "RiskAssessmentInherentRiskScorings",
       sox: "Sox",
       "assessment-adequacies": "AssessmentOfAdequacy",
       "assessment-effectivenesses": "AssessmentOfEffectiveness",
@@ -376,6 +378,16 @@ export const processService = {
     return response.data;
   },
 
+  createRiskAssessmentInherentRiskAssessment: async (
+    data: Omit<RiskAssessment, "Id" | "Date">,
+  ) => {
+    const response = await apiClientDotNet.post(
+      "/RiskAssessmentInherentRiskScorings",
+      data,
+    );
+    return response.data;
+  },
+
   createRiskAssessmentResidualRisk: async (
     data: Omit<RiskAssessment, "Id" | "Date">,
   ) => {
@@ -418,6 +430,8 @@ export const getServiceForTab = (tabKey: string) => {
     "risk-assessment-residual-risks":
       processService.createRiskAssessmentResidualRisk,
     "risk-responses": processService.createRiskResponse,
+    "risk-assessment-inherent-risk-assessment":
+      processService.createRiskAssessmentInherentRiskAssessment,
     sox: processService.createSox,
   };
 

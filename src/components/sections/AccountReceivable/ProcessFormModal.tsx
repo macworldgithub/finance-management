@@ -85,6 +85,10 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
     },
     { key: "other-control-environments", title: "Other Control Environment" },
     { key: "other-control-environment-scorings", title: "CE-Other Assessment" },
+    {
+      key: "risk-assessment-inherent-risk-assessment",
+      title: "Risk Assessment-Inherent Risk Assessment",
+    },
   ];
 
   useEffect(() => {
@@ -2643,6 +2647,59 @@ const ProcessFormModal: React.FC<ProcessFormModalProps> = ({
         </Form.Item>
         <Form.Item name="ProductNameScore" label="Product Name Score(0-25)">
           <Input type="number" min={0} max={25} />
+        </Form.Item>
+      </>
+    ),
+    // Risk Assessment-Inherent Risk Assessment
+    "risk-assessment-inherent-risk-assessment": (
+      <>
+        <Form.Item name="RiskId" label="Risk ID">
+          <Input />
+        </Form.Item>
+        <Form.Item name="RiskType" label="Risk Type">
+          <Input />
+        </Form.Item>
+        <Form.Item name="RiskDescription" label="Risk Description">
+          <TextArea rows={2} />
+        </Form.Item>
+        <Form.Item name="SeverityImpact" label="Severity/Impact">
+          <Select>
+            <Option value="Catastrophic">Catastrophic</Option>
+            <Option value="Major">Major</Option>
+            <Option value="Moderate">Moderate</Option>
+            <Option value="Minor">Minor</Option>
+            <Option value="Insignificant">Insignificant</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="ProbabilityLikelihood" label="Probability/Likelihood">
+          <Select>
+            <Option value="Certain">Certain</Option>
+            <Option value="Likely">Likely</Option>
+            <Option value="Possible">Possible</Option>
+            <Option value="Unlikely">Unlikely</Option>
+            <Option value="Rare">Rare</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="Classification" label="Classification">
+          <Select>
+            <Option value="Critical">Critical</Option>
+            <Option value="High">High</Option>
+            <Option value="Moderate">Moderate</Option>
+            <Option value="Low">Low</Option>
+            <Option value="Lowest">Lowest</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="RiskIdSeverityImpact" label="Risk ID Severity Impact">
+          <Input type="number" />
+        </Form.Item>
+        <Form.Item
+          name="RiskIdProbabilityLikelihood"
+          label="Risk ID Probability Likelihood"
+        >
+          <Input type="number" />
+        </Form.Item>
+        <Form.Item name="RiskIdClassification" label="Risk ID Classification">
+          <Input type="number" />
         </Form.Item>
       </>
     ),
