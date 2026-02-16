@@ -13,9 +13,9 @@ import { DataType } from "./types";
 import { Select } from "antd";
 import {
   getCEOtherColumns,
-  getCEOtherAssessmentColumns as getCEOtherAssessmentColumnsOld,
+  getCEOtherAssessmentColumns,
 } from "./ceOtherColumns";
-import { getCEOtherAssessmentColumns } from "./ceOtherAssessmentColumns";
+import { getRiskAssessmentInherentRiskAssessmentColumns } from "./riskAssessmentInherentRiskAssessmentColumns";
 const { TextArea } = Input;
 export const stageOptions = [
   { label: "Processing", key: "Processing" },
@@ -2501,51 +2501,11 @@ export function getColumns(
       dynamicColumns = riskAssessmentInherentColumns;
       break;
     case "24":
-      // Risk Assessment-Inherent Risk Assessment - Placeholder for now
-      dynamicColumns = [
-        {
-          title: "No",
-          dataIndex: "no",
-          key: "no",
-          width: 80,
-        },
-        {
-          title: "Process",
-          dataIndex: "process",
-          key: "process",
-          width: 300,
-        },
-        {
-          title: "Risk Type",
-          dataIndex: "riskType",
-          key: "riskType",
-          width: 150,
-        },
-        {
-          title: "Risk Description",
-          dataIndex: "riskDescription",
-          key: "riskDescription",
-          width: 250,
-        },
-        {
-          title: "Risk Response",
-          dataIndex: "riskResponse",
-          key: "riskResponse",
-          width: 200,
-        },
-        {
-          title: "Risk Response Description",
-          dataIndex: "riskResponseDescription",
-          key: "riskResponseDescription",
-          width: 250,
-        },
-        {
-          title: "Risk Response Type",
-          dataIndex: "riskResponseType",
-          key: "riskResponseType",
-          width: 180,
-        },
-      ];
+      // Risk Assessment-Inherent Risk Assessment - Use separate component
+      dynamicColumns = getRiskAssessmentInherentRiskAssessmentColumns(
+        handlers,
+        editingKeys,
+      );
       break;
     case "11":
       dynamicColumns = [
@@ -6490,8 +6450,9 @@ export function getColumns(
       ];
       break;
     case "21":
-      // CE-Other - Import from optimized file
-      return getCEOtherColumns(handlers, editingKeys);
+      // CE-Other - Use existing otherEnvColumns
+      dynamicColumns = otherEnvColumns;
+      break;
     default:
       dynamicColumns = processColumns;
   }

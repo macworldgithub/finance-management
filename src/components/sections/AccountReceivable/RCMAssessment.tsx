@@ -162,6 +162,7 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
       if (activeTab === "21") endpoint = "OtherControlEnvironments";
       if (activeTab === "22") endpoint = "OtherControlEnvironmentScorings";
       if (activeTab === "23") endpoint = "RiskAssessmentInherentRisks";
+      if (activeTab === "24") endpoint = "RiskAssessmentInherentRiskScorings";
 
       try {
         const response = await apiClientDotNet.get(`/${endpoint}`, {
@@ -232,7 +233,51 @@ const RCMAssessment = forwardRef<RCMAssessmentRef, RCMAssessmentProps>(
             } as DataType;
           }
 
-          // Special mapping for Risk Assessment-Inherent Risk (tab 23) -> RiskAssessmentInherentRisks API response
+          // Special mapping for Risk Assessment-Inherent Risk Assessment (tab 24) -> RiskAssessmentInherentRiskScorings API response
+          if (
+            activeTab === "24" ||
+            section === "RiskAssessmentInherentRiskAssessment"
+          ) {
+            return {
+              ...base,
+              riskId: item.RiskId ?? item.riskId,
+              riskType: item.RiskType ?? item.riskType,
+              riskDescription: item.RiskDescription ?? item.riskDescription,
+              severityImpact: item.SeverityImpact ?? item.severityImpact,
+              probabilityLikelihood:
+                item.ProbabilityLikelihood ?? item.probabilityLikelihood,
+              classification: item.Classification ?? item.classification,
+              riskIdSeverityImpact:
+                item.RiskIdSeverityImpact ?? item.riskIdSeverityImpact,
+              riskIdProbabilityLikelihood:
+                item.RiskIdProbabilityLikelihood ??
+                item.riskIdProbabilityLikelihood,
+              riskIdClassification:
+                item.RiskIdClassification ?? item.riskIdClassification,
+            } as DataType;
+          }
+          if (
+            activeTab === "24" ||
+            section === "RiskAssessmentInherentRiskAssessment"
+          ) {
+            return {
+              ...base,
+              riskId: item.RiskId ?? item.riskId,
+              riskType: item.RiskType ?? item.riskType,
+              riskDescription: item.RiskDescription ?? item.riskDescription,
+              severityImpact: item.SeverityImpact ?? item.severityImpact,
+              probabilityLikelihood:
+                item.ProbabilityLikelihood ?? item.probabilityLikelihood,
+              classification: item.Classification ?? item.classification,
+              riskIdSeverityImpact:
+                item.RiskIdSeverityImpact ?? item.riskIdSeverityImpact,
+              riskIdProbabilityLikelihood:
+                item.RiskIdProbabilityLikelihood ??
+                item.riskIdProbabilityLikelihood,
+              riskIdClassification:
+                item.RiskIdClassification ?? item.riskIdClassification,
+            } as DataType;
+          }
           if (activeTab === "23" || section === "RiskAssessmentInherentRisk") {
             return {
               ...base,
