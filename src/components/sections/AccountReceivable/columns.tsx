@@ -23,6 +23,7 @@ import { getRiskAssessmentInherentColumns } from "./riskAssessmentInherentColumn
 import { getRiskResponsesColumnsMain } from "./riskResponsesColumnsMain";
 import { getControlAssessmentColumns } from "./configs/controlAssessmentColumns";
 import { getSoxControlActivityColumns } from "./configs/soxControlActivityColumns";
+import { getFinancialStatementAssertionsColumns } from "./configs/financialStatementAssertionsColumns";
 const { TextArea } = Input;
 export const stageOptions = [
   { label: "Processing", key: "Processing" },
@@ -1405,149 +1406,6 @@ export function getColumns(
   const riskAssessmentResidualColumns: ColumnsType<DataType> =
     getRiskAssessmentInherentColumns().map((col) => ({ ...col })); // copy to avoid reference issues
 
-  const financialStatementAssertionsColumns: ColumnsType<DataType> = [
-    // REMOVED: Internal Control Over Financial Reporting? from here
-    {
-      title: "Occurrence",
-      dataIndex: "occurrence",
-      key: "occurrence",
-      width: 150,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "occurrence",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Completeness",
-      dataIndex: "completeness",
-      key: "completeness",
-      width: 150,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "completeness",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Accuracy",
-      dataIndex: "accuracy",
-      key: "accuracy",
-      width: 150,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "accuracy",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Authorization",
-      dataIndex: "authorization",
-      key: "authorization",
-      width: 150,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "authorization",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Cutoff",
-      dataIndex: "cutoff",
-      key: "cutoff",
-      width: 120,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "cutoff",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Classification and Understandability",
-      dataIndex: "classificationSOX",
-      key: "classificationSOX",
-      width: 200,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "classificationAndUnderstandability",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Existence",
-      dataIndex: "existence",
-      key: "existence",
-      width: 150,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "existence",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Rights and Obligations",
-      dataIndex: "rightsAndObligations",
-      key: "rightsAndObligations",
-      width: 180,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "rightsAndObligations",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Valuation and Allocation",
-      dataIndex: "valuationAndAllocation",
-      key: "valuationAndAllocation",
-      width: 200,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "valuationAndAllocation",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-    {
-      title: "Presentation / Disclosure",
-      dataIndex: "presentationDisclosure",
-      key: "presentationDisclosure",
-      width: 200,
-      render: (checked: boolean, record: DataType) =>
-        renderEditableCheckbox(
-          checked,
-          record,
-          "presentationDisclosure",
-          handlers?.onCheckboxChange,
-          editingKeys,
-        ),
-    },
-  ];
   // NEW: Dedicated column for Internal Control Over Financial Reporting
   const icfrColumn: ColumnsType<DataType> = [
     {
@@ -1749,7 +1607,10 @@ export function getColumns(
       if (activeSubTab === "sox") {
         dynamicColumns = getSoxControlActivityColumns(handlers, editingKeys);
       } else if (activeSubTab === "financial")
-        dynamicColumns = financialStatementAssertionsColumns;
+        dynamicColumns = getFinancialStatementAssertionsColumns(
+          handlers,
+          editingKeys,
+        );
       else if (activeSubTab === "icfr") dynamicColumns = icfrColumn; // New subtab
       dynamicColumns = getSoxControlActivityColumns(handlers, editingKeys);
       break;
