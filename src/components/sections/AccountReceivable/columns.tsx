@@ -16,6 +16,11 @@ import {
   getCEOtherAssessmentColumns,
 } from "./ceOtherColumns";
 import { getRiskAssessmentInherentRiskAssessmentColumns } from "./riskAssessmentInherentRiskAssessmentColumns";
+import { getProcessColumns } from "./processColumns";
+import { getOwnershipColumns } from "./ownershipColumns";
+import { getControlActivitiesColumns } from "./controlActivitiesColumns";
+import { getRiskAssessmentInherentColumns } from "./riskAssessmentInherentColumns";
+import { getRiskResponsesColumnsMain } from "./riskResponsesColumnsMain";
 const { TextArea } = Input;
 export const stageOptions = [
   { label: "Processing", key: "Processing" },
@@ -706,301 +711,6 @@ export function getColumns(
       },
     },
   ];
-  const processColumns: ColumnsType<DataType> = [
-    {
-      title: "Process Description",
-      dataIndex: "processDescription",
-      key: "processDescription",
-      width: 300,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableTextArea
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(
-                  record.key,
-                  "processDescription",
-                  newValue,
-                )
-              }
-              autoSize={{ minRows: 2 }}
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Process Objective",
-      dataIndex: "processObjective",
-      key: "processObjective",
-      width: 300,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableTextArea
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(
-                  record.key,
-                  "processObjective",
-                  newValue,
-                )
-              }
-              autoSize={{ minRows: 2 }}
-            />
-          );
-        }
-        return text;
-      },
-    },
-
-    {
-      title: "Process Severity Levels",
-      dataIndex: "processSeverityLevels",
-      key: "processSeverityLevels",
-      width: 200,
-      render: (text: any, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          const menu = buildMenu(processSeverityLevelsOptions, (key) =>
-            handlers?.onSelectGeneric?.(
-              key,
-              record.key,
-              "processSeverityLevels",
-            ),
-          );
-          return (
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <div className="flex items-center cursor-pointer">
-                {text || "Select"}
-                <DownOutlined className="ml-1 text-gray-500 text-xs" />
-              </div>
-            </Dropdown>
-          );
-        }
-        return text || "-";
-      },
-    },
-  ];
-  const ownershipColumns: ColumnsType<DataType> = [
-    {
-      title: "Activity",
-      dataIndex: "activity",
-      key: "activity",
-      width: 250,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "activity", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Process",
-      dataIndex: "process2",
-      key: "process2",
-      width: 250,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "process2", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Process Stage",
-      dataIndex: "stage",
-      key: "stage",
-      width: 180,
-      render: (text: any, record: DataType) => {
-        if (editingKeys && editingKeys.includes(record.key)) {
-          const menu = buildMenu(stageOptions, (key) =>
-            handlers?.onStageChange?.(key, record.key),
-          );
-          return (
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <div className="flex items-center cursor-pointer">
-                {text}
-                <DownOutlined className="ml-1 text-gray-500 text-xs" />
-              </div>
-            </Dropdown>
-          );
-        }
-        return text || "-";
-      },
-    },
-    {
-      title: "Functions",
-      dataIndex: "functions",
-      key: "functions",
-      width: 150,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "functions", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Client Segment / Functional Segment",
-      dataIndex: "clientSegment",
-      key: "clientSegment",
-      width: 180,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "clientSegment", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Operational Unit",
-      dataIndex: "operationalUnit",
-      key: "operationalUnit",
-      width: 180,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(
-                  record.key,
-                  "operationalUnit",
-                  newValue,
-                )
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Division",
-      dataIndex: "division",
-      key: "division",
-      width: 150,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "division", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Entity",
-      dataIndex: "entity",
-      key: "entity",
-      width: 150,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "entity", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Unit / Department",
-      dataIndex: "unitDepartment",
-      key: "unitDepartment",
-      width: 180,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "unitDepartment", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Product Class",
-      dataIndex: "productClass",
-      key: "productClass",
-      width: 150,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "productClass", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Product Name",
-      dataIndex: "productName",
-      key: "productName",
-      width: 180,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "productName", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-  ];
   const cosoColumns: ColumnsType<DataType> = [
     {
       title: "Integrity & Ethical Values",
@@ -1453,194 +1163,6 @@ export function getColumns(
           handlers?.onCheckboxChange,
           editingKeys,
         ),
-    },
-  ];
-  const riskAssessmentInherentColumns: ColumnsType<DataType> = [
-    {
-      title: "Risk Type",
-      dataIndex: "riskType",
-      key: "riskType",
-      width: 200,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableInput
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(record.key, "riskType", newValue)
-              }
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Risk Description",
-      dataIndex: "riskDescription",
-      key: "riskDescription",
-      width: 300,
-      render: (text: string, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          return (
-            <EditableTextArea
-              initialValue={text}
-              onSave={(newValue) =>
-                handlers?.onTextChange?.(
-                  record.key,
-                  "riskDescription",
-                  newValue,
-                )
-              }
-              autoSize={{ minRows: 2 }}
-            />
-          );
-        }
-        return text;
-      },
-    },
-    {
-      title: "Severity / Impact",
-      dataIndex: "severityImpact",
-      key: "severityImpact",
-      width: 180,
-      render: (text: any, record: DataType) => {
-        const menu = buildMenu(severityOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "severityImpact"),
-        );
-        const { bgColor, textColor, borderColor } = getColorForSeverity(text);
-        if (editingKeys.includes(record.key)) {
-          return (
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <div
-                className="flex items-center cursor-pointer p-2 rounded"
-                style={{
-                  backgroundColor: bgColor,
-                  color: textColor,
-                  border: `1px solid ${borderColor}`,
-                  fontWeight: "600",
-                }}
-              >
-                {text || "Select"}
-                <DownOutlined className="ml-2" style={{ color: textColor }} />
-              </div>
-            </Dropdown>
-          );
-        }
-        return (
-          <div
-            className="flex items-center p-2 rounded"
-            style={{
-              backgroundColor: bgColor,
-              color: textColor,
-              border: `1px solid ${borderColor}`,
-              fontWeight: "600",
-            }}
-          >
-            {text || ""}
-          </div>
-        );
-      },
-    },
-    {
-      title: "Probability / Likelihood",
-      dataIndex: "probabilityLikelihood",
-      key: "probabilityLikelihood",
-      width: 200,
-      render: (text: any, record: DataType) => {
-        const probabilityOptions = [
-          { label: "Certain", key: "Certain" },
-          { label: "Likely", key: "Likely" },
-          { label: "Possible", key: "Possible" },
-          { label: "Unlikely", key: "Unlikely" },
-          { label: "Rare", key: "Rare" },
-        ];
-        const menu = buildMenu(probabilityOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "probabilityLikelihood"),
-        );
-        const { bgColor, textColor, borderColor } = getColorForSeverity(text);
-        if (editingKeys.includes(record.key)) {
-          return (
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <div
-                className="flex items-center cursor-pointer p-2 rounded"
-                style={{
-                  backgroundColor: bgColor,
-                  color: textColor,
-                  border: `1px solid ${borderColor}`,
-                  fontWeight: "600",
-                }}
-              >
-                {text || "Select"}
-                <DownOutlined className="ml-2" style={{ color: textColor }} />
-              </div>
-            </Dropdown>
-          );
-        }
-        return (
-          <div
-            className="flex items-center p-2 rounded"
-            style={{
-              backgroundColor: bgColor,
-              color: textColor,
-              border: `1px solid ${borderColor}`,
-              fontWeight: "600",
-            }}
-          >
-            {text || ""}
-          </div>
-        );
-      },
-    },
-    {
-      title: "Classification",
-      dataIndex: "classification",
-      key: "classification",
-      width: 150,
-      render: (text: any, record: DataType) => {
-        const classificationOptions = [
-          { label: "Critical", key: "Critical" },
-          { label: "High", key: "High" },
-          { label: "Moderate", key: "Moderate" },
-          { label: "Low", key: "Low" },
-          { label: "Lowest", key: "Lowest" },
-        ];
-        const menu = buildMenu(classificationOptions, (key) =>
-          handlers?.onSelectGeneric?.(key, record.key, "classification"),
-        );
-        const { bgColor, textColor, borderColor } = getColorForSeverity(text);
-        if (editingKeys.includes(record.key)) {
-          return (
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <div
-                className="flex items-center cursor-pointer p-2 rounded"
-                style={{
-                  backgroundColor: bgColor,
-                  color: textColor,
-                  border: `1px solid ${borderColor}`,
-                  fontWeight: "600",
-                }}
-              >
-                {text || "Select"}
-                <DownOutlined className="ml-2" style={{ color: textColor }} />
-              </div>
-            </Dropdown>
-          );
-        }
-        return (
-          <div
-            className="flex items-center p-2 rounded"
-            style={{
-              backgroundColor: bgColor,
-              color: textColor,
-              border: `1px solid ${borderColor}`,
-              fontWeight: "600",
-            }}
-          >
-            {text || ""}
-          </div>
-        );
-      },
     },
   ];
   const riskResponsesColumns: ColumnsType<DataType> = [
@@ -2450,13 +1972,16 @@ export function getColumns(
       },
     },
   ];
-  let dynamicColumns: ColumnsType<DataType> = processColumns;
+  let dynamicColumns: ColumnsType<DataType> = getProcessColumns(
+    handlers,
+    editingKeys,
+  );
   switch (activeTab) {
     case "1":
-      dynamicColumns = processColumns;
+      dynamicColumns = getProcessColumns(handlers, editingKeys);
       break;
     case "2":
-      dynamicColumns = ownershipColumns;
+      dynamicColumns = getOwnershipColumns(handlers, editingKeys);
       break;
     case "3":
       if (activeSubTab === "coso") dynamicColumns = cosoColumns;
@@ -2464,13 +1989,13 @@ export function getColumns(
       else dynamicColumns = otherEnvColumns;
       break;
     case "4":
-      dynamicColumns = riskAssessmentInherentColumns;
+      dynamicColumns = getRiskAssessmentInherentColumns(handlers, editingKeys);
       break;
     case "5":
-      dynamicColumns = riskResponsesColumns;
+      dynamicColumns = getRiskResponsesColumnsMain(handlers, editingKeys);
       break;
     case "6":
-      dynamicColumns = controlActivitiesColumns;
+      dynamicColumns = getControlActivitiesColumns(handlers, editingKeys);
       break;
     case "7":
       dynamicColumns = controlAssessmentColumns;
@@ -2498,7 +2023,7 @@ export function getColumns(
       dynamicColumns = getCEOtherAssessmentColumns(handlers, editingKeys);
       break;
     case "23":
-      dynamicColumns = riskAssessmentInherentColumns;
+      dynamicColumns = getRiskAssessmentInherentColumns(handlers, editingKeys);
       break;
     case "24":
       // Risk Assessment-Inherent Risk Assessment - Use separate component
@@ -2938,7 +2463,7 @@ export function getColumns(
       ];
       break;
     case "15":
-      dynamicColumns = ownershipColumns;
+      dynamicColumns = getOwnershipColumns(handlers, editingKeys);
       break;
     case "16":
       dynamicColumns = [
@@ -6454,7 +5979,7 @@ export function getColumns(
       dynamicColumns = otherEnvColumns;
       break;
     default:
-      dynamicColumns = processColumns;
+      dynamicColumns = getProcessColumns(handlers, editingKeys);
   }
   // Duplicate actionsColumn removed above. Only one definition remains.
   // For CE-COSO, CE-INTOSAI, and IFACI tabs, don't include actions column
