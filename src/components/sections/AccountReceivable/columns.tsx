@@ -22,6 +22,7 @@ import { getControlActivitiesColumns } from "./controlActivitiesColumns";
 import { getRiskAssessmentInherentColumns } from "./riskAssessmentInherentColumns";
 import { getRiskResponsesColumnsMain } from "./riskResponsesColumnsMain";
 import { getControlAssessmentColumns } from "./configs/controlAssessmentColumns";
+import { getSoxControlActivityColumns } from "./configs/soxControlActivityColumns";
 const { TextArea } = Input;
 export const stageOptions = [
   { label: "Processing", key: "Processing" },
@@ -1404,30 +1405,6 @@ export function getColumns(
   const riskAssessmentResidualColumns: ColumnsType<DataType> =
     getRiskAssessmentInherentColumns().map((col) => ({ ...col })); // copy to avoid reference issues
 
-  const soxSubTabColumns: ColumnsType<DataType> = [
-    {
-      title: "SOX Control Activity",
-      dataIndex: "soxControlActivity",
-      key: "soxControlActivity",
-      width: 250,
-      render: (text: any, record: DataType) => {
-        if (editingKeys.includes(record.key)) {
-          const menu = buildMenu(soxControlActivityOptions, (key) =>
-            handlers?.onSelectGeneric?.(key, record.key, "soxControlActivity"),
-          );
-          return (
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <div className="flex items-center cursor-pointer">
-                {text || "Select"}
-                <DownOutlined className="ml-1 text-gray-500 text-xs" />
-              </div>
-            </Dropdown>
-          );
-        }
-        return text || "-"; // Simple text when not editing
-      },
-    },
-  ];
   const financialStatementAssertionsColumns: ColumnsType<DataType> = [
     // REMOVED: Internal Control Over Financial Reporting? from here
     {
@@ -1769,12 +1746,12 @@ export function getColumns(
       dynamicColumns = riskAssessmentResidualColumns;
       break;
     case "9":
-      if (activeSubTab === "sox") dynamicColumns = soxSubTabColumns;
-      else if (activeSubTab === "financial")
+      if (activeSubTab === "sox") {
+        dynamicColumns = getSoxControlActivityColumns(handlers, editingKeys);
+      } else if (activeSubTab === "financial")
         dynamicColumns = financialStatementAssertionsColumns;
-      else if (activeSubTab === "icfr")
-        dynamicColumns = icfrColumn; // New subtab
-      else dynamicColumns = soxSubTabColumns;
+      else if (activeSubTab === "icfr") dynamicColumns = icfrColumn; // New subtab
+      dynamicColumns = getSoxControlActivityColumns(handlers, editingKeys);
       break;
     case "10":
       if (activeSubTab === "audit") dynamicColumns = internalAuditTestColumns;
