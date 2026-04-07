@@ -720,7 +720,7 @@ export default function ReportsPage() {
   const [error, setError] = useState<string | null>(null);
 
   const API_URL =
-    "https://financedotnet.omnisuiteai.com/api/AssessmentOfAdequacy?page=1&pageSize=100";
+    "https://backend-finance.omnisuiteai.com/api/AssessmentOfAdequacy?page=1&pageSize=100";
 
   useEffect(() => {
     let mounted = true;
